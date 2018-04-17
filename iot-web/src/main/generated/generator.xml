@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="mysql" defaultModelType="flat" targetRuntime="MyBatis3">
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost/lamp?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;tinyInt1isBit=false"
+                        userId="root"
+                        password="As_123456">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="com.scrawl.lamp.dao.entity" targetProject="src/main/generated">
+            <!--<property name="rootClass" value="com.niiwoo.civet.starter.service.entity.BaseEntity"/>-->
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="com.scrawl.lamp.dao.mapping" targetProject="src/main/generated"/>
+
+        <javaClientGenerator targetPackage="com.scrawl.lamp.dao.mapper" type="XMLMAPPER" targetProject="src/main/generated"/>
+
+
+        <table tableName="t_sys_manager" domainObjectName="Manager"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+
+    </context>
+
+</generatorConfiguration>
