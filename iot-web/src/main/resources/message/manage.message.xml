@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="BSC10001">请求参数错误</entry>
+    <entry key="BSC10002">输入内容有误</entry>
+    <entry key="BSC10003">请求方式错误</entry>
+    <entry key="BSC10004">无权限操作</entry>
+    <entry key="BSC10005">用户未登录</entry>
+    <entry key="BSC10006">图片文件不能为空</entry>
+    <entry key="BSC10007">未知文件类型</entry>
+
+    <!-- system -->
+    <entry key="SYS10001">用户名或密码错误</entry>
+
+    <!-- menu -->
+    <entry key="SYS20001">添加菜单错误</entry>
+    <entry key="SYS20002">删除菜单错误</entry>
+    <entry key="SYS20003">编辑菜单错误</entry>
+
+    <!-- manager -->
+    <entry key="SYS30001">编辑管理员错误</entry>
+
+    <entry key="BSC20001">被迫下线！您的账号在另一个终端登录，如不是您本人操作请及时更换密码！</entry>
+    <entry key="SYS9999">服务器开小差了</entry>
+</properties>

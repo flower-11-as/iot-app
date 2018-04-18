@@ -13,18 +13,18 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost/lamp?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;tinyInt1isBit=false"
+                        connectionURL="jdbc:mysql://localhost/iot?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;tinyInt1isBit=false"
                         userId="root"
                         password="As_123456">
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.scrawl.lamp.dao.entity" targetProject="src/main/generated">
+        <javaModelGenerator targetPackage="com.scrawl.iot.web.dao.entity" targetProject="src/main/generated">
             <!--<property name="rootClass" value="com.niiwoo.civet.starter.service.entity.BaseEntity"/>-->
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="com.scrawl.lamp.dao.mapping" targetProject="src/main/generated"/>
+        <sqlMapGenerator targetPackage="com.scrawl.iot.web.dao.mapping" targetProject="src/main/generated"/>
 
-        <javaClientGenerator targetPackage="com.scrawl.lamp.dao.mapper" type="XMLMAPPER" targetProject="src/main/generated"/>
+        <javaClientGenerator targetPackage="com.scrawl.iot.web.dao.mapper" type="XMLMAPPER" targetProject="src/main/generated"/>
 
 
         <table tableName="t_sys_manager" domainObjectName="Manager"

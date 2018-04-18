@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: "iot-manage"
+  profiles:
+    active: "@build.profile.id@"
+
+mybatis:
+  mapper-locations: classpath*:com/scrawl/iot/web/dao/mapping/*.xml
