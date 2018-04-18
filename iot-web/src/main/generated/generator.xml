@@ -18,16 +18,16 @@
                         password="As_123456">
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.scrawl.iot.web.dao.entity" targetProject="src/main/generated">
+        <javaModelGenerator targetPackage="com.scrawl.iot.web.dao.entity" targetProject="src/main/java">
             <!--<property name="rootClass" value="com.niiwoo.civet.starter.service.entity.BaseEntity"/>-->
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="com.scrawl.iot.web.dao.mapping" targetProject="src/main/generated"/>
+        <sqlMapGenerator targetPackage="com.scrawl.iot.web.dao.mapping" targetProject="src/main/java"/>
 
-        <javaClientGenerator targetPackage="com.scrawl.iot.web.dao.mapper" type="XMLMAPPER" targetProject="src/main/generated"/>
+        <javaClientGenerator targetPackage="com.scrawl.iot.web.dao.mapper" type="XMLMAPPER" targetProject="src/main/java"/>
 
 
-        <table tableName="t_sys_manager" domainObjectName="Manager"
+        <table tableName="t_sys_role" domainObjectName="Role"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

@@ -184,6 +184,15 @@
     WHERE mr.manager_id = #{id} AND m.type IN(0,1)
     ORDER BY m.order
   </select>
+  <select id="listMenuByRoleId" resultMap="BaseResultMap">
+    select
+      m.id, m.parent_id as parentId, m.`name`, m.url, m.permission, m.`type`, m.icon, m.`order`,
+    m.create_time as createTime, m.create_manager as createManager, m.update_time as updateTime, m.update_manager as updateManager
+    FROM t_sys_menu m
+    LEFT JOIN t_sys_role_menu rm ON m.id = rm.menu_id
+    WHERE rm.role_id=#{roleId}
+    ORDER BY m.order
+  </select>
   <select id="list" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>

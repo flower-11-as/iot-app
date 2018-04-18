@@ -4,13 +4,14 @@
   <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.Role">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_manager" jdbcType="INTEGER" property="createManager" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="update_manager" jdbcType="INTEGER" property="updateManager" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `name`, create_time, create_manager, update_time, update_manager
+    id, `name`, remark, create_time, create_manager, update_time, update_manager
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -23,14 +24,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.Role">
-    insert into t_sys_role (id, `name`, create_time, 
-      create_manager, update_time, update_manager
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{createManager,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{updateManager,jdbcType=INTEGER}
-      )
+    insert into t_sys_role (id, `name`, remark, 
+      create_time, create_manager, update_time, 
+      update_manager)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateManager,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.Role">
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.Role" useGeneratedKeys="true" keyProperty="id">
     insert into t_sys_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -38,6 +39,9 @@
       </if>
       <if test="name != null">
         `name`,
+      </if>
+      <if test="remark != null">
+        remark,
       </if>
       <if test="createTime != null">
         create_time,
@@ -59,6 +63,9 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -79,6 +86,9 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -97,6 +107,7 @@
   <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.Role">
     update t_sys_role
     set `name` = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_manager = #{createManager,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -112,11 +123,30 @@
   </select>
   <select id="selectBySelective" parameterType="com.scrawl.iot.web.dao.entity.Role" resultMap="BaseResultMap">
     select
-      <include refid="Base_Column_List"/>
+      <include refid="Base_Column_List" />
     from t_sys_role
     where 1=1
     <if test="name != null and name != ''">
       and `name` = #{name,jdbcType=VARCHAR}
     </if>
   </select>
+  <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.sys.role.RoleListReqVO" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_role
+    where 1=1
+    <include refid="select_page_where" />
+    limit #{offset}, #{limit}
+  </select>
+  <select id="selectPageCount" parameterType="com.scrawl.iot.web.vo.sys.role.RoleListReqVO" resultType="java.lang.Integer">
+    select count(*)
+    from t_sys_role
+    where 1=1
+    <include refid="select_page_where" />
+  </select>
+  <sql id="select_page_where">
+    <if test="name != null and name != ''">
+      and name = #{name}
+    </if>
+  </sql>
 </mapper>

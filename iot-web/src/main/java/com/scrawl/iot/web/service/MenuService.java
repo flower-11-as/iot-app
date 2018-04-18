@@ -21,4 +21,8 @@ public interface MenuService {
     int remove(Integer id);
 
     Menu get(Integer id);
+
+    Tree<Menu> getTree();
+
+    Tree<Menu> getTree(Integer roleId);
 }

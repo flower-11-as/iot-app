@@ -2,9 +2,9 @@ package com.scrawl.iot.web.service.impl;
 
 import com.scrawl.iot.web.dao.entity.Menu;
 import com.scrawl.iot.web.dao.mapper.MenuMapper;
-import com.scrawl.iot.web.vo.Tree;
 import com.scrawl.iot.web.service.MenuService;
 import com.scrawl.iot.web.utils.BuildTree;
+import com.scrawl.iot.web.vo.Tree;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -27,15 +28,15 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<Tree<Menu>> listMenuTree(Integer id) {
         List<Tree<Menu>> trees = new ArrayList<>();
-        List<Menu> menuDOs = menuMapper.listMenuByManagerId(id);
-        for (Menu sysMenuDO : menuDOs) {
+        List<Menu> Menus = menuMapper.listMenuByManagerId(id);
+        for (Menu sysMenu : Menus) {
             Tree<Menu> tree = new Tree<>();
-            tree.setId(sysMenuDO.getId().toString());
-            tree.setParentId(sysMenuDO.getParentId().toString());
-            tree.setText(sysMenuDO.getName());
+            tree.setId(sysMenu.getId().toString());
+            tree.setParentId(sysMenu.getParentId().toString());
+            tree.setText(sysMenu.getName());
             Map<String, Object> attributes = new HashMap<>(16);
-            attributes.put("url", sysMenuDO.getUrl());
-            attributes.put("icon", sysMenuDO.getIcon());
+            attributes.put("url", sysMenu.getUrl());
+            attributes.put("icon", sysMenu.getIcon());
             tree.setAttributes(attributes);
             trees.add(tree);
         }
@@ -66,5 +67,47 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Menu get(Integer id) {
         return menuMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Tree<Menu> getTree() {
+        List<Tree<Menu>> trees = new ArrayList<>();
+        List<Menu> menus = menuMapper.list();
+        for (Menu menu : menus) {
+            Tree<Menu> tree = new Tree<>();
+            tree.setId(menu.getId().toString());
+            tree.setParentId(menu.getParentId().toString());
+            tree.setText(menu.getName());
+            trees.add(tree);
+        }
+        // 默认顶级菜单为０，根据数据库实际情况调整
+        Tree<Menu> t = BuildTree.build(trees);
+        return t;
+    }
+
+    @Override
+    public Tree<Menu> getTree(Integer roleId) {
+        // 根据roleId查询权限
+        List<Menu> roleMenus = menuMapper.listMenuByRoleId(roleId);
+        List<Integer> roleMenuIds = roleMenus.stream().map(Menu::getId).collect(Collectors.toList());
+        List<Tree<Menu>> trees = new ArrayList<>();
+        List<Menu> menus = menuMapper.list();
+        for (Menu sysMenu : menus) {
+            Tree<Menu> tree = new Tree<>();
+            tree.setId(sysMenu.getId().toString());
+            tree.setParentId(sysMenu.getParentId().toString());
+            tree.setText(sysMenu.getName());
+            Map<String, Object> state = new HashMap<>(16);
+            Integer menuId = sysMenu.getId();
+            if (roleMenuIds.contains(menuId)) {
+                state.put("selected", true);
+            } else {
+                state.put("selected", false);
+            }
+            tree.setState(state);
+            trees.add(tree);
+        }
+        // 默认顶级菜单为０，根据数据库实际情况调整
+        return BuildTree.build(trees);
     }
 }

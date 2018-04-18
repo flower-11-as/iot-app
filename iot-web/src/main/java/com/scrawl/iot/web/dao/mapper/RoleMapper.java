@@ -2,6 +2,7 @@ package com.scrawl.iot.web.dao.mapper;
 
 import com.scrawl.iot.web.dao.entity.Role;
 import com.scrawl.iot.web.vo.sys.manager.ManagerRoleRespVO;
+import com.scrawl.iot.web.vo.sys.role.RoleListReqVO;
 
 import java.util.List;
 
@@ -21,4 +22,8 @@ public interface RoleMapper {
     List<ManagerRoleRespVO> selectManagerRoleList(Integer managerId);
 
     List<Role> selectBySelective(Role record);
+
+    List<Role> selectPageList(RoleListReqVO reqVO);
+
+    int selectPageCount(RoleListReqVO reqVO);
 }

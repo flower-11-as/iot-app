@@ -127,7 +127,7 @@ function remove(id) {
 			},
 			success : function(data) {
                 if (data.code === '0000') {
-                    layer.msg("保存成功");
+                    layer.msg("删除成功");
                     reLoad();
                 } else {
                     layer.alert(data.msg, {
@@ -182,7 +182,7 @@ function batchRemove() {
 			url : prefix + '/batchRemove',
 			success : function(data) {
                 if (data.code === '0000') {
-                    layer.msg("保存成功");
+                    layer.msg("删除成功");
                     reLoad();
                 } else {
                     layer.alert(data.msg, {

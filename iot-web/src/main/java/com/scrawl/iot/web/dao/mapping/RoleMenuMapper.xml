@@ -103,7 +103,7 @@
     inner join t_sys_manager_role mr on rm.role_id = mr.role_id
     where mr.manager_id = #{managerId}
   </select>
-  <select id="selectPermissionsByManagerId" parameterType="int" resultType="string">
+  <select id="selectPermissionsByManagerId" parameterType="java.lang.Integer" resultType="java.lang.String">
     select
       distinct m.permission
     from t_sys_role_menu rm
@@ -111,4 +111,10 @@
     inner join t_sys_manager_role mr on rm.role_id = mr.role_id
     where mr.manager_id = #{managerId}
   </select>
+  <delete id="deleteByRoleIdAndMenuId">
+    delete from t_sys_role_menu where role_id=#{roleId} and menu_id=#{menuId}
+  </delete>
+  <delete id="deleteByRoleId">
+    delete from t_sys_role_menu where role_id=#{roleId}
+  </delete>
 </mapper>

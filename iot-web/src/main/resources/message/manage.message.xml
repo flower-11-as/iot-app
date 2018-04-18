@@ -23,6 +23,11 @@
     <entry key="SYS30002">添加管理员错误</entry>
     <entry key="SYS30003">删除管理员错误</entry>
 
+    <!--role-->
+    <entry key="SYS40001">编辑角色错误</entry>
+    <entry key="SYS40002">添加角色错误</entry>
+    <entry key="SYS40003">删除角色错误</entry>
+
     <entry key="BSC20001">被迫下线！您的账号在另一个终端登录，如不是您本人操作请及时更换密码！</entry>
     <entry key="SYS9999">服务器开小差了</entry>
 </properties>

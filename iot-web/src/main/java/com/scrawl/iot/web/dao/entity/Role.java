@@ -7,6 +7,8 @@ public class Role {
 
     private String name;
 
+    private String remark;
+
     private Date createTime;
 
     private Integer createManager;
@@ -29,6 +31,14 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public Date getCreateTime() {

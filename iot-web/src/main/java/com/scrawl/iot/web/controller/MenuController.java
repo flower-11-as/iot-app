@@ -9,6 +9,7 @@ import com.scrawl.iot.web.dao.entity.Menu;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.MenuService;
 import com.scrawl.iot.web.vo.R;
+import com.scrawl.iot.web.vo.Tree;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class MenuController extends BaseController {
 
     @RequiresPermissions("sys:menu:add")
     @GetMapping("/add/{pId}")
-    String add(Model model, @PathVariable("pId") Integer pId) {
+    String add(@PathVariable("pId") Integer pId,Model model) {
         model.addAttribute("pId", pId);
         if (pId == 0) {
             model.addAttribute("pName", "根目录");
@@ -126,5 +127,17 @@ public class MenuController extends BaseController {
             log.error("删除菜单异常：", e);
             throw new BizException("SYS20002");
         }
+    }
+
+    @GetMapping("/tree")
+    @ResponseBody
+    public Tree<Menu> tree() {
+        return menuService.getTree();
+    }
+
+    @GetMapping("/tree/{roleId}")
+    @ResponseBody
+    public Tree<Menu> tree(@PathVariable("roleId") Integer roleId) {
+        return menuService.getTree(roleId);
     }
 }

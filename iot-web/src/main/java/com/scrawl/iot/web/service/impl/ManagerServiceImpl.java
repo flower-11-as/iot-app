@@ -126,6 +126,5 @@ public class ManagerServiceImpl implements ManagerService {
         if (ArrayUtils.isNotEmpty(managerIds)) {
             Arrays.stream(managerIds).forEach(this::remove);
         }
-
     }
 }

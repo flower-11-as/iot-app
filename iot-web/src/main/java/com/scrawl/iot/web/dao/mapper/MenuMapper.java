@@ -20,5 +20,7 @@ public interface MenuMapper {
 
     List<Menu> listMenuByManagerId(Integer id);
 
+    List<Menu> listMenuByRoleId(Integer roleId);
+
     List<Menu> list();
 }
