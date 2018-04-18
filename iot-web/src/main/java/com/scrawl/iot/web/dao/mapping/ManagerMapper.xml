@@ -38,7 +38,7 @@
     #{salt,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER},
     #{updateTime,jdbcType=TIMESTAMP}, #{updateManager,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.Manager">
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.Manager" useGeneratedKeys="true" keyProperty="id">
     insert into t_sys_manager
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -175,7 +175,7 @@
     <include refid="select_page_where" />
     limit #{offset}, #{limit}
   </select>
-  <select id="selectPageCount" parameterType="com.scrawl.iot.web.vo.sys.manager.ManagerListReqVO" resultType="int">
+  <select id="selectPageCount" parameterType="com.scrawl.iot.web.vo.sys.manager.ManagerListReqVO" resultType="java.lang.Integer">
     select count(*)
     from t_sys_manager
     where 1=1

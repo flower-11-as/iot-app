@@ -2,7 +2,7 @@ package com.scrawl.iot.web.service;
 
 import com.scrawl.iot.web.dao.entity.Manager;
 import com.scrawl.iot.web.vo.sys.manager.ManagerListReqVO;
-import com.scrawl.iot.web.vo.sys.manager.ManagerUpdateReqVO;
+import com.scrawl.iot.web.vo.sys.manager.ManagerReqVO;
 
 import java.util.List;
 
@@ -17,7 +17,13 @@ public interface ManagerService {
 
     Manager get(Integer id);
 
-    void update(ManagerUpdateReqVO reqVO);
+    void update(ManagerReqVO reqVO);
 
     Manager get(String username);
+
+    void save(ManagerReqVO reqVO);
+
+    void remove(Integer managerId);
+
+    void batchRemove(Integer[] managerIds);
 }

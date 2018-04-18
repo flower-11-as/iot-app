@@ -11,6 +11,7 @@
 
     <!-- system -->
     <entry key="SYS10001">用户名或密码错误</entry>
+    <entry key="SYS10002">用户已被禁用请联系管理员</entry>
 
     <!-- menu -->
     <entry key="SYS20001">添加菜单错误</entry>
@@ -19,6 +20,8 @@
 
     <!-- manager -->
     <entry key="SYS30001">编辑管理员错误</entry>
+    <entry key="SYS30002">添加管理员错误</entry>
+    <entry key="SYS30003">删除管理员错误</entry>
 
     <entry key="BSC20001">被迫下线！您的账号在另一个终端登录，如不是您本人操作请及时更换密码！</entry>
     <entry key="SYS9999">服务器开小差了</entry>

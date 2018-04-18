@@ -10,40 +10,28 @@ $.validator.setDefaults({
     }
 });
 
-function getCheckedRoles() {
-    var adIds = "";
-    $("input:checkbox[name=role]:checked").each(function (i) {
-        if (0 == i) {
-            adIds = $(this).val();
-        } else {
-            adIds += ("," + $(this).val());
-        }
-    });
-    return adIds;
-}
-
 function save() {
-    $("#roleIds").val(getCheckedRoles());
     $.ajax({
         cache: true,
         type: "POST",
-        url: prefix + "",
+        url: prefix + "/save",
         data: $('#signupForm').serialize(),// 你的formid
         async: false,
         error: function (request) {
-            parent.layer.alert("Connection error");
+            layer.alert("Connection error");
         },
         success: function (data) {
-            if (data.code == 0) {
-                parent.layer.msg("操作成功");
+            if (data.code === '0000') {
+                parent.layer.msg("保存成功");
                 parent.reLoad();
                 var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
                 parent.layer.close(index);
-
             } else {
-                parent.layer.alert(data.msg)
+                layer.alert(data.msg, {
+                    title: '提示',
+                    icon: 2
+                });
             }
-
         }
     });
 

@@ -4,6 +4,8 @@ import com.scrawl.iot.web.dao.entity.Manager;
 import com.scrawl.iot.web.dao.mapper.ManagerMapper;
 import com.scrawl.iot.web.dao.mapper.ManagerRoleMapper;
 import com.scrawl.iot.web.dao.mapper.RoleMenuMapper;
+import com.scrawl.iot.web.enums.ManagerStatusEnum;
+import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.helper.ApplicationContextHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
@@ -15,6 +17,8 @@ import org.apache.shiro.util.SimpleByteSource;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -52,13 +56,17 @@ public class IotShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
-        SimpleAuthenticationInfo simpleAuthenticationInfo = null;
+        AtomicReference<SimpleAuthenticationInfo> simpleAuthenticationInfo = new AtomicReference<>();
         ManagerMapper managerMapper = ApplicationContextHelper.getBean(ManagerMapper.class);
-        Manager manager = managerMapper.selectByUsername(usernamePasswordToken.getUsername());
-        if (null != manager) {
-            simpleAuthenticationInfo = new SimpleAuthenticationInfo(manager,
-                    manager.getPassword(), new SimpleByteSource(manager.getSalt()), REALM_NAME);
-        }
-        return simpleAuthenticationInfo;
+        Optional<Manager> optional = Optional.ofNullable(managerMapper.selectByUsername(usernamePasswordToken.getUsername()));
+
+        // 校验是否禁用
+        optional.filter(manager -> manager.getStatus().equals(ManagerStatusEnum.OFF.getCode())).ifPresent(manager -> {throw new BizException("SYS10002");});
+
+        // 校验是否
+        optional.ifPresent(manager -> simpleAuthenticationInfo.set(new SimpleAuthenticationInfo(manager,
+                manager.getPassword(), new SimpleByteSource(manager.getSalt()), REALM_NAME)));
+
+        return simpleAuthenticationInfo.get();
     }
 }

@@ -96,12 +96,15 @@
     from t_sys_manager_role
     where manager_id = #{managerId}
   </select>
-  <select id="selectRoleIdsByManagerId" parameterType="int" resultType="int">
+  <select id="selectRoleIdsByManagerId" parameterType="int" resultType="java.lang.Integer">
     select distinct role_id
     from t_sys_manager_role
     where manager_id = #{managerId}
   </select>
   <delete id="deleteByManagerIdAndRoleId">
     delete from t_sys_manager_role where manager_id = #{managerId} and role_id = #{roleId}
+  </delete>
+  <delete id="deleteByManagerId">
+    delete from t_sys_manager_role where manager_id = #{managerId}
   </delete>
 </mapper>

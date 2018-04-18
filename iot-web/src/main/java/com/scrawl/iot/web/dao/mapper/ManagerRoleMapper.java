@@ -23,4 +23,6 @@ public interface ManagerRoleMapper {
     List<Integer> selectRoleIdsByManagerId(Integer managerId);
 
     int deleteByManagerIdAndRoleId(@Param("managerId") Integer managerId, @Param("roleId") Integer roleId);
+
+    int deleteByManagerId(@Param("managerId") Integer managerId);
 }

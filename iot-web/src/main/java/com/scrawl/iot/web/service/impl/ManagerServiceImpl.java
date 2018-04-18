@@ -4,15 +4,19 @@ import com.scrawl.iot.web.dao.entity.Manager;
 import com.scrawl.iot.web.dao.entity.ManagerRole;
 import com.scrawl.iot.web.dao.mapper.ManagerMapper;
 import com.scrawl.iot.web.dao.mapper.ManagerRoleMapper;
+import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.ManagerService;
 import com.scrawl.iot.web.vo.sys.manager.ManagerListReqVO;
-import com.scrawl.iot.web.vo.sys.manager.ManagerUpdateReqVO;
+import com.scrawl.iot.web.vo.sys.manager.ManagerReqVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +52,7 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     @Transactional
-    public void update(ManagerUpdateReqVO reqVO) {
+    public void update(ManagerReqVO reqVO) {
         // 修改manager
         managerMapper.updateByPrimaryKeySelective(reqVO);
 
@@ -75,5 +79,48 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public Manager get(String username) {
         return managerMapper.selectByUsername(username);
+    }
+
+    @Override
+    @Transactional
+    public void save(ManagerReqVO reqVO) {
+        // 插入管理员
+        if (managerMapper.insertSelective(reqVO) == 0) {
+            throw new BizException("SYS30002");
+        }
+
+        // 插入角色
+        List<Integer> roleIds = reqVO.getRoles();
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return;
+        }
+
+        roleIds.forEach(roleId -> {
+            ManagerRole mr = new ManagerRole();
+            mr.setManagerId(reqVO.getId());
+            mr.setRoleId(roleId);
+            mr.setCreateManager(reqVO.getCreateManager());
+            mr.setCreateTime(reqVO.getCreateTime());
+            managerRoleMapper.insertSelective(mr);
+        });
+    }
+
+    @Override
+    @Transactional
+    public void remove(Integer managerId) {
+        // 删除管理员
+        managerMapper.deleteByPrimaryKey(managerId);
+
+        // 删除管理员角色
+        managerRoleMapper.deleteByManagerId(managerId);
+    }
+
+    @Override
+    @Transactional
+    public void batchRemove(Integer[] managerIds) {
+        if (ArrayUtils.isNotEmpty(managerIds)) {
+            Arrays.stream(managerIds).forEach(this::remove);
+        }
+
     }
 }

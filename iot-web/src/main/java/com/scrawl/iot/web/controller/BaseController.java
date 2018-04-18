@@ -17,5 +17,4 @@ public class BaseController {
     Integer getManagerId() {
         return getManager().getId();
     }
-
 }

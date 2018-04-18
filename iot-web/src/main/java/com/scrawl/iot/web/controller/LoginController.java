@@ -43,13 +43,8 @@ public class LoginController extends BaseController{
         UsernamePasswordToken token = new UsernamePasswordToken(vo.getUsername(), vo.getPassword());
         Subject subject = SecurityUtils.getSubject();
 
-        try {
-            subject.login(token);
-            R r = R.ok();
-            return r;
-        } catch (AuthenticationException e) {
-            throw new BizException("SYS10001");
-        }
+        subject.login(token);
+        return R.ok();
     }
 
     @GetMapping("/index")
@@ -62,5 +57,11 @@ public class LoginController extends BaseController{
     @GetMapping("/main")
     public String main() {
         return "main";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        SecurityUtils.getSubject().logout();
+        return "redirect:/login";
     }
 }

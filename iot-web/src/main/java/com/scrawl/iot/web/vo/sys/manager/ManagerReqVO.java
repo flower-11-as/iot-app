@@ -12,6 +12,6 @@ import java.util.List;
  */
 @Setter
 @Getter
-public class ManagerUpdateReqVO extends Manager {
+public class ManagerReqVO extends Manager {
     private List<Integer> roles;
 }

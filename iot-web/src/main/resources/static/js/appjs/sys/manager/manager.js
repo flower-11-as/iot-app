@@ -67,9 +67,9 @@ function load() {
 						title : '状态',
 						align : 'center',
 						formatter : function(value, row, index) {
-							if (value === '0') {
+							if (value === 0) {
 								return '<span class="label label-danger">禁用</span>';
-							} else if (value === '1') {
+							} else if (value === 1) {
 								return '<span class="label label-primary">正常</span>';
 							}
 						}
@@ -120,18 +120,21 @@ function remove(id) {
 		btn : [ '确定', '取消' ]
 	}, function() {
 		$.ajax({
-			url : "/sys/user/remove",
+			url : prefix + "/remove",
 			type : "post",
 			data : {
 				'id' : id
 			},
-			success : function(r) {
-				if (r.code == 0) {
-					layer.msg(r.msg);
-					reLoad();
-				} else {
-					layer.msg(r.msg);
-				}
+			success : function(data) {
+                if (data.code === '0000') {
+                    layer.msg("保存成功");
+                    reLoad();
+                } else {
+                    layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
+                }
 			}
 		});
 	})
@@ -158,7 +161,7 @@ function resetPwd(id) {
 }
 function batchRemove() {
 	var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
-	if (rows.length == 0) {
+	if (rows.length === 0) {
 		layer.msg("请选择要删除的数据");
 		return;
 	}
@@ -166,10 +169,10 @@ function batchRemove() {
 		btn : [ '确定', '取消' ]
 	// 按钮
 	}, function() {
-		var ids = new Array();
+		var ids = [];
 		// 遍历所有选择的行数据，取每条数据对应的ID
 		$.each(rows, function(i, row) {
-			ids[i] = row['userId'];
+			ids[i] = row['id'];
 		});
 		$.ajax({
 			type : 'POST',
@@ -177,13 +180,16 @@ function batchRemove() {
 				"ids" : ids
 			},
 			url : prefix + '/batchRemove',
-			success : function(r) {
-				if (r.code == 0) {
-					layer.msg(r.msg);
-					reLoad();
-				} else {
-					layer.msg(r.msg);
-				}
+			success : function(data) {
+                if (data.code === '0000') {
+                    layer.msg("保存成功");
+                    reLoad();
+                } else {
+                    layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
+                }
 			}
 		});
 	}, function() {});
