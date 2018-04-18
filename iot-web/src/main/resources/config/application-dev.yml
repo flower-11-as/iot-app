@@ -5,7 +5,7 @@ server:
 spring:
   # datasource
   datasource:
-    url: jdbc:mysql://localhost:3306/iot?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://104.224.159.254:3306/iot?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: As_123456
     type: com.alibaba.druid.pool.DruidDataSource
