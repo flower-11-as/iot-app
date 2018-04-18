@@ -19,4 +19,6 @@ public interface RoleMapper {
     int updateByPrimaryKey(Role record);
 
     List<ManagerRoleRespVO> selectManagerRoleList(Integer managerId);
+
+    List<Role> selectBySelective(Role record);
 }

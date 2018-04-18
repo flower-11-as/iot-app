@@ -18,4 +18,6 @@ public interface ManagerService {
     Manager get(Integer id);
 
     void update(ManagerUpdateReqVO reqVO);
+
+    Manager get(String username);
 }

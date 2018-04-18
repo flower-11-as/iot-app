@@ -111,7 +111,7 @@ function add() {
 		title : '增加用户',
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
-		area : [ '800px', '520px' ],
+		area : [ '800px', '500px' ],
 		content : prefix + '/add'
 	});
 }
@@ -142,7 +142,7 @@ function edit(id) {
 		title : '用户修改',
 		maxmin : true,
 		shadeClose : false,
-		area : [ '800px', '520px' ],
+		area : [ '800px', '420px' ],
 		content : prefix + '/edit/' + id // iframe的url
 	});
 }

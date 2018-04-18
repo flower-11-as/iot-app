@@ -1,5 +1,6 @@
 package com.scrawl.iot.web.service.impl;
 
+import com.scrawl.iot.web.dao.entity.Role;
 import com.scrawl.iot.web.dao.mapper.RoleMapper;
 import com.scrawl.iot.web.service.RoleService;
 import com.scrawl.iot.web.vo.sys.manager.ManagerRoleRespVO;
@@ -21,7 +22,12 @@ public class RoleServiceImpl implements RoleService {
     private RoleMapper roleMapper;
 
     @Override
-    public List<ManagerRoleRespVO> managerRoleList(Integer managerId) {
+    public List<ManagerRoleRespVO> getManagerRoleList(Integer managerId) {
         return roleMapper.selectManagerRoleList(managerId);
+    }
+
+    @Override
+    public List<Role> getRoleList(Role role) {
+        return roleMapper.selectBySelective(role);
     }
 }

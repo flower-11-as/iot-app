@@ -1,6 +1,7 @@
 package com.scrawl.iot.web.controller;
 
 import com.scrawl.iot.web.dao.entity.Manager;
+import com.scrawl.iot.web.dao.entity.Role;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.ManagerService;
 import com.scrawl.iot.web.service.RoleService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Description:
@@ -53,7 +55,7 @@ public class ManagerController extends BaseController {
     public String edit(Model model, @PathVariable("id") Integer id) {
         Manager manager = managerService.get(id);
         model.addAttribute("manager", manager);
-        List<ManagerRoleRespVO> roles = roleService.managerRoleList(id);
+        List<ManagerRoleRespVO> roles = roleService.getManagerRoleList(id);
         model.addAttribute("roles", roles);
         return prefix+"/edit";
     }
@@ -72,34 +74,16 @@ public class ManagerController extends BaseController {
         return R.ok();
     }
 
-    public static String stringToAscii(String value)
-    {
-        StringBuffer sbu = new StringBuffer();
-        char[] chars = value.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            if(i != chars.length - 1)
-            {
-                sbu.append((int)chars[i]).append(",");
-            }
-            else {
-                sbu.append((int)chars[i]);
-            }
-        }
-        return sbu.toString();
+    @GetMapping("/add")
+    public String add(Model model) {
+        List<Role> roles = roleService.getRoleList(null);
+        model.addAttribute("roles", roles);
+        return prefix + "/add";
     }
 
-    public static String asciiToString(String value)
-    {
-        StringBuffer sbu = new StringBuffer();
-        String[] chars = value.split(",");
-        for (int i = 0; i < chars.length; i++) {
-            sbu.append((char) Integer.parseInt(chars[i]));
-        }
-        return sbu.toString();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(stringToAscii("12341956"));
-        System.out.println(asciiToString("48,57,49,51,50,48,51,57"));
+    @PostMapping("/validUsername")
+    @ResponseBody
+    public boolean validUsername(String username) {
+        return !Optional.ofNullable(managerService.get(username)).isPresent();
     }
 }

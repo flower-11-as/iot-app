@@ -102,6 +102,10 @@ public class IotHandlerExceptionResolver extends DefaultHandlerExceptionResolver
     }
 
     private ModelAndView handleSysException(Exception ex, HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (ex.getMessage().equals("java.io.IOException: 您的主机中的软件中止了一个已建立的连接。")) {
+            return new ModelAndView();
+        }
+
         log.error("request has an error: uri={},content-type={},error={}", request.getRequestURI(), request.getContentType(), SYSTEM_ERROR, ex);
         return writeRestResponse(SYSTEM_ERROR, messageSource.getMessage(SYSTEM_ERROR, request.getLocale()), request, response);
     }

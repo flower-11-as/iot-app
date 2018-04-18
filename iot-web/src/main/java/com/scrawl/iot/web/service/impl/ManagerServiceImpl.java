@@ -71,4 +71,9 @@ public class ManagerServiceImpl implements ManagerService {
             managerRoleMapper.insertSelective(mr);
         });
     }
+
+    @Override
+    public Manager get(String username) {
+        return managerMapper.selectByUsername(username);
+    }
 }

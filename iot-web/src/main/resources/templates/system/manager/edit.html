@@ -8,8 +8,7 @@
 			<div class="col-sm-12">
 				<div class="ibox-content">
 					<form class="form-horizontal m-t" id="signupForm">
-						<input id="id" name="id" th:value="${manager.id}"
-							type="hidden">
+						<input id="id" name="id" th:value="${manager.id}" type="hidden">
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="name">姓名：</label>
 							<div class="col-sm-8">
@@ -32,14 +31,13 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="status">状态:</label>
+							<label class="col-sm-3 control-label">状态:</label>
 							<div class="col-sm-8">
-								<label class="radio-inline"> <input
-									th:field="*{manager.status}" type="radio" name="status" value="1" />
-									正常
-								</label> <label class="radio-inline"> <input
-									th:field="*{manager.status}" type="radio" name="status" value="0" />
-									禁用
+								<label class="radio-inline">
+									<input th:field="*{manager.status}" type="radio" name="status" value="1"/> 正常
+								</label>
+								<label class="radio-inline">
+									<input th:field="*{manager.status}" type="radio" name="status" value="0"/> 禁用
 								</label>
 							</div>
 						</div>
@@ -47,8 +45,7 @@
 							<label class="col-sm-3 control-label">角色</label>
 							<div class="col-sm-8">
 								<label th:each="role:${roles}" class="checkbox-inline">
-									<input name="roles" type="checkbox" th:value="${role.id}"
-									th:text="${role.name}" th:checked="${role.roleSign}">
+									<input name="roles" type="checkbox" th:value="${role.id}" th:text="${role.name}" th:checked="${role.roleSign}">
 								</label>
 							</div>
 						</div>
