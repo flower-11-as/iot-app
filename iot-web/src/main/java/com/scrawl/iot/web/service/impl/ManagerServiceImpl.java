@@ -51,6 +51,11 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
+    public boolean update(Manager manager) {
+        return managerMapper.updateByPrimaryKeySelective(manager) > 0;
+    }
+
+    @Override
     @Transactional
     public void update(ManagerReqVO reqVO) {
         // 修改manager

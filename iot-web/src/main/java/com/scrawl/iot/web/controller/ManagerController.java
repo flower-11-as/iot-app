@@ -11,6 +11,7 @@ import com.scrawl.iot.web.vo.sys.manager.ManagerListReqVO;
 import com.scrawl.iot.web.vo.sys.manager.ManagerReqVO;
 import com.scrawl.iot.web.vo.sys.manager.ManagerRoleRespVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -124,6 +126,31 @@ public class ManagerController extends BaseController {
     public R batchRemove(@RequestParam("ids[]") Integer[] ids) {
         try {
             managerService.batchRemove(ids);
+        } catch (Exception e) {
+            log.error("删除管理员异常：", e);
+            throw new BizException("SYS30003");
+        }
+        return R.ok();
+    }
+
+    @GetMapping("/resetPwd/{id}")
+    public String resetPwd(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("id", id);
+        return prefix + "/reset_pwd";
+    }
+
+    @PostMapping("/resetPwd")
+    @ResponseBody
+    public R resetPwd(Manager manager) {
+        try {
+            manager.setPassword(new SimpleHash("md5", manager.getPassword(),
+                    ByteSource.Util.bytes(""), 2).toHex());
+            manager.setUpdateManager(getManagerId());
+            manager.setUpdateTime(new Date());
+
+            if (!managerService.update(manager)) {
+                throw new BizException("SYS30003");
+            }
         } catch (Exception e) {
             log.error("删除管理员异常：", e);
             throw new BizException("SYS30003");

@@ -17,6 +17,8 @@ public interface ManagerService {
 
     Manager get(Integer id);
 
+    boolean update(Manager manager);
+
     void update(ManagerReqVO reqVO);
 
     Manager get(String username);

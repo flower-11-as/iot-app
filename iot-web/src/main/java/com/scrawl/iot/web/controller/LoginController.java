@@ -9,6 +9,7 @@ import com.scrawl.iot.web.vo.sys.LoginReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,11 @@ public class LoginController extends BaseController{
     public R iotLogin(@Validated LoginReqVO vo) {
         UsernamePasswordToken token = new UsernamePasswordToken(vo.getUsername(), vo.getPassword());
         Subject subject = SecurityUtils.getSubject();
-
-        subject.login(token);
+        try {
+            subject.login(token);
+        } catch (IncorrectCredentialsException e) {
+            throw new BizException("SYS10001");
+        }
         return R.ok();
     }
 
