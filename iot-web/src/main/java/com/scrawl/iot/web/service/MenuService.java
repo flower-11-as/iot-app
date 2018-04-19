@@ -1,7 +1,7 @@
 package com.scrawl.iot.web.service;
 
 import com.scrawl.iot.web.dao.entity.Menu;
-import com.scrawl.iot.web.vo.Tree;
+import com.scrawl.iot.paper.domain.Tree;
 
 import java.util.List;
 

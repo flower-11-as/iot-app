@@ -1,14 +1,13 @@
 package com.scrawl.iot.web.controller;
 
 import com.scrawl.iot.web.dao.entity.Menu;
-import com.scrawl.iot.web.vo.Tree;
+import com.scrawl.iot.paper.domain.Tree;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.MenuService;
 import com.scrawl.iot.web.vo.R;
 import com.scrawl.iot.web.vo.sys.LoginReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;

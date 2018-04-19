@@ -11,5 +11,18 @@
 
     <artifactId>iot-paper</artifactId>
 
+    <dependencies>
+        <!--http client-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
 
+        <!--Generate Metadata-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <!--<optional>true</optional>-->
+        </dependency>
+    </dependencies>
 </project>

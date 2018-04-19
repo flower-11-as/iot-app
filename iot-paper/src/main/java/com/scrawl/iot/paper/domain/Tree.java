@@ -1,4 +1,4 @@
-package com.scrawl.iot.web.vo;
+package com.scrawl.iot.paper.domain;
 
 import lombok.Data;
 

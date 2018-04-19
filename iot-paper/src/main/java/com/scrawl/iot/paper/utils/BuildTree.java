@@ -1,6 +1,7 @@
-package com.scrawl.iot.web.utils;
+package com.scrawl.iot.paper.utils;
 
-import com.scrawl.iot.web.vo.Tree;
+
+import com.scrawl.iot.paper.domain.Tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
