@@ -10,4 +10,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class IotLoginResponse extends IotResponse {
+    private String accessToken;
 }

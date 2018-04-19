@@ -13,3 +13,5 @@ spring:
   thymeleaf:
     mode: LEGACYHTML5
     cache: false
+iot:
+  api-uri: https://www.easy-iot.cn/idev/3rdcap
