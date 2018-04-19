@@ -13,7 +13,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost/iot?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;tinyInt1isBit=false"
+                        connectionURL="jdbc:mysql://104.224.159.254:3306/iot?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;tinyInt1isBit=false"
                         userId="root"
                         password="As_123456">
         </jdbcConnection>
@@ -27,7 +27,7 @@
         <javaClientGenerator targetPackage="com.scrawl.iot.web.dao.mapper" type="XMLMAPPER" targetProject="src/main/java"/>
 
 
-        <table tableName="t_sys_role" domainObjectName="Role"
+        <table tableName="t_iot_account" domainObjectName="Account"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
