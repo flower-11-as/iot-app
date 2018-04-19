@@ -44,12 +44,11 @@ public class PaperHttpClient {
     private HttpResponse doRequest(RequestMethodEnum requestMethod, String url, Map<String, Object> headers, Map<String, Object> params) {
         HttpUriRequest httpRequest;
 
-        List<BasicNameValuePair> paris = createPairs(params);
-
         if (requestMethod == RequestMethodEnum.POST) {
-            StringEntity entity = createEntity(paris);
+            StringEntity entity = createEntity(params);
             httpRequest = RequestBuilder.create(requestMethod.name()).setUri(url).setEntity(entity).build();
         } else if (requestMethod == RequestMethodEnum.GET) {
+            List<BasicNameValuePair> paris = createPairs(params);
             httpRequest = RequestBuilder.create(requestMethod.name()).setUri(url).addParameters(paris.toArray(new BasicNameValuePair[0])).build();
         } else {
             throw new PaperHttpException("请求方式不存在");
@@ -60,7 +59,7 @@ public class PaperHttpClient {
         try {
             resp = httpClient.execute(httpRequest);
         } catch (IOException e) {
-            log.error("request error", e);
+            log.error("paper http request error", e);
             throw new PaperHttpException("http请求异常");
         }
 
@@ -74,21 +73,21 @@ public class PaperHttpClient {
 
     private List<BasicNameValuePair> createPairs(Map<String, Object> params) {
         List<BasicNameValuePair> formPairs = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            if (entry.getValue() == null) {
-                continue;
+        params.forEach((k, v) -> {
+            if (v == null) {
+                return;
             }
-            BasicNameValuePair pair = new BasicNameValuePair(entry.getKey(), entry.getValue().toString());
+            BasicNameValuePair pair = new BasicNameValuePair(k, v.toString());
             formPairs.add(pair);
-        }
+        });
         return formPairs;
     }
 
-    private StringEntity createEntity(List<BasicNameValuePair> formPairs) {
+    private StringEntity createEntity(Map<String, Object> params) {
         StringEntity entity = null;
-        if (!formPairs.isEmpty()) {
+        if (!params.isEmpty()) {
             try {
-                entity = new StringEntity(JSONObject.toJSONString(formPairs), "utf-8");
+                entity = new StringEntity(JSONObject.toJSONString(params), "utf-8");
             } catch (UnsupportedCharsetException e) {
                 log.error("create entity error:{}", e.getMessage());
                 throw new PaperHttpException("create entity error", e);

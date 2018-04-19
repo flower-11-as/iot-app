@@ -24,5 +24,10 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <!--<optional>true</optional>-->
         </dependency>
+
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
     </dependencies>
 </project>
