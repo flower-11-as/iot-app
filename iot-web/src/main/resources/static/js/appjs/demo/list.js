@@ -1,5 +1,5 @@
 // ************个性化设置************
-var prefix = "/iot-manage/iot/account";
+var prefix = "/iot-manage/demo";
 var localParams = {
     limit: params.limit,
     offset: params.offset
@@ -12,7 +12,8 @@ var localColumns = [
         field: 'id', // 列字段名
         title: '序号' // 列标题
     }];
-var localPageName = "账户";
+var localPageName = "模板";
+
 // ************个性化设置************
 
 $(function () {
@@ -120,19 +121,40 @@ function edit(id) {
     });
 }
 
-// 编辑密码
-function resetPwd(id) {
-    layer.open({
-        type: 2,
-        title: '重置密码',
-        maxmin: true,
-        shadeClose: false, // 点击遮罩关闭层
-        area: ['400px', '260px'],
-        content: prefix + '/resetPwd/' + id // iframe的url
+// 批量删除
+function batchRemove() {
+    var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
+    if (rows.length === 0) {
+        layer.msg("请选择要删除的数据");
+        return;
+    }
+    layer.confirm("确认要删除选中的'" + rows.length + "'条数据吗?", {
+        btn: ['确定', '取消']
+        // 按钮
+    }, function () {
+        var ids = [];
+        // 遍历所有选择的行数据，取每条数据对应的ID
+        $.each(rows, function (i, row) {
+            ids[i] = row['id'];
+        });
+        $.ajax({
+            type: 'POST',
+            data: {
+                "ids": ids
+            },
+            url: prefix + '/batchRemove',
+            success: function (data) {
+                if (data.code === '0000') {
+                    layer.msg("删除成功");
+                    reLoad();
+                } else {
+                    layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
+                }
+            }
+        });
+    }, function () {
     });
-}
-
-// 刷新登录授权
-function refreshLogin(id) {
-
 }

@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
-<head th:include="include :: header"></head>
+<head th:include="include::header"></head>
 <body class="gray-bg">
 	<div class="wrapper wrapper-content animated fadeInRight">
-
 		<div class="row">
 			<div class="col-sm-12">
-
 				<div class="ibox-content">
 					<form class="form-horizontal m-t" id="signupForm">
 						<input id="id" name="id" th:value="${id}"
@@ -30,74 +28,7 @@
 		</div>
 	</div>
 
-	<!-- 全局js -->
-	<script src="/iot-manage/js/jquery.min.js?v=2.1.4"></script>
-	<script src="/iot-manage/js/bootstrap.min.js?v=3.3.6"></script>
-
-	<!-- 自定义js -->
-	<script src="/iot-manage/js/content.js?v=1.0.0"></script>
-
-	<!-- jQuery Validation plugin javascript-->
-	<script src="/iot-manage/js/plugins/validate/jquery.validate.min.js"></script>
-	<script src="/iot-manage/js/plugins/validate/messages_zh.min.js"></script>
-
-	<!-- script src="/iot-manage/js/demo/form-validate-demo.js"></script> -->
-	<script type="text/javascript">
-		$(document).ready(function() {
-			validateRule();
-			//setCheckedRoles();
-		});
-		$.validator.setDefaults({
-			submitHandler : function() {
-				update();
-			}
-		});
-		function update() {
-			$.ajax({
-				cache : true,
-				type : "POST",
-				url : "/iot-manage/sys/manager/resetPwd",
-				data : $('#signupForm').serialize(),// 你的formid
-				async : false,
-				error : function(request) {
-					parent.layer.msg("系统错误，联系管理员");
-				},
-				success : function(data) {
-                    if (data.code === '0000') {
-                        parent.layer.msg("保存成功");
-                        parent.reLoad();
-                        var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
-                        parent.layer.close(index);
-                    } else {
-                        layer.alert(data.msg, {
-                            title: '提示',
-                            icon: 2
-                        });
-                    }
-				}
-			});
-
-		}
-
-		function validateRule() {
-			var icon = "<i class='fa fa-times-circle'></i> ";
-			$("#signupForm").validate({
-				rules : {
-
-					password : {
-						required : true,
-						minlength : 6
-					}
-				},
-				messages : {
-					password : {
-						required : icon + "请输入您的密码",
-						minlength : icon + "密码必须6个字符以上"
-					}
-				}
-			})
-		}
-	</script>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript" src="/iot-manage/js/appjs/sys/manager/reset_pwd.js"></script>
 </body>
-
 </html>
