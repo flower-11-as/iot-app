@@ -3,6 +3,9 @@ spring:
     name: "iot-manage"
   profiles:
     active: "@build.profile.id@"
+  jackson:
+        time-zone: GMT+8
+        date-format: yyyy-MM-dd HH:mm:ss
 
 mybatis:
   mapper-locations: classpath*:com/scrawl/iot/web/dao/mapping/*.xml
