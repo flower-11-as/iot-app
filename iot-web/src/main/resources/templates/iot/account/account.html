@@ -9,7 +9,7 @@
                 <div class="ibox-body">
                     <div class="fixed-table-toolbar">
                         <div class="columns pull-left">
-                            <button shiro:hasPermission="sys:account:add" type="button"
+                            <button shiro:hasPermission="iot:account:add" type="button"
                                     class="btn  btn-primary" onclick="add()">
                                 <i class="fa fa-plus hidden" aria-hidden="true"></i>添加
                             </button>
@@ -29,8 +29,31 @@
             </div>
         </div>
     </div>
+    <!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+    <div>
+        <script type="text/javascript">
+            var s_remove_h = 'hidden';
+            var s_resetPwd_h = 'hidden';
+            var s_resetAuth_h = 'hidden';
+        </script>
+    </div>
+    <div shiro:hasPermission="iot:account:remove">
+        <script type="text/javascript">
+            s_remove_h = '';
+        </script>
+    </div>
+    <div shiro:hasPermission="iot:account:resetPwd">
+        <script type="text/javascript">
+            s_resetPwd_h = '';
+        </script>
+    </div>
+    <div shiro:hasPermission="iot:account:resetAuth">
+        <script type="text/javascript">
+            s_resetAuth_h = '';
+        </script>
+    </div>
 
-    <div th:include="include :: footer"></div>
+    <div th:include="include::footer"></div>
     <script type="text/javascript" src="/iot-manage/js/appjs/iot/account/account.js"></script>
 </body>
 </html>

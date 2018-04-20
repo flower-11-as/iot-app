@@ -1,9 +1,6 @@
 // ************个性化设置************
 var prefix = "/iot-manage/demo";
-var localParams = {
-    limit: params.limit,
-    offset: params.offset
-};
+var localParams = {};
 var localColumns = [
     {
         checkbox: true
@@ -13,7 +10,6 @@ var localColumns = [
         title: '序号' // 列标题
     }];
 var localPageName = "模板";
-
 // ************个性化设置************
 
 $(function () {
@@ -45,6 +41,8 @@ function load() {
         sidePagination: "server", // 设置在哪里进行分页，可选值为"client" 或者
         // "server"
         queryParams: function (params) {
+            localParams["limit"] = params.limit;
+            localParams["offset"] = params.offset;
             return localParams;
         },
         // //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果

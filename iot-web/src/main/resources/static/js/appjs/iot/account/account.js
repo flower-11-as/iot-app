@@ -1,9 +1,6 @@
 // ************个性化设置************
 var prefix = "/iot-manage/iot/account";
-var localParams = {
-    limit: params.limit,
-    offset: params.offset
-};
+var localParams = {};
 var localColumns = [
     {
         checkbox: true
@@ -11,6 +8,43 @@ var localColumns = [
     {
         field: 'id', // 列字段名
         title: '序号' // 列标题
+    },
+    {
+        field: 'serverId', // 列字段名
+        title: '用户名' // 列标题
+    },
+    {
+        field: 'status', // 列字段名
+        title: '授权状态', // 列标题
+        align: 'center',
+        formatter: function (value, row, index) {
+            if (value === 0) {
+                return '<span class="label label-danger">失败</span>';
+            } else if (value === 1) {
+                return '<span class="label label-primary">成功</span>';
+            }
+        }
+    },
+    {
+        field: 'lastLoginTime', // 列字段名
+        title: '最近登录时间' // 列标题
+    },
+    {
+        title: '操作',
+        field: 'id',
+        align: 'center',
+        formatter: function (value, row, index) {
+            var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="#" title="删除"  mce_href="#" onclick="remove(\''
+                + row.id
+                + '\')"><i class="fa fa-remove"></i></a> ';
+            var f = '<a class="btn btn-success btn-sm ' + s_resetPwd_h + '" href="#" title="重置密码"  mce_href="#" onclick="resetPwd(\''
+                + row.id
+                + '\')"><i class="fa fa-key"></i></a> ';
+            var g = '<a class="btn btn-info btn-sm ' + s_resetAuth_h + '" href="#" title="刷新授权"  mce_href="#" onclick="resetAuth(\''
+                + row.id
+                + '\')"><i class="fa fa-user-plus"></i></a> ';
+            return d + f + g;
+        }
     }];
 var localPageName = "账户";
 // ************个性化设置************
@@ -44,6 +78,8 @@ function load() {
         sidePagination: "server", // 设置在哪里进行分页，可选值为"client" 或者
         // "server"
         queryParams: function (params) {
+            localParams["limit"] = params.limit;
+            localParams["offset"] = params.offset;
             return localParams;
         },
         // //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -108,19 +144,7 @@ function remove(id) {
     })
 }
 
-// 编辑
-function edit(id) {
-    layer.open({
-        type: 2,
-        title: localPageName + '修改',
-        maxmin: true,
-        shadeClose: false,
-        area: ['800px', '420px'],
-        content: prefix + '/edit/' + id // iframe的url
-    });
-}
-
-// 编辑密码
+// 重置密码
 function resetPwd(id) {
     layer.open({
         type: 2,
@@ -133,6 +157,27 @@ function resetPwd(id) {
 }
 
 // 刷新登录授权
-function refreshLogin(id) {
-
+function resetAuth(id) {
+    layer.confirm('确定要刷新选中记录的授权信息？', {
+        btn: ['确定', '取消']
+    }, function () {
+        $.ajax({
+            url: prefix + "/resetAuth",
+            type: "post",
+            data: {
+                'id': id
+            },
+            success: function (data) {
+                if (data.code === '0000') {
+                    layer.msg("删除成功");
+                    reLoad();
+                } else {
+                    layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
+                }
+            }
+        });
+    })
 }

@@ -22,6 +22,7 @@
     <entry key="SYS30001">编辑管理员错误</entry>
     <entry key="SYS30002">添加管理员错误</entry>
     <entry key="SYS30003">删除管理员错误</entry>
+    <entry key="SYS30004">重置管理员密码错误</entry>
 
     <!--role-->
     <entry key="SYS40001">编辑角色错误</entry>
@@ -29,7 +30,10 @@
     <entry key="SYS40003">删除角色错误</entry>
 
     <!--account-->
-    <entry key="SYS50001">添加iot账户错误</entry>
+    <entry key="SYS50001">添加IoT账户错误</entry>
+    <entry key="SYS50002">删除IoT账户错误</entry>
+    <entry key="SYS50003">重置IoT账户密码错误</entry>
+    <entry key="SYS50004">重置IoT账户授权错误</entry>
 
     <entry key="BSC20001">被迫下线！您的账号在另一个终端登录，如不是您本人操作请及时更换密码！</entry>
     <entry key="SYS9999">服务器开小差了</entry>

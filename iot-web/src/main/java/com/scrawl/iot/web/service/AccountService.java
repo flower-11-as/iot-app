@@ -13,9 +13,15 @@ import java.util.List;
 public interface AccountService {
     List<Account> list(AccountListReqVO reqVO);
 
+    int count(AccountListReqVO reqVO);
+
     boolean save(Account account);
 
     boolean remove(Integer id);
 
     Account get(Integer id);
+
+    boolean resetPwd(Account account);
+
+    boolean resetAuth(Integer id, Integer managerId);
 }

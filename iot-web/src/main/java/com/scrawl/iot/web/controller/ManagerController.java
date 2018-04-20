@@ -149,11 +149,11 @@ public class ManagerController extends BaseController {
             manager.setUpdateTime(new Date());
 
             if (!managerService.update(manager)) {
-                throw new BizException("SYS30003");
+                throw new BizException("SYS30004");
             }
         } catch (Exception e) {
-            log.error("删除管理员异常：", e);
-            throw new BizException("SYS30003");
+            log.error("重置管理员密码异常：", e);
+            throw new BizException("SYS30004");
         }
         return R.ok();
     }

@@ -2,25 +2,25 @@
 var prefix = "/iot-manage/iot/account";
 // ************个性化设置************
 
-$().ready(function () {
+$(function () {
     validateRule();
 });
 
 $.validator.setDefaults({
     submitHandler: function () {
-        save();
+        update();
     }
 });
 
-function save() {
+function update() {
     $.ajax({
         cache: true,
         type: "POST",
-        url: prefix + "/save",
+        url: prefix + "/resetPwd",
         data: $('#signupForm').serialize(),// 你的formid
         async: false,
         error: function (request) {
-            layer.alert("Connection error");
+            parent.layer.msg("系统错误，联系管理员");
         },
         success: function (data) {
             if (data.code === '0000') {
@@ -42,20 +42,16 @@ function validateRule() {
     var icon = "<i class='fa fa-times-circle'></i> ";
     $("#signupForm").validate({
         rules: {
-            serverId: {
-                required: true
-            },
             password: {
-                required: true
-            },
+                required: true,
+                minlength: 6
+            }
         },
         messages: {
-            serverId: {
-                required: icon + "请输入用户名"
-            },
             password: {
-                required: icon + "请输入密码"
-            },
+                required: icon + "请输入您的密码",
+                minlength: icon + "密码必须6个字符以上"
+            }
         }
     })
 }

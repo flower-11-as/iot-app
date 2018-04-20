@@ -7,5 +7,5 @@ import com.scrawl.iot.web.vo.PageReqVO;
  * Created by as on 2018/4/20.
  */
 public class AccountListReqVO extends PageReqVO {
-    private String username;
+    private String serverId;
 }
