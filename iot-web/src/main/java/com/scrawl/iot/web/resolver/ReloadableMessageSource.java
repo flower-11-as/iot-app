@@ -1,5 +1,6 @@
 package com.scrawl.iot.web.resolver;
 
+import com.google.common.base.Joiner;
 import com.scrawl.iot.web.helper.SpringResourceHelper;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
@@ -43,17 +44,15 @@ public class ReloadableMessageSource extends ReloadableResourceBundleMessageSour
 
     @Override
     protected String getMessageInternal(String code, Object[] args, Locale locale) {
-        //        String message = super.getMessageInternal(code, new String[]{""}, locale);
-        String message = super.getMessageInternal(code, args, locale);
-        return message;
-        //        if (message != null) {
-        //            if (args == null || args.length == 0 || args[0] == null) {
-        //                return message;
-        //            } else {
-        //                return message + ":" + Joiner.on(" ").skipNulls().join(args);
-        //            }
-        //        }
-        //        return code;
+                String message = super.getMessageInternal(code, new String[]{""}, locale);
+                if (message != null) {
+                    if (args == null || args.length == 0 || args[0] == null) {
+                        return message;
+                    } else {
+                        return message + ":" + Joiner.on(" ").skipNulls().join(args);
+                    }
+                }
+                return code;
     }
 
     @Override

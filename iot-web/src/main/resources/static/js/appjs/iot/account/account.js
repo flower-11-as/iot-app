@@ -113,7 +113,7 @@ function add() {
         title: '增加' + localPageName,
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '500px'],
+        area: ['800px', '350px'],
         content: prefix + '/add'
     });
 }
@@ -169,7 +169,7 @@ function resetAuth(id) {
             },
             success: function (data) {
                 if (data.code === '0000') {
-                    layer.msg("删除成功");
+                    layer.msg("授权成功");
                     reLoad();
                 } else {
                     layer.alert(data.msg, {

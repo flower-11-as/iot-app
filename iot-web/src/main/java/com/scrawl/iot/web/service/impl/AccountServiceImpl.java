@@ -1,11 +1,14 @@
 package com.scrawl.iot.web.service.impl;
 
+import com.scrawl.iot.paper.exception.IotHttpException;
+import com.scrawl.iot.paper.exception.PaperHttpException;
 import com.scrawl.iot.paper.http.request.IotLoginRequest;
 import com.scrawl.iot.paper.http.response.IotLoginResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
 import com.scrawl.iot.web.dao.entity.Account;
 import com.scrawl.iot.web.dao.mapper.AccountMapper;
 import com.scrawl.iot.web.enums.AccountStatusEnum;
+import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
 import com.scrawl.iot.web.vo.sys.account.AccountListReqVO;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +47,12 @@ public class AccountServiceImpl implements AccountService {
         IotLoginRequest request = new IotLoginRequest();
         request.setServerId(account.getServerId());
         request.setPassword(account.getPassword());
-        IotLoginResponse response = iotHttpService.loginAuth(request);
+        IotLoginResponse response;
+        try {
+            response = iotHttpService.loginAuth(request);
+        } catch (IotHttpException | PaperHttpException e) {
+            throw new BizException("SYS50001", e.getMessage());
+        }
 
         account.setToken(response.getAccessToken());
         account.setLastLoginTime(new Date());
@@ -66,10 +74,17 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean resetPwd(Account account) {
+        Account oldAccount = get(account.getId());
+
         IotLoginRequest request = new IotLoginRequest();
-        request.setServerId(account.getServerId());
+        request.setServerId(oldAccount.getServerId());
         request.setPassword(account.getPassword());
-        IotLoginResponse response = iotHttpService.loginAuth(request);
+        IotLoginResponse response;
+        try {
+            response = iotHttpService.loginAuth(request);
+        } catch (IotHttpException | PaperHttpException e) {
+            throw new BizException("SYS50001", e.getMessage());
+        }
 
         account.setToken(response.getAccessToken());
         account.setLastLoginTime(new Date());
@@ -84,7 +99,12 @@ public class AccountServiceImpl implements AccountService {
         IotLoginRequest request = new IotLoginRequest();
         request.setServerId(account.getServerId());
         request.setPassword(account.getPassword());
-        IotLoginResponse response = iotHttpService.loginAuth(request);
+        IotLoginResponse response;
+        try {
+            response = iotHttpService.loginAuth(request);
+        } catch (IotHttpException | PaperHttpException e) {
+            throw new BizException("SYS50001", e.getMessage());
+        }
 
         account.setToken(response.getAccessToken());
         account.setLastLoginTime(new Date());

@@ -55,7 +55,7 @@ function validateRule() {
             },
             password: {
                 required: icon + "请输入密码"
-            },
+            }
         }
     })
 }

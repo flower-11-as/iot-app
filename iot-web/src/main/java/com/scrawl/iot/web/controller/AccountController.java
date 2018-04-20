@@ -55,6 +55,9 @@ public class AccountController extends BaseController {
             account.setCreateTime(now);
             account.setUpdateTime(now);
             accountService.save(account);
+        } catch (BizException e) {
+            log.error("添加IoT账户异常：", e);
+          throw e;
         } catch (Exception e) {
             log.error("添加IoT账户异常：", e);
             throw new BizException("SYS50001");
@@ -90,6 +93,9 @@ public class AccountController extends BaseController {
             if (!accountService.resetPwd(account)) {
                 throw new BizException("SYS50003");
             }
+        } catch (BizException e) {
+            log.error("重置IoT账户密码异常：", e);
+            throw e;
         } catch (Exception e) {
             log.error("重置IoT账户密码异常：", e);
             throw new BizException("SYS50003");
@@ -102,6 +108,9 @@ public class AccountController extends BaseController {
     public R resetAuth(Integer id) {
         try {
             accountService.resetAuth(id, getManagerId());
+        } catch (BizException e) {
+            log.error("重置IoT账户授权异常：", e);
+            throw e;
         } catch (Exception e) {
             log.error("重置IoT账户授权异常：", e);
             throw new BizException("SYS50002");
