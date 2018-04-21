@@ -130,6 +130,16 @@
                 data : parms?parms:options.ajaxParams,
                 dataType : "JSON",
                 success : function(data, textStatus, jqXHR) {
+                    if (data.code && data.code !== '0000') {
+                        layer.alert(data.msg, {
+                            title: '提示',
+                            icon: 2
+                        });
+                        var _empty = '<tr><td colspan="'+options.columns.length+'"><div style="display: block;text-align: center;">没有记录</div></td></tr>'
+                        tbody.html(_empty);
+                        return;
+                    }
+
                     // 加载完数据先清空
                     tbody.html("");
                     if(!data||data.length<=0){

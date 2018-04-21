@@ -1,4 +1,4 @@
-package com.scrawl.iot.paper.http.Constans;
+package com.scrawl.iot.paper.http.constans;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +17,7 @@ public class IotConstant {
 
 	// api
 	public static String LOGIN_AUTH = "/server/login";
+	public static String SERVER = "/service-config/get-iotservers";
 
 	static{
 		resultCodeExplain=new HashMap<>();

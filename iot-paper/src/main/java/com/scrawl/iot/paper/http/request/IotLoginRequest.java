@@ -9,6 +9,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class IotLoginRequest extends IotRequest {
+public class IotLoginRequest {
+    private String serverId;
     private String password;
 }

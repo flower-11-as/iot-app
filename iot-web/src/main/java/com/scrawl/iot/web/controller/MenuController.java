@@ -41,9 +41,9 @@ public class MenuController extends BaseController {
         return prefix + "/menu";
     }
 
-    @RequestMapping("/list")
+    @PostMapping("/list")
     @ResponseBody
-    public List<Menu> list(@RequestParam Map<String, Object> params) {
+    public List<Menu> list() {
         return menuService.list();
     }
 

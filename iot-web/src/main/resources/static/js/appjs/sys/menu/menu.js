@@ -9,7 +9,7 @@ var load = function () {
                 id: 'id',
                 code: 'id',
                 parentCode: 'parentId',
-                type: "GET", // 请求数据的ajax类型
+                type: "POST", // 请求数据的ajax类型
                 url: prefix + '/list', // 请求数据的ajax的url
                 ajaxParams: {sort:'order_num'}, // 请求数据的ajax的data属性
                 expandColumn: '1',// 在哪一列上面显示展开按钮
@@ -98,7 +98,15 @@ var load = function () {
                                 + '\')"><i class="fa fa-remove"></i></a> ';
                             return e + d + p;
                         }
-                    }]
+                    }],
+                onLoadSuccess: function (data) {
+                    if (data.code && data.code !== '0000') {
+                        layer.alert(data.msg, {
+                            title: '提示',
+                            icon: 2
+                        });
+                    }
+                }
             });
 }
 

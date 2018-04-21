@@ -24,4 +24,6 @@ public interface AccountService {
     boolean resetPwd(Account account);
 
     boolean resetAuth(Integer id, Integer managerId);
+
+    Account getAvailableAccount();
 }

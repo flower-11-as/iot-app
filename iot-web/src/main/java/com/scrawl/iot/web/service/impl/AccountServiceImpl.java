@@ -14,6 +14,7 @@ import com.scrawl.iot.web.vo.sys.account.AccountListReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -44,15 +45,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean save(Account account) {
-        IotLoginRequest request = new IotLoginRequest();
-        request.setServerId(account.getServerId());
-        request.setPassword(account.getPassword());
-        IotLoginResponse response;
-        try {
-            response = iotHttpService.loginAuth(request);
-        } catch (IotHttpException | PaperHttpException e) {
-            throw new BizException("SYS50001", e.getMessage());
-        }
+        IotLoginResponse response = iotLogin(account.getServerId(), account.getPassword());
 
         account.setToken(response.getAccessToken());
         account.setLastLoginTime(new Date());
@@ -76,16 +69,7 @@ public class AccountServiceImpl implements AccountService {
     public boolean resetPwd(Account account) {
         Account oldAccount = get(account.getId());
 
-        IotLoginRequest request = new IotLoginRequest();
-        request.setServerId(oldAccount.getServerId());
-        request.setPassword(account.getPassword());
-        IotLoginResponse response;
-        try {
-            response = iotHttpService.loginAuth(request);
-        } catch (IotHttpException | PaperHttpException e) {
-            throw new BizException("SYS50001", e.getMessage());
-        }
-
+        IotLoginResponse response = iotLogin(oldAccount.getServerId(), account.getPassword());
         account.setToken(response.getAccessToken());
         account.setLastLoginTime(new Date());
         account.setStatus(AccountStatusEnum.SUCCESS.getCode());
@@ -96,19 +80,50 @@ public class AccountServiceImpl implements AccountService {
     public boolean resetAuth(Integer id, Integer managerId) {
         Account account = get(id);
 
+        IotLoginResponse response = iotLogin(account.getServerId(), account.getPassword());
+        account.setToken(response.getAccessToken());
+        account.setLastLoginTime(new Date());
+        account.setStatus(AccountStatusEnum.SUCCESS.getCode());
+        return accountMapper.updateByPrimaryKeySelective(account) > 0;
+    }
+
+    private IotLoginResponse iotLogin(String serverId, String password) {
         IotLoginRequest request = new IotLoginRequest();
-        request.setServerId(account.getServerId());
-        request.setPassword(account.getPassword());
+        request.setServerId(serverId);
+        request.setPassword(password);
         IotLoginResponse response;
         try {
             response = iotHttpService.loginAuth(request);
         } catch (IotHttpException | PaperHttpException e) {
             throw new BizException("SYS50001", e.getMessage());
         }
+        return response;
+    }
 
-        account.setToken(response.getAccessToken());
-        account.setLastLoginTime(new Date());
-        account.setStatus(AccountStatusEnum.SUCCESS.getCode());
-        return accountMapper.updateByPrimaryKeySelective(account) > 0;
+    @Override
+    @Transactional
+    public Account getAvailableAccount() {
+        Account params = new Account();
+        params.setStatus(AccountStatusEnum.SUCCESS.getCode());
+        List<Account> accountList = accountMapper.selectListBySelective(params);
+        Account rs = null;
+        for (Account account : accountList) {
+            // 尝试登陆一次
+            try {
+                IotLoginResponse response = iotLogin(account.getServerId(), account.getPassword());
+
+                account.setToken(response.getAccessToken());
+                account.setLastLoginTime(new Date());
+                account.setStatus(AccountStatusEnum.SUCCESS.getCode());
+                accountMapper.updateByPrimaryKeySelective(account);
+
+                rs = account;
+                break;
+            } catch (IotHttpException | PaperHttpException e) {
+                // ignore
+            }
+        }
+
+        return rs;
     }
 }

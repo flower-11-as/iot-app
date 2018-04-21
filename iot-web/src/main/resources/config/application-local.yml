@@ -1,0 +1,18 @@
+server:
+  context-path: /iot-manage
+  port: 80
+
+spring:
+  # datasource
+  datasource:
+    url: jdbc:mysql://localhost/iot?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: As_123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+
+iot:
+  api-uri: https://www.easy-iot.cn/idev/3rdcap

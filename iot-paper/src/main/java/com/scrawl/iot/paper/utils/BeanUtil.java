@@ -13,10 +13,13 @@ import java.util.Set;
  */
 public class BeanUtil {
 
-    public static Map<String, Object> object2Map(Object object){
-        JSONObject jsonObject = (JSONObject) JSON.toJSON(object);
-        Set<Map.Entry<String,Object>> entrySet = jsonObject.entrySet();
-        Map<String, Object> map=new HashMap<>();
+    public static Map<String, Object> object2Map(Object object) {
+        if (null == object) {
+            return new HashMap<>();
+        }
+        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(object);
+        Set<Map.Entry<String, Object>> entrySet = jsonObject.entrySet();
+        Map<String, Object> map = new HashMap<>();
         for (Map.Entry<String, Object> entry : entrySet) {
             map.put(entry.getKey(), entry.getValue());
         }

@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class IotRequest {
+public class IotHeader {
     private String serverId;
     private String accessToken;
 }

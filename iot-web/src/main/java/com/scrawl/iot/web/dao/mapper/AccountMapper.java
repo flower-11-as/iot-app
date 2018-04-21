@@ -21,4 +21,6 @@ public interface AccountMapper {
     List<Account> selectPageList(AccountListReqVO reqVO);
 
     int selectPageCount(AccountListReqVO reqVO);
+
+    List<Account> selectListBySelective(Account record);
 }

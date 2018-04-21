@@ -35,6 +35,12 @@
     <entry key="SYS50003">重置IoT账户密码错误</entry>
     <entry key="SYS50004">重置IoT账户授权错误</entry>
 
-    <entry key="BSC20001">被迫下线！您的账号在另一个终端登录，如不是您本人操作请及时更换密码！</entry>
+    <!--server-->
+    <entry key="SYS60001">同步IoT连接平台错误</entry>
+
+    <!--iot-->
+    <entry key="IOT10001">未获取到有效授权IoT账户</entry>
+
+    <!--sys-->
     <entry key="SYS9999">服务器开小差了</entry>
 </properties>

@@ -9,14 +9,14 @@
     <result column="permission" jdbcType="VARCHAR" property="permission" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
-    <result column="order" jdbcType="INTEGER" property="order" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_manager" jdbcType="INTEGER" property="createManager" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="update_manager" jdbcType="INTEGER" property="updateManager" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, parent_id, `name`, url, permission, `type`, icon, `order`, create_time, create_manager, 
+    id, parent_id, `name`, url, permission, `type`, icon, order_num, create_time, create_manager, 
     update_time, update_manager
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -32,12 +32,12 @@
   <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.Menu">
     insert into t_sys_menu (id, parent_id, `name`, 
       url, permission, `type`, 
-      icon, `order`, create_time, 
+      icon, order_num, create_time, 
       create_manager, update_time, update_manager
       )
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{url,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{icon,jdbcType=VARCHAR}, #{order,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{icon,jdbcType=VARCHAR}, #{orderNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{createManager,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{updateManager,jdbcType=INTEGER}
       )
   </insert>
@@ -65,8 +65,8 @@
       <if test="icon != null">
         icon,
       </if>
-      <if test="order != null">
-        `order`,
+      <if test="orderNum != null">
+        order_num,
       </if>
       <if test="createTime != null">
         create_time,
@@ -103,8 +103,8 @@
       <if test="icon != null">
         #{icon,jdbcType=VARCHAR},
       </if>
-      <if test="order != null">
-        #{order,jdbcType=INTEGER},
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -141,8 +141,8 @@
       <if test="icon != null">
         icon = #{icon,jdbcType=VARCHAR},
       </if>
-      <if test="order != null">
-        `order` = #{order,jdbcType=INTEGER},
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -167,7 +167,7 @@
       permission = #{permission,jdbcType=VARCHAR},
       `type` = #{type,jdbcType=INTEGER},
       icon = #{icon,jdbcType=VARCHAR},
-      `order` = #{order,jdbcType=INTEGER},
+      order_num = #{orderNum,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_manager = #{createManager,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -176,26 +176,27 @@
   </update>
   <select id="listMenuByManagerId" resultType="com.scrawl.iot.web.dao.entity.Menu">
     select
-    DISTINCT m.id, m.parent_id as parentId, m.`name`, m.url, m.permission, m.`type`, m.icon, m.`order`,
+    DISTINCT m.id, m.parent_id as parentId, m.`name`, m.url, m.permission, m.`type`, m.icon, m.`order_num`,
     m.create_time as createTime, m.create_manager as createManager, m.update_time as updateTime, m.update_manager as updateManager
     FROM t_sys_menu m
     LEFT JOIN t_sys_role_menu rm ON m.id = rm.menu_id
     LEFT JOIN t_sys_manager_role mr ON rm.role_id = mr.role_id
     WHERE mr.manager_id = #{id} AND m.type IN(0,1)
-    ORDER BY m.order
+    ORDER BY m.`type`,m.order_num
   </select>
   <select id="listMenuByRoleId" resultMap="BaseResultMap">
     select
-      m.id, m.parent_id as parentId, m.`name`, m.url, m.permission, m.`type`, m.icon, m.`order`,
+      m.id, m.parent_id as parentId, m.`name`, m.url, m.permission, m.`type`, m.icon, m.`order_num`,
     m.create_time as createTime, m.create_manager as createManager, m.update_time as updateTime, m.update_manager as updateManager
     FROM t_sys_menu m
     LEFT JOIN t_sys_role_menu rm ON m.id = rm.menu_id
     WHERE rm.role_id=#{roleId}
-    ORDER BY m.order
+    ORDER BY m.`type`,m.order_num
   </select>
   <select id="list" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
-    from t_sys_menu m
+    <include refid="Base_Column_List" />
+    from t_sys_menu
+    order by `type`, order_num
   </select>
 </mapper>

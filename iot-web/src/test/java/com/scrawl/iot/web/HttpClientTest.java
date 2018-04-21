@@ -30,4 +30,13 @@ public class HttpClientTest {
         IotLoginResponse response = iotHttpService.loginAuth(request);
         System.out.println(JSON.toJSONString(response));
     }
+
+    @Test
+    public void getIotServers() {
+        IotLoginRequest request = new IotLoginRequest();
+        request.setServerId("jiayingdev01");
+        request.setPassword("jsj2018");
+        IotLoginResponse response = iotHttpService.loginAuth(request);
+        System.out.println(JSON.toJSONString(response));
+    }
 }

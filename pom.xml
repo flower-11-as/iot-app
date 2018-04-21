@@ -23,13 +23,19 @@
     <!-- 配置profiles -->
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>local</id>
             <properties>
-                <build.profile.id>dev</build.profile.id>
+                <build.profile.id>local</build.profile.id>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <build.profile.id>dev</build.profile.id>
+            </properties>
         </profile>
         <profile>
             <id>test</id>
