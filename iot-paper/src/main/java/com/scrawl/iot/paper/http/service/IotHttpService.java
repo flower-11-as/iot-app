@@ -4,6 +4,7 @@ import com.scrawl.iot.paper.http.client.IotHttpClient;
 import com.scrawl.iot.paper.http.constans.IotConstant;
 import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.request.IotLoginRequest;
+import com.scrawl.iot.paper.http.response.IotDevTypeResponse;
 import com.scrawl.iot.paper.http.response.IotLoginResponse;
 import com.scrawl.iot.paper.http.response.IotServerResponse;
 import com.scrawl.iot.paper.http.response.IotServiceModeResponse;
@@ -23,19 +24,26 @@ public class IotHttpService {
         this.iotHttpClient = iotHttpClient;
     }
 
-    // IoT 登录授权
+    // IoT登录授权
     public IotLoginResponse loginAuth(IotLoginRequest request) {
         return iotHttpClient.doPost(IotConstant.LOGIN_AUTH, null, request, IotLoginResponse.class);
     }
 
-    // IoT 获取连接平台
+    // IoT获取连接平台
     public IotServerResponse getServers(IotHeader header) {
         return iotHttpClient.doGet(IotConstant.SERVER, header, null, IotServerResponse.class);
     }
 
+    // IoT获取业务类型
     public IotServiceModeResponse getServiceModes(Map<String, Object> urlParams, IotHeader header) {
         return iotHttpClient.doGet(withUrlParams(IotConstant.SERVICE_MODE, urlParams), header,
                 null, IotServiceModeResponse.class);
+    }
+
+    // IoT获取产品型号
+    public IotDevTypeResponse getDevTypes(Map<String, Object> urlParams, IotHeader header) {
+        return iotHttpClient.doGet(withUrlParams(IotConstant.DEV_TYPES, urlParams), header,
+                null, IotDevTypeResponse.class);
     }
 
     private String withUrlParams(String url, Map<String, Object> urlParams) {
