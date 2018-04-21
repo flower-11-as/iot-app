@@ -1,5 +1,5 @@
 // ************个性化设置************
-var prefix = "/iot-manage/iot/server";
+var prefix = "/iot-manage/iot/serviceMode";
 var localParams = {};
 var localColumns = [
     {
@@ -11,10 +11,18 @@ var localColumns = [
         title: '连接平台id' // 列标题
     },
     {
+        field: 'serviceMode', // 列字段名
+        title: '业务模式' // 列标题
+    },
+    {
         field: 'description', // 列字段名
-        title: '连接平台描述' // 列标题
+        title: '业务模式描述' // 列标题
+    },
+    {
+        field: 'isDefault', // 列字段名
+        title: '是否默认' // 列标题
     }];
-var localPageName = "IoT连接平台";
+var localPageName = "业务模式";
 // ************个性化设置************
 
 $(function () {
@@ -72,9 +80,9 @@ function reLoad() {
     $('#exampleTable').bootstrapTable('refresh');
 }
 
-// 同步IoT servers
-function syncServer() {
-    layer.confirm("确定要同步"+ localPageName +"吗?", {
+// 同步IoT ServiceModes
+function syncServiceModes() {
+    layer.confirm("确定要同步" + localPageName + "吗?", {
         btn: ['确定', '取消']
         // 按钮
     }, function () {
@@ -82,10 +90,10 @@ function syncServer() {
         // 遍历所有选择的行数据，取每条数据对应的ID
         $.ajax({
             type: 'POST',
-            url: prefix + '/syncServers',
+            url: prefix + '/syncServiceModes',
             success: function (data) {
                 if (data.code === '0000') {
-                    layer.msg("同步"+ localPageName +"成功");
+                    layer.msg("同步" + localPageName + "成功");
                     reLoad();
                 } else {
                     layer.alert(data.msg, {

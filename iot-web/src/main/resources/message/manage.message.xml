@@ -38,6 +38,9 @@
     <!--server-->
     <entry key="SYS60001">同步IoT连接平台错误</entry>
 
+    <!--service mode-->
+    <entry key="SYS70001">同步IoT业务模式错误</entry>
+
     <!--iot-->
     <entry key="IOT10001">未获取到有效授权IoT账户</entry>
 

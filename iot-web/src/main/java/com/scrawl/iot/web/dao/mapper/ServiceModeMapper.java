@@ -2,6 +2,8 @@ package com.scrawl.iot.web.dao.mapper;
 
 import com.scrawl.iot.web.dao.entity.ServiceMode;
 
+import java.util.List;
+
 public interface ServiceModeMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,10 @@ public interface ServiceModeMapper {
     int updateByPrimaryKeySelective(ServiceMode record);
 
     int updateByPrimaryKey(ServiceMode record);
+
+    List<ServiceMode> selectList();
+
+    int deleteAll();
+
+    int deleteByServerId(String serverId);
 }
