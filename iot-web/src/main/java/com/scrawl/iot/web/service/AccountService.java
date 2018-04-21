@@ -3,6 +3,7 @@ package com.scrawl.iot.web.service;
 
 import com.scrawl.iot.web.dao.entity.Account;
 import com.scrawl.iot.web.vo.sys.account.AccountListReqVO;
+import com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ import java.util.List;
  */
 public interface AccountService {
     List<Account> list(AccountListReqVO reqVO);
+
+    List<Account> list(Account account);
 
     int count(AccountListReqVO reqVO);
 
@@ -26,4 +29,6 @@ public interface AccountService {
     boolean resetAuth(Integer id, Integer managerId);
 
     Account getAvailableAccount();
+
+    List<ManagerAccountRespVO> getManagerAccountList(Integer managerId);
 }

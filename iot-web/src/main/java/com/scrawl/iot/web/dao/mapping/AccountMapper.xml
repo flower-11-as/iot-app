@@ -184,4 +184,11 @@
       and `status` = #{status}
     </if>
   </sql>
+  <select id="selectManagerAccountList" parameterType="int" resultType="com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO">
+    SELECT
+    a.id, a.server_id as serverId, a.`password`, a.`status`, a.token, a.last_login_time as lastLoginTime,
+    IF(
+    (SELECT id FROM t_sys_manager_account ma WHERE ma.account_id = a.`id` AND ma.manager_id=#{managerId}) IS NOT NULL, 'true', 'false') AS accountSign
+    FROM t_iot_account a
+  </select>
 </mapper>

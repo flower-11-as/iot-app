@@ -1,7 +1,10 @@
 package com.scrawl.iot.web.service.impl;
 
+import com.scrawl.iot.web.dao.entity.Account;
 import com.scrawl.iot.web.dao.entity.Manager;
+import com.scrawl.iot.web.dao.entity.ManagerAccount;
 import com.scrawl.iot.web.dao.entity.ManagerRole;
+import com.scrawl.iot.web.dao.mapper.ManagerAccountMapper;
 import com.scrawl.iot.web.dao.mapper.ManagerMapper;
 import com.scrawl.iot.web.dao.mapper.ManagerRoleMapper;
 import com.scrawl.iot.web.exception.BizException;
@@ -34,6 +37,9 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Autowired
     private ManagerRoleMapper managerRoleMapper;
+
+    @Autowired
+    private ManagerAccountMapper managerAccountMapper;
 
     @Override
     public List<Manager> list(ManagerListReqVO reqVO) {
@@ -69,7 +75,6 @@ public class ManagerServiceImpl implements ManagerService {
         oldRoles.stream().filter(role -> !roles.contains(role)).collect(Collectors.toList()).
                 forEach(id -> managerRoleMapper.deleteByManagerIdAndRoleId(reqVO.getId(), id));
 
-
         // 添加rm
         roles.stream().filter(role -> !oldRoles.contains(role)).collect(Collectors.toList()).forEach(id -> {
             ManagerRole mr = new ManagerRole();
@@ -78,6 +83,29 @@ public class ManagerServiceImpl implements ManagerService {
             mr.setCreateManager(reqVO.getUpdateManager());
             mr.setCreateTime(new Date());
             managerRoleMapper.insertSelective(mr);
+        });
+
+
+        // 修改manager-account
+        List<Integer> accounts = null == reqVO.getAccounts() ? new ArrayList<>() : reqVO.getAccounts();
+
+        ManagerAccount managerAccount = new ManagerAccount();
+        managerAccount.setManagerId(reqVO.getId());
+        List<Integer> oldAccounts = managerAccountMapper.selectBySelective(managerAccount).
+                stream().map(ManagerAccount::getAccountId).collect(Collectors.toList());
+
+        // 删除ma
+        oldAccounts.stream().filter(account -> !accounts.contains(account)).collect(Collectors.toList()).
+                forEach(id -> managerAccountMapper.deleteByManagerIdAndAccountId(reqVO.getId(), id));
+
+        // 添加ma
+        accounts.stream().filter(account -> !oldAccounts.contains(account)).collect(Collectors.toList()).forEach(id -> {
+            ManagerAccount ma = new ManagerAccount();
+            ma.setManagerId(reqVO.getId());
+            ma.setAccountId(id);
+            ma.setCreateManager(reqVO.getUpdateManager());
+            ma.setCreateTime(new Date());
+            managerAccountMapper.insertSelective(ma);
         });
     }
 
@@ -96,18 +124,29 @@ public class ManagerServiceImpl implements ManagerService {
 
         // 插入角色
         List<Integer> roleIds = reqVO.getRoles();
-        if (CollectionUtils.isEmpty(roleIds)) {
-            return;
+        if (CollectionUtils.isNotEmpty(roleIds)) {
+            roleIds.forEach(roleId -> {
+                ManagerRole mr = new ManagerRole();
+                mr.setManagerId(reqVO.getId());
+                mr.setRoleId(roleId);
+                mr.setCreateManager(reqVO.getCreateManager());
+                mr.setCreateTime(reqVO.getCreateTime());
+                managerRoleMapper.insertSelective(mr);
+            });
         }
 
-        roleIds.forEach(roleId -> {
-            ManagerRole mr = new ManagerRole();
-            mr.setManagerId(reqVO.getId());
-            mr.setRoleId(roleId);
-            mr.setCreateManager(reqVO.getCreateManager());
-            mr.setCreateTime(reqVO.getCreateTime());
-            managerRoleMapper.insertSelective(mr);
-        });
+        // 插入账户
+        List<Integer> accountIds = reqVO.getAccounts();
+        if (CollectionUtils.isNotEmpty(accountIds)) {
+            accountIds.forEach(accountId -> {
+                ManagerAccount ma = new ManagerAccount();
+                ma.setManagerId(reqVO.getId());
+                ma.setAccountId(accountId);
+                ma.setCreateManager(reqVO.getCreateManager());
+                ma.setCreateTime(new Date());
+                managerAccountMapper.insertSelective(ma);
+            });
+        }
     }
 
     @Override
@@ -118,6 +157,9 @@ public class ManagerServiceImpl implements ManagerService {
 
         // 删除管理员角色
         managerRoleMapper.deleteByManagerId(managerId);
+
+        // 删除管理员IoT账户
+        managerAccountMapper.deleteByManagerId(managerId);
     }
 
     @Override

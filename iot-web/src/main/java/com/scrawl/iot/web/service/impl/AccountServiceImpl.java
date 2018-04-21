@@ -11,6 +11,7 @@ import com.scrawl.iot.web.enums.AccountStatusEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
 import com.scrawl.iot.web.vo.sys.account.AccountListReqVO;
+import com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<Account> list(AccountListReqVO reqVO) {
         return accountMapper.selectPageList(reqVO);
+    }
+
+    @Override
+    public List<Account> list(Account account) {
+        return accountMapper.selectListBySelective(account);
     }
 
     @Override
@@ -125,5 +131,10 @@ public class AccountServiceImpl implements AccountService {
         }
 
         return rs;
+    }
+
+    @Override
+    public List<ManagerAccountRespVO> getManagerAccountList(Integer managerId) {
+        return accountMapper.selectManagerAccountList(managerId);
     }
 }

@@ -14,4 +14,6 @@ import java.util.List;
 @Getter
 public class ManagerReqVO extends Manager {
     private List<Integer> roles;
+
+    private List<Integer> accounts;
 }

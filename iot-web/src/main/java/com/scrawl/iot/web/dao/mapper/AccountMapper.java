@@ -2,6 +2,7 @@ package com.scrawl.iot.web.dao.mapper;
 
 import com.scrawl.iot.web.dao.entity.Account;
 import com.scrawl.iot.web.vo.sys.account.AccountListReqVO;
+import com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface AccountMapper {
     int selectPageCount(AccountListReqVO reqVO);
 
     List<Account> selectListBySelective(Account record);
+
+    List<ManagerAccountRespVO> selectManagerAccountList(Integer managerId);
 }

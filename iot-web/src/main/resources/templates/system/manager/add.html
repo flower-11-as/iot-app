@@ -53,6 +53,14 @@
 								</div>
 							</div>
 							<div class="form-group">
+								<label class="col-sm-3 control-label">IoT账户</label>
+								<div class="col-sm-8">
+									<label th:each="account:${accounts}" class="checkbox-inline">
+										<input name="accounts" type="checkbox" th:value="${account.id}" th:text="${account.serverId}">
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
 								<div class="col-sm-8 col-sm-offset-3">
 									<button type="submit" class="btn btn-primary">提交</button>
 								</div>

@@ -116,7 +116,7 @@
   </update>
   <select id="selectManagerRoleList" parameterType="int" resultType="com.scrawl.iot.web.vo.sys.manager.ManagerRoleRespVO">
     SELECT
-      r.*,
+      r.id, r.`name`, r.remark,
     IF(
       (SELECT id FROM t_sys_manager_role mr WHERE mr.role_id = r.`id` AND mr.manager_id=#{managerId}) IS NOT NULL, 'true', 'false') AS roleSign
     FROM t_sys_role r

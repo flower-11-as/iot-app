@@ -1,12 +1,16 @@
 package com.scrawl.iot.web.controller;
 
+import com.scrawl.iot.web.dao.entity.Account;
 import com.scrawl.iot.web.dao.entity.Manager;
 import com.scrawl.iot.web.dao.entity.Role;
 import com.scrawl.iot.web.exception.BizException;
+import com.scrawl.iot.web.service.AccountService;
+import com.scrawl.iot.web.service.ManagerAccountService;
 import com.scrawl.iot.web.service.ManagerService;
 import com.scrawl.iot.web.service.RoleService;
 import com.scrawl.iot.web.vo.PageRespVO;
 import com.scrawl.iot.web.vo.R;
+import com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO;
 import com.scrawl.iot.web.vo.sys.manager.ManagerListReqVO;
 import com.scrawl.iot.web.vo.sys.manager.ManagerReqVO;
 import com.scrawl.iot.web.vo.sys.manager.ManagerRoleRespVO;
@@ -41,6 +45,9 @@ public class ManagerController extends BaseController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private AccountService accountService;
+
     @GetMapping
     public String manager() {
         return prefix + "/manager";
@@ -61,6 +68,8 @@ public class ManagerController extends BaseController {
         model.addAttribute("manager", manager);
         List<ManagerRoleRespVO> roles = roleService.getManagerRoleList(id);
         model.addAttribute("roles", roles);
+        List<ManagerAccountRespVO> accounts = accountService.getManagerAccountList(id);
+        model.addAttribute("accounts", accounts);
         return prefix + "/edit";
     }
 
@@ -80,8 +89,10 @@ public class ManagerController extends BaseController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        List<Role> roles = roleService.getRoleList(null);
+        List<Role> roles = roleService.getRoleList(new Role());
         model.addAttribute("roles", roles);
+        List<Account> accounts = accountService.list(new Account());
+        model.addAttribute("accounts", accounts);
         return prefix + "/add";
     }
 

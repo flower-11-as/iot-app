@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scrawl.iot.web.dao.mapper.ManagerAccountMapper">
+  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.ManagerAccount">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="manager_id" jdbcType="INTEGER" property="managerId" />
+    <result column="account_id" jdbcType="INTEGER" property="accountId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_manager" jdbcType="INTEGER" property="createManager" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, manager_id, account_id, create_time, create_manager
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_manager_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_manager_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
+    insert into t_sys_manager_account (id, manager_id, account_id, 
+      create_time, create_manager)
+    values (#{id,jdbcType=INTEGER}, #{managerId,jdbcType=INTEGER}, #{accountId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
+    insert into t_sys_manager_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="managerId != null">
+        manager_id,
+      </if>
+      <if test="accountId != null">
+        account_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createManager != null">
+        create_manager,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="managerId != null">
+        #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="accountId != null">
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createManager != null">
+        #{createManager,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
+    update t_sys_manager_account
+    <set>
+      <if test="managerId != null">
+        manager_id = #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="accountId != null">
+        account_id = #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createManager != null">
+        create_manager = #{createManager,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
+    update t_sys_manager_account
+    set manager_id = #{managerId,jdbcType=INTEGER},
+      account_id = #{accountId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_manager = #{createManager,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectBySelective" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from t_sys_manager_account
+    where 1=1
+    <include refid="select_list_where"/>
+  </select>
+  <sql id="select_list_where">
+    <if test="managerId != null">
+      and manager_id = #{managerId}
+    </if>
+    <if test="accountId != null">
+      and account_id = #{accountId}
+    </if>
+  </sql>
+  <delete id="deleteByManagerIdAndAccountId">
+    delete from t_sys_manager_account where manager_id=#{managerId} and account_id=#{accountId}
+  </delete>
+  <delete id="deleteByManagerId">
+    delete from t_sys_manager_account where manager_id=#{managerId}
+  </delete>
+</mapper>
