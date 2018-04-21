@@ -36,7 +36,7 @@ function load() {
         toolbar: '#exampleToolbar',
         striped: true, // 设置为true会有隔行变色效果
         dataType: "json", // 服务器返回的数据类型
-        pagination: true, // 设置为true会在底部显示分页条
+        pagination: false, // 设置为true会在底部显示分页条
         // queryParamsType : "limit",
         // //设置为limit则会发送符合RESTFull格式的参数
         singleSelect: false, // 设置为true将禁止多选
@@ -47,7 +47,6 @@ function load() {
         search: true, // 是否显示搜索框
         showColumns: false, // 是否显示内容下拉框（选择显示的列）
         // sidePagination: "server", // 设置在哪里进行分页，可选值为"client" 或者
-        // "server"
         queryParams: function (params) {
             // localParams["limit"] = params.limit;
             // localParams["offset"] = params.offset;

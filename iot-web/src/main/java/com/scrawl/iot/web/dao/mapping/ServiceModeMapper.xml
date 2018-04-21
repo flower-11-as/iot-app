@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scrawl.iot.web.dao.mapper.ServiceModeMapper">
+  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.ServiceMode">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="server_id" jdbcType="VARCHAR" property="serverId" />
+    <result column="service_mode" jdbcType="VARCHAR" property="serviceMode" />
+    <result column="is_default" jdbcType="INTEGER" property="isDefault" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, server_id, service_mode, is_default, description, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_iot_service_mode
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_iot_service_mode
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.ServiceMode">
+    insert into t_iot_service_mode (id, server_id, service_mode, 
+      is_default, description, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{serverId,jdbcType=VARCHAR}, #{serviceMode,jdbcType=VARCHAR}, 
+      #{isDefault,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.ServiceMode">
+    insert into t_iot_service_mode
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="serverId != null">
+        server_id,
+      </if>
+      <if test="serviceMode != null">
+        service_mode,
+      </if>
+      <if test="isDefault != null">
+        is_default,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="serverId != null">
+        #{serverId,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceMode != null">
+        #{serviceMode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        #{isDefault,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.ServiceMode">
+    update t_iot_service_mode
+    <set>
+      <if test="serverId != null">
+        server_id = #{serverId,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceMode != null">
+        service_mode = #{serviceMode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        is_default = #{isDefault,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.ServiceMode">
+    update t_iot_service_mode
+    set server_id = #{serverId,jdbcType=VARCHAR},
+      service_mode = #{serviceMode,jdbcType=VARCHAR},
+      is_default = #{isDefault,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

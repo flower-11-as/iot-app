@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class ServerServiceImpl implements ServerService{
+public class ServerServiceImpl implements ServerService {
 
     @Autowired
     private ServerMapper serverMapper;
@@ -55,7 +55,7 @@ public class ServerServiceImpl implements ServerService{
         header.setAccessToken(account.getToken());
         IotServerResponse response;
         try {
-            response = iotHttpService.getServers(header, null);
+            response = iotHttpService.getServers(header);
         } catch (IotHttpException | PaperHttpException e) {
             throw new BizException("SYS60001", e.getMessage());
         }

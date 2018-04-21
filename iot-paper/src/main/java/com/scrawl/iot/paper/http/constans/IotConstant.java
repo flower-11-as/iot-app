@@ -18,6 +18,7 @@ public class IotConstant {
 	// api
 	public static String LOGIN_AUTH = "/server/login";
 	public static String SERVER = "/service-config/get-iotservers";
+	public static String SERVICE_MODE = "/service-config/get-iotservicemode";
 
 	static{
 		resultCodeExplain=new HashMap<>();
