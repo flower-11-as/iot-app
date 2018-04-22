@@ -82,4 +82,16 @@ public class HttpClientTest {
         List<String> list = Arrays.asList("jiayingdev01");
         devTypeService.syncDevTypes(list, 1);
     }
+
+    @Test
+    public void getDevices() {
+        IotHeader header = new IotHeader();
+        header.setServerId("jiayingdev01");
+        header.setAccessToken("4a4702e7220f5d3c0de819fd51bf7613");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("serverID", "jiayingdev01");
+        IotDeviceAllResponse response = iotHttpService.getDevices(params, header);
+        System.out.println(JSON.toJSONString(response));
+    }
 }

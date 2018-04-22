@@ -50,9 +50,9 @@ public class IotHttpService {
     }
 
     // IoT获取产品型号信息
-    public IotDevTypeInfoResponse getDevices(Map<String, Object> urlParams, IotHeader header) {
+    public IotDeviceAllResponse getDevices(Map<String, Object> urlParams, IotHeader header) {
         return iotHttpClient.doGet(withUrlParams(IotConstant.DEVICE_ALL, urlParams), header,
-                null, IotDevTypeInfoResponse.class);
+                null, IotDeviceAllResponse.class);
     }
 
     private String withUrlParams(String url, Map<String, Object> urlParams) {

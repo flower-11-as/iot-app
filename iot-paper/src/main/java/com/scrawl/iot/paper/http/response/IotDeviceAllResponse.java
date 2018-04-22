@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -12,45 +14,40 @@ import java.util.Date;
 @Getter
 @Setter
 public class IotDeviceAllResponse extends IotResponse {
-    private Integer id;
+    List<IotDevice> devices;
 
-    private String serverId;
+    @Setter
+    @Getter
+    public class IotDevice {
+        private List<DeviceData> deviceData;
+        // 信号
+        private Integer signalStrength;
+        // 电量
+        private Integer batteryLevel;
 
-    private String devType;
+        private Date createTime;
+        private String devSerial;
+        private String industryName;
+        private String location;
+        private Integer isPublished;
+        private String createBy;
+        private String clientID;
+        private Integer displayIconId;
+        private String endUserName;
+        private String connectPointId;
+        private String categoryName;
+        private String endUserInfo;
+        private String devType;
+        private String name;
+        private Double longitude;
+        private Double latitude;
+        private String hasSimCard;
+    }
 
-    private String devSerial;
-
-    private String name;
-
-    private String connectPointId;
-
-    private String serviceMode;
-
-    private Integer isPublished;
-
-    private String location;
-
-    private Double longitude;
-
-    private Double latitude;
-
-    private String endUserInfo;
-
-    private String endUserName;
-
-    private String industryName;
-
-    private String categoryName;
-
-    private Integer displayIconId;
-
-    private String clientId;
-
-    private String protocolType;
-
-    private String hasSimCard;
-
-    private Byte delFlag;
-
-    private Date createTime;
+    @Setter
+    @Getter
+    public class DeviceData{
+        private String serviceId;
+        private Map<String, Object> serviceData;
+    }
 }
