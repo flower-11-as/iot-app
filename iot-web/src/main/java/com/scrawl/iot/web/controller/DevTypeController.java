@@ -78,8 +78,8 @@ public class DevTypeController extends BaseController {
         // devType message info
         model.addAttribute("messageInfos", devTypeInfoService.getDevTypeMessages(id));
 
-        // devType commend info
-        model.addAttribute("commendInfos", devTypeInfoService.getDevTypeCommends(id));
+        // devType command info
+        model.addAttribute("commandInfos", devTypeInfoService.getDevTypeCommands(id));
 
         return prefix + "/info";
     }

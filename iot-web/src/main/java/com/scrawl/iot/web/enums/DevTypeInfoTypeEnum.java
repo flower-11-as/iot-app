@@ -12,8 +12,8 @@ import lombok.Getter;
 public enum  DevTypeInfoTypeEnum {
     // 1、设备消息 2、指令参数 3、指令响应参数
     MESSAGE_REQUEST((byte) 1, "设备消息"),
-    COMMEND_REQUEST((byte) 2, "指令参数"),
-    COMMEND_RESPONSE((byte) 3, "指令响应参数");
+    COMMAND_REQUEST((byte) 2, "指令参数"),
+    COMMAND_RESPONSE((byte) 3, "指令响应参数");
 
     private Byte type;
     private String desc;

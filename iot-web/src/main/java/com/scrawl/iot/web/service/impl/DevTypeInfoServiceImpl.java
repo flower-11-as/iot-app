@@ -4,7 +4,7 @@ import com.scrawl.iot.web.dao.entity.DevTypeInfo;
 import com.scrawl.iot.web.dao.mapper.DevTypeInfoMapper;
 import com.scrawl.iot.web.enums.DevTypeInfoTypeEnum;
 import com.scrawl.iot.web.service.DevTypeInfoService;
-import com.scrawl.iot.web.vo.iot.devType.DevTypeCommendInfoRespVO;
+import com.scrawl.iot.web.vo.iot.devType.DevTypeCommandInfoRespVO;
 import com.scrawl.iot.web.vo.iot.devType.DevTypeMessageInfoRespVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,27 +46,27 @@ public class DevTypeInfoServiceImpl implements DevTypeInfoService {
     }
 
     @Override
-    public List<DevTypeCommendInfoRespVO> getDevTypeCommends(Integer devTypeId) {
+    public List<DevTypeCommandInfoRespVO> getDevTypeCommands(Integer devTypeId) {
         // 指令参数
         DevTypeInfo record = new DevTypeInfo();
         record.setDevTypeId(devTypeId);
-        record.setType(DevTypeInfoTypeEnum.COMMEND_REQUEST.getType());
+        record.setType(DevTypeInfoTypeEnum.COMMAND_REQUEST.getType());
         List<DevTypeInfo> devTypeInfos = devTypeInfoMapper.selectBySelective(record);
 
         // 指令响应参数
-        record.setType(DevTypeInfoTypeEnum.COMMEND_RESPONSE.getType());
+        record.setType(DevTypeInfoTypeEnum.COMMAND_RESPONSE.getType());
         devTypeInfos.addAll(devTypeInfoMapper.selectBySelective(record));
 
         Map<String, List<DevTypeInfo>> nameMap = devTypeInfos.stream().collect(Collectors.groupingBy(DevTypeInfo::getName));
-        List<DevTypeCommendInfoRespVO> rs = new ArrayList<>();
+        List<DevTypeCommandInfoRespVO> rs = new ArrayList<>();
         nameMap.forEach((name, infos) -> {
-            DevTypeCommendInfoRespVO respVO = new DevTypeCommendInfoRespVO();
+            DevTypeCommandInfoRespVO respVO = new DevTypeCommandInfoRespVO();
             respVO.setName(name);
 
             Map<Byte, List<DevTypeInfo>> typeMap = devTypeInfos.stream().collect(Collectors.groupingBy(DevTypeInfo::getType));
 
-            respVO.setRequestList(typeMap.get(DevTypeInfoTypeEnum.COMMEND_REQUEST.getType()));
-            respVO.setResponseList(typeMap.get(DevTypeInfoTypeEnum.COMMEND_RESPONSE.getType()));
+            respVO.setRequestList(typeMap.get(DevTypeInfoTypeEnum.COMMAND_REQUEST.getType()));
+            respVO.setResponseList(typeMap.get(DevTypeInfoTypeEnum.COMMAND_RESPONSE.getType()));
 
             rs.add(respVO);
         });

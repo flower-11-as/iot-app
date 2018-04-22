@@ -1,6 +1,6 @@
 package com.scrawl.iot.web.service;
 
-import com.scrawl.iot.web.vo.iot.devType.DevTypeCommendInfoRespVO;
+import com.scrawl.iot.web.vo.iot.devType.DevTypeCommandInfoRespVO;
 import com.scrawl.iot.web.vo.iot.devType.DevTypeMessageInfoRespVO;
 
 import java.util.List;
@@ -12,5 +12,5 @@ import java.util.List;
 public interface DevTypeInfoService {
     List<DevTypeMessageInfoRespVO> getDevTypeMessages(Integer devTypeId);
 
-    List<DevTypeCommendInfoRespVO> getDevTypeCommends(Integer devTypeId);
+    List<DevTypeCommandInfoRespVO> getDevTypeCommands(Integer devTypeId);
 }

@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Setter
 @Getter
-public class DevTypeCommendInfoRespVO {
+public class DevTypeCommandInfoRespVO {
     // 消息、指令名称
     private String name;
     private List<DevTypeInfo> requestList;

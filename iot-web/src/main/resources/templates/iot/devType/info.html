@@ -15,7 +15,7 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#basic_info" data-toggle="tab">基本信息</a></li>
                             <li><a href="#message_info" data-toggle="tab">设备消息</a></li>
-                            <li><a href="#commend_info" data-toggle="tab">设备指令</a></li>
+                            <li><a href="#command_info" data-toggle="tab">设备指令</a></li>
                         </ul>
                     </div>
                 </div>
@@ -61,27 +61,27 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ibox-content tab-pane fade"  id="commend_info">
-                        <div class="panel panel-default" th:each="commendInfo, infoStat:${commendInfos}">
-                            <div class="panel-heading" th:text="${commendInfo.name}"></div>
+                    <div class="ibox-content tab-pane fade"  id="command_info">
+                        <div class="panel panel-default" th:each="commandInfo, infoStat:${commandInfos}">
+                            <div class="panel-heading" th:text="${commandInfo.name}"></div>
                             <div class="panel-body">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li role="presentation" class="active">
-                                        <a href="#commend_request" aria-controls="home" role="tab"
-                                           data-toggle="tab" th:href="'#commend_request_'+${infoStat.index}">
+                                        <a href="#command_request" aria-controls="home" role="tab"
+                                           data-toggle="tab" th:href="'#command_request_'+${infoStat.index}">
                                             指令参数
                                         </a>
                                     </li>
                                     <li role="presentation">
-                                        <a href="#commend_response" aria-controls="profile" role="tab"
-                                           data-toggle="tab" th:href="'#commend_response_'+${infoStat.index}">
+                                        <a href="#command_response" aria-controls="profile" role="tab"
+                                           data-toggle="tab" th:href="'#command_response_'+${infoStat.index}">
                                             指令响应参数
                                         </a>
                                     </li>
                                 </ul>
 
                                 <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active" id="commend_request" th:id="'commend_request_'+${infoStat.index}">
+                                    <div role="tabpanel" class="tab-pane active" id="command_request" th:id="'command_request_'+${infoStat.index}">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
                                                 <table class="table">
@@ -90,7 +90,7 @@
                                                         <th>dataType</th>
                                                         <th>pos</th>
                                                     </tr>
-                                                    <tr th:each="request:${commendInfo.requestList}">
+                                                    <tr th:each="request:${commandInfo.requestList}">
                                                         <td th:text="${request.paramName}"></td>
                                                         <td th:text="${request.dataType}"></td>
                                                         <td th:text="${request.pos}"></td>
@@ -99,7 +99,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane" id="commend_response" th:id="'commend_response_'+${infoStat.index}">
+                                    <div role="tabpanel" class="tab-pane" id="command_response" th:id="'command_response_'+${infoStat.index}">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
                                                 <table class="table">
@@ -108,7 +108,7 @@
                                                         <th>dataType</th>
                                                         <th>pos</th>
                                                     </tr>
-                                                    <tr th:each="response:${commendInfo.responseList}">
+                                                    <tr th:each="response:${commandInfo.responseList}">
                                                         <td th:text="${response.paramName}"></td>
                                                         <td th:text="${response.dataType}"></td>
                                                         <td th:text="${response.pos}"></td>
