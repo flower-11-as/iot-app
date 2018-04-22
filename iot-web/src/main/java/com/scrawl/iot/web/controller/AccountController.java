@@ -5,7 +5,7 @@ import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
 import com.scrawl.iot.web.vo.PageRespVO;
 import com.scrawl.iot.web.vo.R;
-import com.scrawl.iot.web.vo.sys.account.AccountListReqVO;
+import com.scrawl.iot.web.vo.iot.account.AccountListReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

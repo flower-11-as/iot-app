@@ -184,7 +184,7 @@
     WHERE mr.manager_id = #{id} AND m.type IN(0,1)
     ORDER BY m.`type`,m.order_num
   </select>
-  <select id="listMenuByRoleId" resultMap="BaseResultMap">
+  <select id="listMenuByRoleId" resultType="com.scrawl.iot.web.dao.entity.Menu">
     select
       m.id, m.parent_id as parentId, m.`name`, m.url, m.permission, m.`type`, m.icon, m.`order_num`,
     m.create_time as createTime, m.create_manager as createManager, m.update_time as updateTime, m.update_manager as updateManager

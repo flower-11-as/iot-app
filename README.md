@@ -6,4 +6,4 @@ IoT APP, just do it
 2、session失效之后，查询列表问题不跳转问题
 3、session失效之后ajax请求跳转到localhost/login
 4、角色管理中菜单树有bug
-5、
+5、同步Iot产品型号不是很完善。

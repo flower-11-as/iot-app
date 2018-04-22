@@ -10,7 +10,7 @@ import com.scrawl.iot.web.dao.mapper.AccountMapper;
 import com.scrawl.iot.web.enums.AccountStatusEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
-import com.scrawl.iot.web.vo.sys.account.AccountListReqVO;
+import com.scrawl.iot.web.vo.iot.account.AccountListReqVO;
 import com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,8 +129,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<ManagerAccountRespVO> getManagerAccountList(Integer managerId) {
-        return accountMapper.selectManagerAccountList(managerId);
+    public List<ManagerAccountRespVO> getAccountListByManager(Integer managerId) {
+        return accountMapper.selectAccountListByManager(managerId);
     }
 
     @Override
@@ -138,5 +138,10 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountMapper.selectByServerId(serverId);
 
         return iotLogin(account) ? account : null;
+    }
+
+    @Override
+    public List<Account> getManagerAccountList(Integer managerId) {
+        return accountMapper.selectManagerAccountList(managerId);
     }
 }

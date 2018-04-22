@@ -30,7 +30,7 @@ public class ServiceModeController {
     private ServiceModeService serviceModeService;
 
     @GetMapping
-    public String server() {
+    public String serviceMode() {
         return prefix + "/serviceMode";
     }
 

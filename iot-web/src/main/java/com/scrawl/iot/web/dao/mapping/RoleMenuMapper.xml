@@ -96,9 +96,9 @@
     from t_sys_role_menu
     where role_id = #{roleId}
   </select>
-  <select id="selectByManagerId" parameterType="int" resultMap="BaseResultMap">
+  <select id="selectByManagerId" parameterType="int" resultType="com.scrawl.iot.web.dao.entity.RoleMenu">
     select
-      rm.*
+      rm.id, rm.role_id as roleId, rm.menu_id as menuId, rm.create_time as createTime, rm.create_manager as createManager
     from t_sys_role_menu rm
     inner join t_sys_manager_role mr on rm.role_id = mr.role_id
     where mr.manager_id = #{managerId}

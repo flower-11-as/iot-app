@@ -5,7 +5,6 @@ import com.scrawl.iot.web.dao.entity.Manager;
 import com.scrawl.iot.web.dao.entity.Role;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
-import com.scrawl.iot.web.service.ManagerAccountService;
 import com.scrawl.iot.web.service.ManagerService;
 import com.scrawl.iot.web.service.RoleService;
 import com.scrawl.iot.web.vo.PageRespVO;
@@ -15,7 +14,6 @@ import com.scrawl.iot.web.vo.sys.manager.ManagerListReqVO;
 import com.scrawl.iot.web.vo.sys.manager.ManagerReqVO;
 import com.scrawl.iot.web.vo.sys.manager.ManagerRoleRespVO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +65,7 @@ public class ManagerController extends BaseController {
         model.addAttribute("manager", manager);
         List<ManagerRoleRespVO> roles = roleService.getManagerRoleList(id);
         model.addAttribute("roles", roles);
-        List<ManagerAccountRespVO> accounts = accountService.getManagerAccountList(id);
+        List<ManagerAccountRespVO> accounts = accountService.getAccountListByManager(id);
         model.addAttribute("accounts", accounts);
         return prefix + "/edit";
     }

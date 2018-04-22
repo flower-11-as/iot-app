@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include::header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <!--ibox-->
+            <div class="ibox">
+                <!--ibox-title-->
+                <div class="ibox-title" style="padding-bottom: 0;">
+                    <h3 class="text-center" th:text="${devType.devType}"></h3>
+                    <div class="gg-nav">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#basic_info" data-toggle="tab">基本信息</a></li>
+                            <li><a href="#message_info" data-toggle="tab">设备消息</a></li>
+                            <li><a href="#commend_info" data-toggle="tab">设备指令</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!--ibox-content-->
+                <div class="tab-content">
+                    <div class="ibox-content tab-pane fade in active" id="basic_info">
+                        <form class="gg-form" role="form">
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>IoT用户名:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${devType.serverId}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>产品型号:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${devType.devType}"></u>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ibox-content tab-pane fade" id="message_info">
+                        <div class="panel panel-default" th:each="messageInfo:${messageInfos}">
+                            <div class="panel-heading" th:text="${messageInfo.name}"></div>
+                            <div class="panel-body">
+                                <table class="table">
+                                    <tr>
+                                        <th>paramName</th>
+                                        <th>dataType</th>
+                                        <th>pos</th>
+                                    </tr>
+                                    <tr th:each="message:${messageInfo.messageList}">
+                                        <td th:text="${message.paramName}"></td>
+                                        <td th:text="${message.dataType}"></td>
+                                        <td th:text="${message.pos}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content tab-pane fade"  id="commend_info">
+                        <div class="panel panel-default" th:each="commendInfo, infoStat:${commendInfos}">
+                            <div class="panel-heading" th:text="${commendInfo.name}"></div>
+                            <div class="panel-body">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active">
+                                        <a href="#commend_request" aria-controls="home" role="tab"
+                                           data-toggle="tab" th:href="'#commend_request_'+${infoStat.index}">
+                                            指令参数
+                                        </a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#commend_response" aria-controls="profile" role="tab"
+                                           data-toggle="tab" th:href="'#commend_response_'+${infoStat.index}">
+                                            指令响应参数
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="commend_request" th:id="'commend_request_'+${infoStat.index}">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>paramName</th>
+                                                        <th>dataType</th>
+                                                        <th>pos</th>
+                                                    </tr>
+                                                    <tr th:each="request:${commendInfo.requestList}">
+                                                        <td th:text="${request.paramName}"></td>
+                                                        <td th:text="${request.dataType}"></td>
+                                                        <td th:text="${request.pos}"></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="commend_response" th:id="'commend_response_'+${infoStat.index}">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>paramName</th>
+                                                        <th>dataType</th>
+                                                        <th>pos</th>
+                                                    </tr>
+                                                    <tr th:each="response:${commendInfo.responseList}">
+                                                        <td th:text="${response.paramName}"></td>
+                                                        <td th:text="${response.dataType}"></td>
+                                                        <td th:text="${response.pos}"></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+</body>
+</html>

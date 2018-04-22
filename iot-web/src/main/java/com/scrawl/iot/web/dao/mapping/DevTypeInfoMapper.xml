@@ -138,4 +138,19 @@
       create_manager = #{createManager,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectBySelective" parameterType="com.scrawl.iot.web.dao.entity.DevTypeInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_iot_dev_type_info
+    where 1=1
+    <include refid="select_list_where"/>
+  </select>
+  <sql id="select_list_where">
+    <if test="devTypeId != null">
+      and dev_type_id = #{devTypeId}
+    </if>
+    <if test="type != null">
+      and type = #{type}
+    </if>
+  </sql>
 </mapper>

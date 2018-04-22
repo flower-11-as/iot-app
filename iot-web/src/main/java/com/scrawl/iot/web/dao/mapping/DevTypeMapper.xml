@@ -108,4 +108,35 @@
       and del_flag = #{delFlag}
     </if>
   </sql>
+  <sql id="select_page_where">
+    <if test="serverId != null and serverId != ''">
+      and server_id = #{serverId}
+    </if>
+    <if test="devType != null and devType != ''">
+      and dev_type = #{devType}
+    </if>
+    <if test="delFlag != null and delFlag != ''">
+      and del_flag = #{delFlag}
+    </if>
+    <if test="serverIds != null and serverIds.size() > 0">
+      and server_id in
+      <foreach collection="serverIds" item="item" index="index" open="(" close=")" separator=",">
+        #{item}
+      </foreach>
+    </if>
+  </sql>
+  <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.iot.devType.DevTypeListReqVO" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_iot_dev_type
+    where 1=1
+    <include refid="select_page_where"/>
+    limit #{offset}, #{limit}
+  </select>
+  <select id="selectPageCount" parameterType="com.scrawl.iot.web.vo.iot.devType.DevTypeListReqVO" resultType="java.lang.Integer">
+    select count(*)
+    from t_iot_dev_type
+    where 1=1
+    <include refid="select_page_where"/>
+  </select>
 </mapper>

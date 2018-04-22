@@ -150,7 +150,7 @@
       update_manager = #{updateManager,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.sys.account.AccountListReqVO" resultMap="BaseResultMap">
+  <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.iot.account.AccountListReqVO" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_iot_account
@@ -158,7 +158,7 @@
     <include refid="select_page_where" />
     limit #{offset}, #{limit}
   </select>
-  <select id="selectPageCount" parameterType="com.scrawl.iot.web.vo.sys.account.AccountListReqVO" resultType="java.lang.Integer">
+  <select id="selectPageCount" parameterType="com.scrawl.iot.web.vo.iot.account.AccountListReqVO" resultType="java.lang.Integer">
     select count(*)
     from t_iot_account
     where 1=1
@@ -184,9 +184,13 @@
       and `status` = #{status}
     </if>
   </sql>
-  <select id="selectManagerAccountList" parameterType="int" resultType="com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO">
-    SELECT
+  <sql id="Alias_Column_List">
     a.id, a.server_id as serverId, a.`password`, a.`status`, a.token, a.last_login_time as lastLoginTime,
+    a.create_time as createTime, a.create_manager as createManager, a.update_time as updateTime, a.update_manager as updateManager
+  </sql>
+  <select id="selectAccountListByManager" parameterType="int" resultType="com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO">
+    SELECT
+      <include refid="Alias_Column_List"/> ,
     IF(
     (SELECT id FROM t_sys_manager_account ma WHERE ma.account_id = a.`id` AND ma.manager_id=#{managerId}) IS NOT NULL, 'true', 'false') AS accountSign
     FROM t_iot_account a
@@ -195,5 +199,12 @@
     select
       <include refid="Base_Column_List"/>
     from t_iot_account where server_id=#{serverId}
+  </select>
+  <select id="selectManagerAccountList" parameterType="java.lang.Integer" resultType="com.scrawl.iot.web.dao.entity.Account">
+    select
+      <include refid="Alias_Column_List"/>
+    from t_iot_account a
+    inner join t_sys_manager_account mr on a.id = mr.account_id
+    where mr.manager_id=#{managerId}
   </select>
 </mapper>

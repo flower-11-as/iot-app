@@ -12,6 +12,7 @@ import com.scrawl.iot.web.dao.mapper.DevTypeMapper;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
 import com.scrawl.iot.web.service.DevTypeService;
+import com.scrawl.iot.web.vo.iot.devType.DevTypeListReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,13 @@ public class DevTypeServicesImpl implements DevTypeService {
     private DevTypeInfoMapper insertSelective;
 
     @Override
-    public List<DevType> list(DevType devType) {
-        return devTypeMapper.selectBySelective(devType);
+    public List<DevType> list(DevTypeListReqVO reqVO) {
+        return devTypeMapper.selectPageList(reqVO);
+    }
+
+    @Override
+    public int count(DevTypeListReqVO reqVO) {
+        return devTypeMapper.selectPageCount(reqVO);
     }
 
     @Override
@@ -59,7 +65,7 @@ public class DevTypeServicesImpl implements DevTypeService {
             try {
                 syncDevTypesByServerId(serverId, managerId);
             } catch (Exception e) {
-                log.error("同步产品类型异常：", e);
+                log.error("同步产品型号异常：", e);
                 // ignore
             }
         });
@@ -101,7 +107,7 @@ public class DevTypeServicesImpl implements DevTypeService {
         record.setServerId(account.getServerId());
         record.setDevType(d);
 
-        // 产品信号
+        // 产品型号
         List<DevType> devTypes = devTypeMapper.selectBySelective(record);
         if (null != devTypes && devTypes.size() > 0) {
             DevType devType = devTypes.get(0);
@@ -161,5 +167,10 @@ public class DevTypeServicesImpl implements DevTypeService {
         devTypeInfo.setCreateTime(new Date());
 
         insertSelective.insertSelective(devTypeInfo);
+    }
+
+    @Override
+    public DevType get(Integer id) {
+        return devTypeMapper.selectByPrimaryKey(id);
     }
 }

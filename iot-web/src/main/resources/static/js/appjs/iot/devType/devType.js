@@ -1,52 +1,46 @@
 // ************个性化设置************
-var prefix = "/iot-manage/iot/account";
+var prefix = "/iot-manage/iot/devType";
 var localParams = {};
 var localColumns = [
-    {
-        checkbox: true
-    },
+    // {
+    //     checkbox: true
+    // },
     {
         field: 'id', // 列字段名
         title: '序号' // 列标题
     },
     {
         field: 'serverId', // 列字段名
-        title: '用户名' // 列标题
+        title: '平台用户名' // 列标题
     },
     {
-        field: 'status', // 列字段名
-        title: '授权状态', // 列标题
+        field: 'devType', // 列字段名
+        title: '产品型号' // 列标题
+    },
+    {
+        field: 'delFlag', // 列字段名
+        title: '是否已停用', // 列标题
         align: 'center',
         formatter: function (value, row, index) {
             if (value === 0) {
-                return '<span class="label label-danger">失败</span>';
+                return '<span class="label label-primary">未停用</span>';
             } else if (value === 1) {
-                return '<span class="label label-primary">成功</span>';
+                return '<span class="label label-danger">已停用</span>';
             }
         }
-    },
-    {
-        field: 'lastLoginTime', // 列字段名
-        title: '最近登录时间' // 列标题
     },
     {
         title: '操作',
         field: 'id',
         align: 'center',
         formatter: function (value, row, index) {
-            var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="#" title="删除"  mce_href="#" onclick="remove(\''
+            var d = '<a class="btn btn-primary btn-sm ' + s_info_h + '" href="#" title="产品信息"  mce_href="#" onclick="info(\''
                 + row.id
-                + '\')"><i class="fa fa-remove"></i></a> ';
-            var f = '<a class="btn btn-success btn-sm ' + s_resetPwd_h + '" href="#" title="重置密码"  mce_href="#" onclick="resetPwd(\''
-                + row.id
-                + '\')"><i class="fa fa-key"></i></a> ';
-            var g = '<a class="btn btn-info btn-sm ' + s_resetAuth_h + '" href="#" title="刷新授权"  mce_href="#" onclick="resetAuth(\''
-                + row.id
-                + '\')"><i class="fa fa-user-plus"></i></a> ';
-            return d + f + g;
+                + '\')"><i class="fa fa-edit"></i></a> ';
+            return d;
         }
     }];
-var localPageName = "账户";
+var localPageName = "产品型号";
 // ************个性化设置************
 
 $(function () {
@@ -73,13 +67,13 @@ function load() {
         // //发送到服务器的数据编码类型
         pageSize: 10, // 如果设置了分页，每页数据条数
         pageNumber: 1, // 如果设置了分布，首页页码
-        // search : true, // 是否显示搜索框
+        // search: true, // 是否显示搜索框
         showColumns: false, // 是否显示内容下拉框（选择显示的列）
         sidePagination: "server", // 设置在哪里进行分页，可选值为"client" 或者
         queryParams: function (params) {
             localParams["limit"] = params.limit;
             localParams["offset"] = params.offset;
-            localParams["serverId"] = $("#serverId").val();
+            localParams["devType"] = $('#devType').val();
             return localParams;
         },
         // //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -105,79 +99,42 @@ function reLoad() {
     $('#exampleTable').bootstrapTable('refresh');
 }
 
-// 添加
-function add() {
+// 同步IoT devTypes
+function syncDevTypes() {
+    layer.confirm("确定要同步" + localPageName + "吗?", {
+        btn: ['确定', '取消']
+        // 按钮
+    }, function () {
+        var ids = [];
+        // 遍历所有选择的行数据，取每条数据对应的ID
+        $.ajax({
+            type: 'POST',
+            url: prefix + '/syncDevTypes',
+            success: function (data) {
+                if (data.code === '0000') {
+                    layer.msg("同步" + localPageName + "成功");
+                    reLoad();
+                } else {
+                    layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
+                }
+            }
+        });
+    }, function () {
+    });
+}
+
+// 产品信息
+function info(id) {
     // iframe层
     layer.open({
         type: 2,
-        title: '增加' + localPageName,
+        title: localPageName + "信息",
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '350px'],
-        content: prefix + '/add'
+        area: ['800px', '600px'],
+        content: prefix + '/info?id=' + id
     });
-}
-
-// 删除
-function remove(id) {
-    layer.confirm('确定要删除选中的记录？', {
-        btn: ['确定', '取消']
-    }, function () {
-        $.ajax({
-            url: prefix + "/remove",
-            type: "post",
-            data: {
-                'id': id
-            },
-            success: function (data) {
-                if (data.code === '0000') {
-                    layer.msg("删除成功");
-                    reLoad();
-                } else {
-                    layer.alert(data.msg, {
-                        title: '提示',
-                        icon: 2
-                    });
-                }
-            }
-        });
-    })
-}
-
-// 重置密码
-function resetPwd(id) {
-    layer.open({
-        type: 2,
-        title: '重置密码',
-        maxmin: true,
-        shadeClose: false, // 点击遮罩关闭层
-        area: ['400px', '260px'],
-        content: prefix + '/resetPwd/' + id // iframe的url
-    });
-}
-
-// 刷新登录授权
-function resetAuth(id) {
-    layer.confirm('确定要刷新选中记录的授权信息？', {
-        btn: ['确定', '取消']
-    }, function () {
-        $.ajax({
-            url: prefix + "/resetAuth",
-            type: "post",
-            data: {
-                'id': id
-            },
-            success: function (data) {
-                if (data.code === '0000') {
-                    layer.msg("授权成功");
-                    reLoad();
-                } else {
-                    layer.alert(data.msg, {
-                        title: '提示',
-                        icon: 2
-                    });
-                }
-            }
-        });
-    })
 }
