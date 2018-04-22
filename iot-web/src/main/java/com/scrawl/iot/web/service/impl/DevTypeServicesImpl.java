@@ -61,14 +61,7 @@ public class DevTypeServicesImpl implements DevTypeService {
             return;
         }
 
-        serverIds.forEach(serverId -> {
-            try {
-                syncDevTypesByServerId(serverId, managerId);
-            } catch (Exception e) {
-                log.error("同步产品型号异常：", e);
-                // ignore
-            }
-        });
+        serverIds.forEach(serverId -> syncDevTypesByServerId(serverId, managerId));
     }
 
     // 根据账户同步产品型号
@@ -80,7 +73,7 @@ public class DevTypeServicesImpl implements DevTypeService {
          */
         Account account = accountService.getAndAuthAccount(serverId);
         if (null == account) {
-            throw new BizException("SYS80001");
+            throw new BizException("IOT10001");
         }
 
         IotHeader header = new IotHeader();

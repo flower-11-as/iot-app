@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Description:
  * Created by as on 2018/4/22.
@@ -52,6 +54,10 @@ public class DevTypeController extends BaseController {
     @ResponseBody
     public R syncDevTypes() {
         try {
+            List<String> serverIds = getManagerServerIds();
+            if (null == serverIds || serverIds.size() == 0) {
+                throw new BizException("SYS10003");
+            }
             devTypeService.syncDevTypes(getManagerServerIds(), getManagerId());
         } catch (BizException e) {
             log.error("同步IoT产品型号异常：", e);

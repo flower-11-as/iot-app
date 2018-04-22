@@ -43,7 +43,7 @@ var localColumns = [
             var g = '<a class="btn btn-info btn-sm ' + s_resetAuth_h + '" href="#" title="刷新授权"  mce_href="#" onclick="resetAuth(\''
                 + row.id
                 + '\')"><i class="fa fa-user-plus"></i></a> ';
-            return d + f + g;
+            return f + g + d;
         }
     }];
 var localPageName = "账户";
