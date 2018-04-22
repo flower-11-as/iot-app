@@ -3,19 +3,16 @@ package com.scrawl.iot.web;
 import com.alibaba.fastjson.JSON;
 import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.request.IotLoginRequest;
-import com.scrawl.iot.paper.http.response.IotDevTypeResponse;
-import com.scrawl.iot.paper.http.response.IotLoginResponse;
-import com.scrawl.iot.paper.http.response.IotServerResponse;
-import com.scrawl.iot.paper.http.response.IotServiceModeResponse;
+import com.scrawl.iot.paper.http.response.*;
 import com.scrawl.iot.paper.http.service.IotHttpService;
+import com.scrawl.iot.web.service.DevTypeService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Description:
@@ -26,6 +23,9 @@ import java.util.Map;
 public class HttpClientTest {
     @Autowired
     private IotHttpService iotHttpService;
+
+    @Autowired
+    private DevTypeService devTypeService;
 
     @Test
     public void loginAuthTest() {
@@ -67,5 +67,19 @@ public class HttpClientTest {
         params.put("serverID", "jiayingdev01");
         IotDevTypeResponse response = iotHttpService.getDevTypes(params, header);
         System.out.println(JSON.toJSONString(response));
+    }
+
+    @Test
+    public void getDevType() {
+//        IotHeader header = new IotHeader();
+//        header.setServerId("jiayingdev01");
+//        header.setAccessToken("10478d612196daf63365956cc643765b");
+//
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("devType", "MyLamp");
+//        IotDevTypeInfoResponse response = iotHttpService.getDevType(params, header);
+//        System.out.println(JSON.toJSONString(response));
+        List<String> list = Arrays.asList("jiayingdev01");
+        devTypeService.syncDevTypes(list, 1);
     }
 }

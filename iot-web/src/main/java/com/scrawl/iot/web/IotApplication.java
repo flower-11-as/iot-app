@@ -3,6 +3,7 @@ package com.scrawl.iot.web;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * Description:
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @MapperScan(basePackages = "com.scrawl.iot.web.dao.mapper")
+@EnableAspectJAutoProxy(proxyTargetClass=true, exposeProxy=true)
 public class IotApplication {
     public static void main(String[] args) {
         SpringApplication.run(IotApplication.class);

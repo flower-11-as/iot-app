@@ -18,6 +18,8 @@ public interface AccountService {
 
     int count(AccountListReqVO reqVO);
 
+    boolean iotLogin(Account account);
+
     boolean save(Account account);
 
     boolean remove(Integer id);
@@ -31,4 +33,6 @@ public interface AccountService {
     Account getAvailableAccount();
 
     List<ManagerAccountRespVO> getManagerAccountList(Integer managerId);
+
+    Account getAndAuthAccount(String serverId);
 }

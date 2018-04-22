@@ -41,6 +41,9 @@
     <!--service mode-->
     <entry key="SYS70001">同步IoT业务模式错误</entry>
 
+    <!--dev type-->
+    <entry key="SYS80001">同步IoT产品型号错误</entry>
+
     <!--iot-->
     <entry key="IOT10001">未获取到有效授权IoT账户</entry>
 

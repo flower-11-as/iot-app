@@ -4,10 +4,7 @@ import com.scrawl.iot.paper.http.client.IotHttpClient;
 import com.scrawl.iot.paper.http.constans.IotConstant;
 import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.request.IotLoginRequest;
-import com.scrawl.iot.paper.http.response.IotDevTypeResponse;
-import com.scrawl.iot.paper.http.response.IotLoginResponse;
-import com.scrawl.iot.paper.http.response.IotServerResponse;
-import com.scrawl.iot.paper.http.response.IotServiceModeResponse;
+import com.scrawl.iot.paper.http.response.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +41,12 @@ public class IotHttpService {
     public IotDevTypeResponse getDevTypes(Map<String, Object> urlParams, IotHeader header) {
         return iotHttpClient.doGet(withUrlParams(IotConstant.DEV_TYPES, urlParams), header,
                 null, IotDevTypeResponse.class);
+    }
+
+    // IoT获取产品型号信息
+    public IotDevTypeInfoResponse getDevType(Map<String, Object> urlParams, IotHeader header) {
+        return iotHttpClient.doGet(withUrlParams(IotConstant.DEV_TYPE, urlParams), header,
+                null, IotDevTypeInfoResponse.class);
     }
 
     private String withUrlParams(String url, Map<String, Object> urlParams) {

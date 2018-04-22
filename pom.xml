@@ -70,6 +70,7 @@
         <ehcache.version>1.3.2</ehcache.version>
         <httpclient.version>4.5.3</httpclient.version>
         <beanutils.version>1.9.3</beanutils.version>
+        <aspectj.version>1.8.0</aspectj.version>
     </properties>
 
     <dependencies>
@@ -110,6 +111,20 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${common.lang3.version}</version>
+        </dependency>
+
+        <!--aspectj-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+
+        <!--aspectj-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
     </dependencies>
 

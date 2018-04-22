@@ -15,6 +15,7 @@ import com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -50,13 +51,31 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean save(Account account) {
-        IotLoginResponse response = iotLogin(account.getServerId(), account.getPassword());
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public boolean iotLogin(Account account) {
+        IotLoginRequest request = new IotLoginRequest();
+        request.setServerId(account.getServerId());
+        request.setPassword(account.getPassword());
+        IotLoginResponse response;
+        try {
+            response = iotHttpService.loginAuth(request);
+        } catch (IotHttpException | PaperHttpException e) {
+            // 置位失败
+            account.setStatus(AccountStatusEnum.FAIL.getCode());
+            accountMapper.updateByPrimaryKeySelective(account);
+
+            throw new BizException("SYS50001", e.getMessage());
+        }
 
         account.setToken(response.getAccessToken());
         account.setLastLoginTime(new Date());
         account.setStatus(AccountStatusEnum.SUCCESS.getCode());
-        return accountMapper.insertSelective(account) > 0;
+        return accountMapper.updateByPrimaryKeySelective(account) > 0;
+    }
+
+    @Override
+    public boolean save(Account account) {
+        return iotLogin(account);
     }
 
     @Override
@@ -74,40 +93,21 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public boolean resetPwd(Account account) {
         Account oldAccount = get(account.getId());
+        account.setServerId(oldAccount.getServerId());
 
-        IotLoginResponse response = iotLogin(oldAccount.getServerId(), account.getPassword());
-        account.setToken(response.getAccessToken());
-        account.setLastLoginTime(new Date());
-        account.setStatus(AccountStatusEnum.SUCCESS.getCode());
-        return accountMapper.updateByPrimaryKeySelective(account) > 0;
+        return iotLogin(account);
     }
 
     @Override
     public boolean resetAuth(Integer id, Integer managerId) {
         Account account = get(id);
+        account.setUpdateManager(managerId);
+        account.setUpdateTime(new Date());
 
-        IotLoginResponse response = iotLogin(account.getServerId(), account.getPassword());
-        account.setToken(response.getAccessToken());
-        account.setLastLoginTime(new Date());
-        account.setStatus(AccountStatusEnum.SUCCESS.getCode());
-        return accountMapper.updateByPrimaryKeySelective(account) > 0;
-    }
-
-    private IotLoginResponse iotLogin(String serverId, String password) {
-        IotLoginRequest request = new IotLoginRequest();
-        request.setServerId(serverId);
-        request.setPassword(password);
-        IotLoginResponse response;
-        try {
-            response = iotHttpService.loginAuth(request);
-        } catch (IotHttpException | PaperHttpException e) {
-            throw new BizException("SYS50001", e.getMessage());
-        }
-        return response;
+        return iotLogin(account);
     }
 
     @Override
-    @Transactional
     public Account getAvailableAccount() {
         Account params = new Account();
         params.setStatus(AccountStatusEnum.SUCCESS.getCode());
@@ -116,16 +116,11 @@ public class AccountServiceImpl implements AccountService {
         for (Account account : accountList) {
             // 尝试登陆一次
             try {
-                IotLoginResponse response = iotLogin(account.getServerId(), account.getPassword());
-
-                account.setToken(response.getAccessToken());
-                account.setLastLoginTime(new Date());
-                account.setStatus(AccountStatusEnum.SUCCESS.getCode());
-                accountMapper.updateByPrimaryKeySelective(account);
-
+                iotLogin(account);
                 rs = account;
                 break;
-            } catch (IotHttpException | PaperHttpException e) {
+            } catch (Exception e) {
+                log.error("获取有效账户异常：", e);
                 // ignore
             }
         }
@@ -136,5 +131,12 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<ManagerAccountRespVO> getManagerAccountList(Integer managerId) {
         return accountMapper.selectManagerAccountList(managerId);
+    }
+
+    @Override
+    public Account getAndAuthAccount(String serverId) {
+        Account account = accountMapper.selectByServerId(serverId);
+
+        return iotLogin(account) ? account : null;
     }
 }

@@ -20,6 +20,7 @@ public class IotConstant {
 	public static String SERVER = "/service-config/get-iotservers";
 	public static String SERVICE_MODE = "/service-config/get-iotservicemode";
 	public static String DEV_TYPES = "/devices/list-devtypes";
+	public static String DEV_TYPE = "/dev-manage/query-devType";
 
 	static{
 		resultCodeExplain=new HashMap<>();

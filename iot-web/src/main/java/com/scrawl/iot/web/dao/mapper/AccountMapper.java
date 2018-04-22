@@ -26,4 +26,6 @@ public interface AccountMapper {
     List<Account> selectListBySelective(Account record);
 
     List<ManagerAccountRespVO> selectManagerAccountList(Integer managerId);
+
+    Account selectByServerId(String serverId);
 }
