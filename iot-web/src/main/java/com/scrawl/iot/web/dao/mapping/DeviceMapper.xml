@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scrawl.iot.web.dao.mapper.DeviceMapper">
+  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.Device">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="server_id" jdbcType="VARCHAR" property="serverId" />
+    <result column="dev_type" jdbcType="VARCHAR" property="devType" />
+    <result column="dev_serial" jdbcType="VARCHAR" property="devSerial" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="connect_point_id" jdbcType="VARCHAR" property="connectPointId" />
+    <result column="service_mode" jdbcType="VARCHAR" property="serviceMode" />
+    <result column="is_published" jdbcType="INTEGER" property="isPublished" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="end_user_info" jdbcType="VARCHAR" property="endUserInfo" />
+    <result column="end_user_name" jdbcType="VARCHAR" property="endUserName" />
+    <result column="industry_name" jdbcType="VARCHAR" property="industryName" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="display_icon_id" jdbcType="INTEGER" property="displayIconId" />
+    <result column="client_iD" jdbcType="VARCHAR" property="clientId" />
+    <result column="protocol_type" jdbcType="VARCHAR" property="protocolType" />
+    <result column="has_sim_Card" jdbcType="VARCHAR" property="hasSimCard" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, server_id, dev_type, dev_serial, `name`, connect_point_id, service_mode, is_published, 
+    `location`, longitude, latitude, end_user_info, end_user_name, industry_name, category_name, 
+    display_icon_id, client_iD, protocol_type, has_sim_Card, del_flag, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_iot_device
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_iot_device
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.Device">
+    insert into t_iot_device (id, server_id, dev_type, 
+      dev_serial, `name`, connect_point_id, 
+      service_mode, is_published, `location`, 
+      longitude, latitude, end_user_info, 
+      end_user_name, industry_name, category_name, 
+      display_icon_id, client_iD, protocol_type, 
+      has_sim_Card, del_flag, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{serverId,jdbcType=VARCHAR}, #{devType,jdbcType=VARCHAR}, 
+      #{devSerial,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{connectPointId,jdbcType=VARCHAR}, 
+      #{serviceMode,jdbcType=VARCHAR}, #{isPublished,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
+      #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{endUserInfo,jdbcType=VARCHAR}, 
+      #{endUserName,jdbcType=VARCHAR}, #{industryName,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, 
+      #{displayIconId,jdbcType=INTEGER}, #{clientId,jdbcType=VARCHAR}, #{protocolType,jdbcType=VARCHAR}, 
+      #{hasSimCard,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.Device">
+    insert into t_iot_device
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="serverId != null">
+        server_id,
+      </if>
+      <if test="devType != null">
+        dev_type,
+      </if>
+      <if test="devSerial != null">
+        dev_serial,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="connectPointId != null">
+        connect_point_id,
+      </if>
+      <if test="serviceMode != null">
+        service_mode,
+      </if>
+      <if test="isPublished != null">
+        is_published,
+      </if>
+      <if test="location != null">
+        `location`,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="endUserInfo != null">
+        end_user_info,
+      </if>
+      <if test="endUserName != null">
+        end_user_name,
+      </if>
+      <if test="industryName != null">
+        industry_name,
+      </if>
+      <if test="categoryName != null">
+        category_name,
+      </if>
+      <if test="displayIconId != null">
+        display_icon_id,
+      </if>
+      <if test="clientId != null">
+        client_iD,
+      </if>
+      <if test="protocolType != null">
+        protocol_type,
+      </if>
+      <if test="hasSimCard != null">
+        has_sim_Card,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="serverId != null">
+        #{serverId,jdbcType=VARCHAR},
+      </if>
+      <if test="devType != null">
+        #{devType,jdbcType=VARCHAR},
+      </if>
+      <if test="devSerial != null">
+        #{devSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="connectPointId != null">
+        #{connectPointId,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceMode != null">
+        #{serviceMode,jdbcType=VARCHAR},
+      </if>
+      <if test="isPublished != null">
+        #{isPublished,jdbcType=INTEGER},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="endUserInfo != null">
+        #{endUserInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="endUserName != null">
+        #{endUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="industryName != null">
+        #{industryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null">
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="displayIconId != null">
+        #{displayIconId,jdbcType=INTEGER},
+      </if>
+      <if test="clientId != null">
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="protocolType != null">
+        #{protocolType,jdbcType=VARCHAR},
+      </if>
+      <if test="hasSimCard != null">
+        #{hasSimCard,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.Device">
+    update t_iot_device
+    <set>
+      <if test="serverId != null">
+        server_id = #{serverId,jdbcType=VARCHAR},
+      </if>
+      <if test="devType != null">
+        dev_type = #{devType,jdbcType=VARCHAR},
+      </if>
+      <if test="devSerial != null">
+        dev_serial = #{devSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="connectPointId != null">
+        connect_point_id = #{connectPointId,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceMode != null">
+        service_mode = #{serviceMode,jdbcType=VARCHAR},
+      </if>
+      <if test="isPublished != null">
+        is_published = #{isPublished,jdbcType=INTEGER},
+      </if>
+      <if test="location != null">
+        `location` = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="endUserInfo != null">
+        end_user_info = #{endUserInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="endUserName != null">
+        end_user_name = #{endUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="industryName != null">
+        industry_name = #{industryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null">
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="displayIconId != null">
+        display_icon_id = #{displayIconId,jdbcType=INTEGER},
+      </if>
+      <if test="clientId != null">
+        client_iD = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="protocolType != null">
+        protocol_type = #{protocolType,jdbcType=VARCHAR},
+      </if>
+      <if test="hasSimCard != null">
+        has_sim_Card = #{hasSimCard,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.Device">
+    update t_iot_device
+    set server_id = #{serverId,jdbcType=VARCHAR},
+      dev_type = #{devType,jdbcType=VARCHAR},
+      dev_serial = #{devSerial,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      connect_point_id = #{connectPointId,jdbcType=VARCHAR},
+      service_mode = #{serviceMode,jdbcType=VARCHAR},
+      is_published = #{isPublished,jdbcType=INTEGER},
+      `location` = #{location,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DOUBLE},
+      latitude = #{latitude,jdbcType=DOUBLE},
+      end_user_info = #{endUserInfo,jdbcType=VARCHAR},
+      end_user_name = #{endUserName,jdbcType=VARCHAR},
+      industry_name = #{industryName,jdbcType=VARCHAR},
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      display_icon_id = #{displayIconId,jdbcType=INTEGER},
+      client_iD = #{clientId,jdbcType=VARCHAR},
+      protocol_type = #{protocolType,jdbcType=VARCHAR},
+      has_sim_Card = #{hasSimCard,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
