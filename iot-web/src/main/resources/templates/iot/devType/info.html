@@ -43,8 +43,34 @@
                         </form>
                     </div>
                     <div class="ibox-content tab-pane fade" id="message_info">
-                        <div class="panel panel-default" th:each="messageInfo:${messageInfos}">
-                            <div class="panel-heading" th:text="${messageInfo.name}"></div>
+                        <div class="panel panel-default" th:each="messageInfo,infoStat:${messageInfos}">
+                            <div class="panel-heading">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">显示名称：</label>
+                                        <p class="col-sm-2 form-control-static" th:text="${messageInfo.message.messageName}">
+                                        </p>
+                                        <div class="col-sm-1"></div>
+
+                                        <label class="col-sm-2 control-label">消息ID：</label>
+
+                                        <p class="col-sm-3 form-control-static"
+                                             th:classappend="${messageInfo.message.messageId}?'':'hidden'"
+                                             th:text="${messageInfo.message.messageId}">
+                                        </p>
+
+                                        <div class="col-sm-3"
+                                             th:classappend="${messageInfo.message.messageId}?'hidden'">
+                                            <input class="form-control" type="text" placeholder="消息ID" th:id="'message_id_'+${infoStat.index}">
+                                        </div>
+                                        <button type="button" class="btn btn-success"
+                                                th:classappend="${messageInfo.message.messageId}?'hidden'"
+                                                th:onclick="'javascript:fillMessageId('+${messageInfo.message.id}+','+${infoStat.index}+')'">
+                                                保存
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                             <div class="panel-body">
                                 <table class="table">
                                     <tr>
@@ -62,8 +88,34 @@
                         </div>
                     </div>
                     <div class="ibox-content tab-pane fade"  id="command_info">
-                        <div class="panel panel-default" th:each="commandInfo, infoStat:${commandInfos}">
-                            <div class="panel-heading" th:text="${commandInfo.name}"></div>
+                        <div class="panel panel-default" th:each="commandInfo,infoStat:${commandInfos}">
+                            <div class="panel-heading">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">显示名称：</label>
+                                        <p class="col-sm-2 form-control-static" th:text="${commandInfo.command.commandName}">
+                                        </p>
+                                        <div class="col-sm-1"></div>
+
+                                        <label class="col-sm-2 control-label">指令ID：</label>
+
+                                        <p class="col-sm-3 form-control-static"
+                                           th:classappend="${commandInfo.command.commandId}?'':'hidden'"
+                                           th:text="${commandInfo.command.commandId}">
+                                        </p>
+
+                                        <div class="col-sm-3"
+                                             th:classappend="${commandInfo.command.commandId}?'hidden'">
+                                            <input class="form-control" type="text" placeholder="指令ID" th:id="'command_id_'+${infoStat.index}">
+                                        </div>
+                                        <button type="button" class="btn btn-success"
+                                                th:classappend="${commandInfo.command.commandId}?'hidden'"
+                                                th:onclick="'javascript:fillCommandId('+${commandInfo.command.id}+','+${infoStat.index}+')'">
+                                            保存
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                             <div class="panel-body">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li role="presentation" class="active">
@@ -127,5 +179,65 @@
     </div>
 </div>
 <div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = "/iot-manage/iot/devType";
+    function fillMessageId(id, index) {
+        var messageId = $('#message_id_'+index).val();
+        if (!messageId) {
+            layer.alert("请输入消息ID", {
+                title: '提示',
+                icon: 2
+            });
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            data: {"id": id, "messageId": messageId},
+            dateType: 'json',
+            url: prefix + '/setMessageId',
+            success: function (data) {
+                if (data.code === '0000') {
+                    layer.msg("设置消息ID成功");
+                    window.location.reload();
+                } else {
+                    layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
+                }
+            }
+        });
+    }
+
+    function fillCommandId(id, index) {
+        var commandId = $('#command_id_'+index).val();
+        if (!commandId) {
+            layer.alert("请输入指令ID", {
+                title: '提示',
+                icon: 2
+            });
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            data: {"id": id, "commandId": commandId},
+            dateType: 'json',
+            url: prefix + '/setCommandId',
+            success: function (data) {
+                if (data.code === '0000') {
+                    layer.msg("设置指令ID成功");
+                    window.location.reload();
+                } else {
+                    layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
+                }
+            }
+        });
+    }
+</script>
 </body>
 </html>

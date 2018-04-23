@@ -1,5 +1,6 @@
 package com.scrawl.iot.web.vo.iot.devType;
 
+import com.scrawl.iot.web.dao.entity.DevTypeCommand;
 import com.scrawl.iot.web.dao.entity.DevTypeCommandParam;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +14,8 @@ import java.util.List;
 @Setter
 @Getter
 public class DevTypeCommandInfoRespVO {
-    // 消息、指令名称
-    private String name;
+    // 设备指令
+    private DevTypeCommand command;
     private List<DevTypeCommandParam> requestList;
     private List<DevTypeCommandParam> responseList;
 }

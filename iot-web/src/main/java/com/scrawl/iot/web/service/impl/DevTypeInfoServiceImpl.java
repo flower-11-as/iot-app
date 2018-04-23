@@ -43,7 +43,7 @@ public class DevTypeInfoServiceImpl implements DevTypeInfoService {
         List<DevTypeMessage> messages = devTypeMessageMapper.selectByTypeId(devTypeId);
         messages.forEach(message -> {
             DevTypeMessageInfoRespVO respVO = new DevTypeMessageInfoRespVO();
-            respVO.setName(message.getMessageName());
+            respVO.setMessage(message);
             respVO.setMessageList(devTypeMessageParamMapper.selectByMessageId(message.getId()));
 
             rs.add(respVO);
@@ -59,7 +59,7 @@ public class DevTypeInfoServiceImpl implements DevTypeInfoService {
         List<DevTypeCommand> commands = devTypeCommandMapper.selectByTypeId(devTypeId);
         commands.forEach(command -> {
             DevTypeCommandInfoRespVO respVO = new DevTypeCommandInfoRespVO();
-            respVO.setName(command.getCommandName());
+            respVO.setCommand(command);
             respVO.setRequestList(devTypeCommandParamMapper.selectByCommandIdAndType(command.getId(),
                     DevTypeCommandTypeEnum.COMMAND_REQUEST.getType()));
             respVO.setResponseList(devTypeCommandParamMapper.selectByCommandIdAndType(command.getId(),
@@ -69,5 +69,15 @@ public class DevTypeInfoServiceImpl implements DevTypeInfoService {
         });
 
         return rs;
+    }
+
+    @Override
+    public boolean updateMessage(DevTypeMessage devTypeMessage) {
+        return devTypeMessageMapper.updateByPrimaryKeySelective(devTypeMessage) > 0;
+    }
+
+    @Override
+    public boolean updateCommand(DevTypeCommand devTypeCommand) {
+        return devTypeCommandMapper.updateByPrimaryKeySelective(devTypeCommand) > 0;
     }
 }

@@ -1,7 +1,8 @@
 package com.scrawl.iot.web.controller;
 
 import com.scrawl.iot.web.dao.entity.DevType;
-import com.scrawl.iot.web.dao.mapper.DevTypeMessageMapper;
+import com.scrawl.iot.web.dao.entity.DevTypeCommand;
+import com.scrawl.iot.web.dao.entity.DevTypeMessage;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.DevTypeInfoService;
 import com.scrawl.iot.web.service.DevTypeService;
@@ -83,5 +84,29 @@ public class DevTypeController extends BaseController {
         model.addAttribute("commandInfos", devTypeInfoService.getDevTypeCommands(id));
 
         return prefix + "/info";
+    }
+
+    @PostMapping("/setMessageId")
+    @ResponseBody
+    public R setMessageId(DevTypeMessage devTypeMessage) {
+        try {
+            devTypeInfoService.updateMessage(devTypeMessage);
+        } catch (Exception e) {
+            log.error("设置设备消息ID异常：", e);
+            throw new BizException("SYS80002");
+        }
+        return R.ok();
+    }
+
+    @PostMapping("/setCommandId")
+    @ResponseBody
+    public R setCommandId(DevTypeCommand devTypeCommand) {
+        try {
+            devTypeInfoService.updateCommand(devTypeCommand);
+        } catch (Exception e) {
+            log.error("设置设备指令ID异常：", e);
+            throw new BizException("SYS80003");
+        }
+        return R.ok();
     }
 }
