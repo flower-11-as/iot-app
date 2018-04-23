@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scrawl.iot.web.dao.mapper.DevTypeCommandMapper">
+  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.DevTypeCommand">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="dev_type_id" jdbcType="INTEGER" property="devTypeId" />
+    <result column="command_id" jdbcType="VARCHAR" property="commandId" />
+    <result column="command_name" jdbcType="VARCHAR" property="commandName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, dev_type_id, command_id, command_name, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_iot_dev_type_command
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_iot_dev_type_command
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.DevTypeCommand">
+    insert into t_iot_dev_type_command (id, dev_type_id, command_id, 
+      command_name, create_time)
+    values (#{id,jdbcType=INTEGER}, #{devTypeId,jdbcType=INTEGER}, #{commandId,jdbcType=VARCHAR}, 
+      #{commandName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DevTypeCommand">
+    insert into t_iot_dev_type_command
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="devTypeId != null">
+        dev_type_id,
+      </if>
+      <if test="commandId != null">
+        command_id,
+      </if>
+      <if test="commandName != null">
+        command_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="devTypeId != null">
+        #{devTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="commandId != null">
+        #{commandId,jdbcType=VARCHAR},
+      </if>
+      <if test="commandName != null">
+        #{commandName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.DevTypeCommand">
+    update t_iot_dev_type_command
+    <set>
+      <if test="devTypeId != null">
+        dev_type_id = #{devTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="commandId != null">
+        command_id = #{commandId,jdbcType=VARCHAR},
+      </if>
+      <if test="commandName != null">
+        command_name = #{commandName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.DevTypeCommand">
+    update t_iot_dev_type_command
+    set dev_type_id = #{devTypeId,jdbcType=INTEGER},
+      command_id = #{commandId,jdbcType=VARCHAR},
+      command_name = #{commandName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByTypeIdAndName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_iot_dev_type_command
+    where dev_type_id = #{typeId} and command_name = #{name}
+  </select>
+  <select id="selectByTypeId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_iot_dev_type_command
+    where dev_type_id = #{typeId}
+  </select>
+</mapper>

@@ -1,6 +1,7 @@
 package com.scrawl.iot.web.controller;
 
 import com.scrawl.iot.web.dao.entity.DevType;
+import com.scrawl.iot.web.dao.mapper.DevTypeMessageMapper;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.DevTypeInfoService;
 import com.scrawl.iot.web.service.DevTypeService;
@@ -58,7 +59,7 @@ public class DevTypeController extends BaseController {
             if (null == serverIds || serverIds.size() == 0) {
                 throw new BizException("SYS10003");
             }
-            devTypeService.syncDevTypes(getManagerServerIds(), getManagerId());
+            devTypeService.syncDevTypes(getManagerServerIds());
         } catch (BizException e) {
             log.error("同步IoT产品型号异常：", e);
             throw e;

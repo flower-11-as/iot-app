@@ -1,6 +1,6 @@
 package com.scrawl.iot.web.vo.iot.devType;
 
-import com.scrawl.iot.web.dao.entity.DevTypeInfo;
+import com.scrawl.iot.web.dao.entity.DevTypeMessageParam;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,5 +15,5 @@ import java.util.List;
 public class DevTypeMessageInfoRespVO {
     // 消息、指令名称
     private String name;
-    private List<DevTypeInfo> messageList;
+    private List<DevTypeMessageParam> messageList;
 }

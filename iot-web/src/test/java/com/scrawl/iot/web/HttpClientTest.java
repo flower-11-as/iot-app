@@ -80,7 +80,7 @@ public class HttpClientTest {
 //        IotDevTypeInfoResponse response = iotHttpService.getDevType(params, header);
 //        System.out.println(JSON.toJSONString(response));
         List<String> list = Arrays.asList("jiayingdev01");
-        devTypeService.syncDevTypes(list, 1);
+        devTypeService.syncDevTypes(list);
     }
 
     @Test

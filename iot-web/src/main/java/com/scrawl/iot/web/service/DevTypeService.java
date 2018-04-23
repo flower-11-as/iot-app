@@ -16,11 +16,11 @@ public interface DevTypeService {
 
     int count(DevTypeListReqVO reqVO);
 
-    void syncDevTypes(List<String> serverIds, Integer managerId);
+    void syncDevTypes(List<String> serverIds);
 
-    void syncDevType(String d, Account account, Integer managerId);
+    void syncDevType(String d, Account account);
 
-    void syncDevTypeInfo(DevType devType, Account account, Integer managerId);
+    void syncDevTypeInfo(DevType devType, Account account);
 
     DevType get(Integer id);
 }

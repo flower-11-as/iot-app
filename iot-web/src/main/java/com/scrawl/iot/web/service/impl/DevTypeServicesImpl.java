@@ -4,11 +4,9 @@ import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.response.IotDevTypeInfoResponse;
 import com.scrawl.iot.paper.http.response.IotDevTypeResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
-import com.scrawl.iot.web.dao.entity.Account;
-import com.scrawl.iot.web.dao.entity.DevType;
-import com.scrawl.iot.web.dao.entity.DevTypeInfo;
-import com.scrawl.iot.web.dao.mapper.DevTypeInfoMapper;
-import com.scrawl.iot.web.dao.mapper.DevTypeMapper;
+import com.scrawl.iot.web.dao.entity.*;
+import com.scrawl.iot.web.dao.mapper.*;
+import com.scrawl.iot.web.enums.DevTypeCommandTypeEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
 import com.scrawl.iot.web.service.DevTypeService;
@@ -24,6 +22,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -43,7 +42,16 @@ public class DevTypeServicesImpl implements DevTypeService {
     private IotHttpService iotHttpService;
 
     @Autowired
-    private DevTypeInfoMapper insertSelective;
+    private DevTypeMessageMapper devTypeMessageMapper;
+
+    @Autowired
+    private DevTypeMessageParamMapper devTypeMessageParamMapper;
+
+    @Autowired
+    private DevTypeCommandMapper devTypeCommandMapper;
+
+    @Autowired
+    private DevTypeCommandParamMapper devTypeCommandParamMapper;
 
     @Override
     public List<DevType> list(DevTypeListReqVO reqVO) {
@@ -56,16 +64,16 @@ public class DevTypeServicesImpl implements DevTypeService {
     }
 
     @Override
-    public void syncDevTypes(List<String> serverIds, Integer managerId) {
+    public void syncDevTypes(List<String> serverIds) {
         if (null == serverIds) {
             return;
         }
 
-        serverIds.forEach(serverId -> syncDevTypesByServerId(serverId, managerId));
+        serverIds.forEach(serverId -> syncDevTypesByServerId(serverId));
     }
 
     // 根据账户同步产品型号
-    private void syncDevTypesByServerId(String serverId, Integer managerId) {
+    private void syncDevTypesByServerId(String serverId) {
         /*
          * 1、获取所有产品型号
          * 2、同步该账户下所有产品型号（加、删）
@@ -84,7 +92,7 @@ public class DevTypeServicesImpl implements DevTypeService {
         params.put("serverID", "account.getServerId()");
         IotDevTypeResponse response = iotHttpService.getDevTypes(params, header);
         response.getDevTypes().forEach(d -> {
-            getSelfProxy().syncDevType(d, account, managerId);
+            getSelfProxy().syncDevType(d, account);
         });
     }
 
@@ -94,7 +102,7 @@ public class DevTypeServicesImpl implements DevTypeService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void syncDevType(String d, Account account, Integer managerId) {
+    public void syncDevType(String d, Account account) {
         // 判断是否已经存在
         DevType record = new DevType();
         record.setServerId(account.getServerId());
@@ -102,27 +110,26 @@ public class DevTypeServicesImpl implements DevTypeService {
 
         // 产品型号
         List<DevType> devTypes = devTypeMapper.selectBySelective(record);
+        DevType devType;
         if (null != devTypes && devTypes.size() > 0) {
-            DevType devType = devTypes.get(0);
+            devType = devTypes.get(0);
             devType.setDelFlag((byte) 0);
             devTypeMapper.updateByPrimaryKey(devType);
-
-            // TODO:暂时不考虑这种情况
         } else {
-            DevType devType = new DevType();
+            devType = new DevType();
             devType.setServerId(account.getServerId());
             devType.setDevType(d);
             devType.setDelFlag((byte) 0);
             devType.setCreateTime(new Date());
             devTypeMapper.insertSelective(devType);
-
-            syncDevTypeInfo(devType, account, managerId);
         }
+
+        syncDevTypeInfo(devType, account);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void syncDevTypeInfo(DevType devType, Account account, Integer managerId) {
+    public void syncDevTypeInfo(DevType devType, Account account) {
         IotHeader header = new IotHeader();
         header.setServerId(account.getServerId());
         header.setAccessToken(account.getToken());
@@ -130,36 +137,78 @@ public class DevTypeServicesImpl implements DevTypeService {
         Map<String, Object> params = new HashMap<>();
         params.put("devType", devType.getDevType());
         IotDevTypeInfoResponse response = iotHttpService.getDevType(params, header);
-        response.getCommandList().forEach(iotCommandList -> {
-            iotCommandList.getRequestParamList().forEach(iotParam -> {
-                addDevTypeInfo(devType, (byte)2, iotCommandList.getCommandName(), iotParam, managerId);
-            });
 
-            iotCommandList.getResponseParamList().forEach(iotParam -> {
-                addDevTypeInfo(devType, (byte)3, iotCommandList.getCommandName(), iotParam, managerId);
-            });
+        // 设备消息
+        response.getMessageList().forEach(iotMessageList -> {
+            addDevTypeMessage(devType, iotMessageList.getMessageName(), iotMessageList.getParamList());
         });
 
-        response.getMessageList().forEach(iotMessageList -> {
-            iotMessageList.getParamList().forEach(iotParam -> {
-                addDevTypeInfo(devType, (byte)1, iotMessageList.getMessageName(), iotParam, managerId);
-            });
+        // 设备指令
+        response.getCommandList().forEach(iotCommandList -> {
+            addDevTypeCommand(devType, iotCommandList.getCommandName(), DevTypeCommandTypeEnum.COMMAND_REQUEST, iotCommandList.getRequestParamList());
+            addDevTypeCommand(devType, iotCommandList.getCommandName(), DevTypeCommandTypeEnum.COMMAND_RESPONSE, iotCommandList.getResponseParamList());
         });
     }
 
-    // 1、设备消息 2、指令参数 3、指令响应参数
-    private void addDevTypeInfo(DevType devType, byte type, String name, IotDevTypeInfoResponse.IotParam iotParam, Integer managerId) {
-        DevTypeInfo devTypeInfo = new DevTypeInfo();
-        devTypeInfo.setDevTypeId(devType.getId());
-        devTypeInfo.setName(name);
-        devTypeInfo.setType(type);
-        devTypeInfo.setParamName(iotParam.getParamName());
-        devTypeInfo.setDataType(iotParam.getDataType());
-        devTypeInfo.setPos(iotParam.getPos());
-        devTypeInfo.setCreateManager(managerId);
-        devTypeInfo.setCreateTime(new Date());
+    private void addDevTypeMessage(DevType devType, String messageName, List<IotDevTypeInfoResponse.IotParam> paramList) {
+        DevTypeMessage devTypeMessage = devTypeMessageMapper.selectByTypeIdAndName(devType.getId(), messageName);
 
-        insertSelective.insertSelective(devTypeInfo);
+        // 不存在该设备消息，添加
+        if (null == devTypeMessage) {
+            devTypeMessage = new DevTypeMessage();
+            devTypeMessage.setDevTypeId(devType.getId());
+            devTypeMessage.setMessageName(messageName);
+            devTypeMessage.setCreateTime(new Date());
+
+            devTypeMessageMapper.insertSelective(devTypeMessage);
+        }
+
+        Integer messageId = devTypeMessage.getId();
+
+        paramList.forEach(param -> {
+            DevTypeMessageParam messageParam = devTypeMessageParamMapper.selectByMessageIdAndName(messageId, param.getParamName());
+            if (null == messageParam) {
+                messageParam = new DevTypeMessageParam();
+                messageParam.setMessageId(messageId);
+                messageParam.setParamName(param.getParamName());
+                messageParam.setDataType(param.getDataType());
+                messageParam.setPos(param.getPos());
+                messageParam.setCreateTime(new Date());
+
+                devTypeMessageParamMapper.insertSelective(messageParam);
+            }
+        });
+    }
+
+    private void addDevTypeCommand(DevType devType, String commandName, DevTypeCommandTypeEnum typeEnum, List<IotDevTypeInfoResponse.IotParam> paramList) {
+        DevTypeCommand devTypeCommand = devTypeCommandMapper.selectByTypeIdAndName(devType.getId(), commandName);
+
+        // 不存在该设备消息，添加
+        if (null == devTypeCommand) {
+            devTypeCommand = new DevTypeCommand();
+            devTypeCommand.setDevTypeId(devType.getId());
+            devTypeCommand.setCommandName(commandName);
+            devTypeCommand.setCreateTime(new Date());
+
+            devTypeCommandMapper.insertSelective(devTypeCommand);
+        }
+
+        Integer commandId = devTypeCommand.getId();
+
+        paramList.forEach(param -> {
+            DevTypeCommandParam commandParam = devTypeCommandParamMapper.selectByCommandIdAndName(commandId, param.getParamName());
+            if (null == commandParam) {
+                commandParam = new DevTypeCommandParam();
+                commandParam.setCommandId(commandId);
+                commandParam.setParamName(param.getParamName());
+                commandParam.setParamType(typeEnum.getType());
+                commandParam.setDataType(param.getDataType());
+                commandParam.setPos(param.getPos());
+                commandParam.setCreateTime(new Date());
+
+                devTypeCommandParamMapper.insertSelective(commandParam);
+            }
+        });
     }
 
     @Override

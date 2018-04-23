@@ -2,14 +2,10 @@ package com.scrawl.iot.web.dao.entity;
 
 import java.util.Date;
 
-public class DevTypeInfo {
+public class DevTypeMessageParam {
     private Integer id;
 
-    private Integer devTypeId;
-
-    private String name;
-
-    private Byte type;
+    private Integer messageId;
 
     private String paramName;
 
@@ -19,8 +15,6 @@ public class DevTypeInfo {
 
     private Date createTime;
 
-    private Integer createManager;
-
     public Integer getId() {
         return id;
     }
@@ -29,28 +23,12 @@ public class DevTypeInfo {
         this.id = id;
     }
 
-    public Integer getDevTypeId() {
-        return devTypeId;
+    public Integer getMessageId() {
+        return messageId;
     }
 
-    public void setDevTypeId(Integer devTypeId) {
-        this.devTypeId = devTypeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Byte getType() {
-        return type;
-    }
-
-    public void setType(Byte type) {
-        this.type = type;
+    public void setMessageId(Integer messageId) {
+        this.messageId = messageId;
     }
 
     public String getParamName() {
@@ -83,13 +61,5 @@ public class DevTypeInfo {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public Integer getCreateManager() {
-        return createManager;
-    }
-
-    public void setCreateManager(Integer createManager) {
-        this.createManager = createManager;
     }
 }

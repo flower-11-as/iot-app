@@ -1,8 +1,12 @@
 package com.scrawl.iot.web.service.impl;
 
-import com.scrawl.iot.web.dao.entity.DevTypeInfo;
-import com.scrawl.iot.web.dao.mapper.DevTypeInfoMapper;
-import com.scrawl.iot.web.enums.DevTypeInfoTypeEnum;
+import com.scrawl.iot.web.dao.entity.DevTypeCommand;
+import com.scrawl.iot.web.dao.entity.DevTypeMessage;
+import com.scrawl.iot.web.dao.mapper.DevTypeCommandMapper;
+import com.scrawl.iot.web.dao.mapper.DevTypeCommandParamMapper;
+import com.scrawl.iot.web.dao.mapper.DevTypeMessageMapper;
+import com.scrawl.iot.web.dao.mapper.DevTypeMessageParamMapper;
+import com.scrawl.iot.web.enums.DevTypeCommandTypeEnum;
 import com.scrawl.iot.web.service.DevTypeInfoService;
 import com.scrawl.iot.web.vo.iot.devType.DevTypeCommandInfoRespVO;
 import com.scrawl.iot.web.vo.iot.devType.DevTypeMessageInfoRespVO;
@@ -12,8 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -23,21 +25,26 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DevTypeInfoServiceImpl implements DevTypeInfoService {
     @Autowired
-    private DevTypeInfoMapper devTypeInfoMapper;
+    private DevTypeMessageMapper devTypeMessageMapper;
+
+    @Autowired
+    private DevTypeMessageParamMapper devTypeMessageParamMapper;
+
+    @Autowired
+    private DevTypeCommandMapper devTypeCommandMapper;
+
+    @Autowired
+    private DevTypeCommandParamMapper devTypeCommandParamMapper;
 
     @Override
     public List<DevTypeMessageInfoRespVO> getDevTypeMessages(Integer devTypeId) {
-        DevTypeInfo record = new DevTypeInfo();
-        record.setDevTypeId(devTypeId);
-        record.setType(DevTypeInfoTypeEnum.MESSAGE_REQUEST.getType());
-        List<DevTypeInfo> devTypeInfos = devTypeInfoMapper.selectBySelective(record);
-
-        Map<String, List<DevTypeInfo>> nameMap = devTypeInfos.stream().collect(Collectors.groupingBy(DevTypeInfo::getName));
         List<DevTypeMessageInfoRespVO> rs = new ArrayList<>();
-        nameMap.forEach((name, infos) -> {
+
+        List<DevTypeMessage> messages = devTypeMessageMapper.selectByTypeId(devTypeId);
+        messages.forEach(message -> {
             DevTypeMessageInfoRespVO respVO = new DevTypeMessageInfoRespVO();
-            respVO.setName(name);
-            respVO.setMessageList(infos);
+            respVO.setName(message.getMessageName());
+            respVO.setMessageList(devTypeMessageParamMapper.selectByMessageId(message.getId()));
 
             rs.add(respVO);
         });
@@ -47,26 +54,16 @@ public class DevTypeInfoServiceImpl implements DevTypeInfoService {
 
     @Override
     public List<DevTypeCommandInfoRespVO> getDevTypeCommands(Integer devTypeId) {
-        // 指令参数
-        DevTypeInfo record = new DevTypeInfo();
-        record.setDevTypeId(devTypeId);
-        record.setType(DevTypeInfoTypeEnum.COMMAND_REQUEST.getType());
-        List<DevTypeInfo> devTypeInfos = devTypeInfoMapper.selectBySelective(record);
-
-        // 指令响应参数
-        record.setType(DevTypeInfoTypeEnum.COMMAND_RESPONSE.getType());
-        devTypeInfos.addAll(devTypeInfoMapper.selectBySelective(record));
-
-        Map<String, List<DevTypeInfo>> nameMap = devTypeInfos.stream().collect(Collectors.groupingBy(DevTypeInfo::getName));
         List<DevTypeCommandInfoRespVO> rs = new ArrayList<>();
-        nameMap.forEach((name, infos) -> {
+
+        List<DevTypeCommand> commands = devTypeCommandMapper.selectByTypeId(devTypeId);
+        commands.forEach(command -> {
             DevTypeCommandInfoRespVO respVO = new DevTypeCommandInfoRespVO();
-            respVO.setName(name);
-
-            Map<Byte, List<DevTypeInfo>> typeMap = devTypeInfos.stream().collect(Collectors.groupingBy(DevTypeInfo::getType));
-
-            respVO.setRequestList(typeMap.get(DevTypeInfoTypeEnum.COMMAND_REQUEST.getType()));
-            respVO.setResponseList(typeMap.get(DevTypeInfoTypeEnum.COMMAND_RESPONSE.getType()));
+            respVO.setName(command.getCommandName());
+            respVO.setRequestList(devTypeCommandParamMapper.selectByCommandIdAndType(command.getId(),
+                    DevTypeCommandTypeEnum.COMMAND_REQUEST.getType()));
+            respVO.setResponseList(devTypeCommandParamMapper.selectByCommandIdAndType(command.getId(),
+                    DevTypeCommandTypeEnum.COMMAND_RESPONSE.getType()));
 
             rs.add(respVO);
         });
