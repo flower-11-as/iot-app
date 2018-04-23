@@ -41,9 +41,17 @@ public class Device {
 
     private String hasSimCard;
 
+    private String simNum;
+
     private Byte delFlag;
 
     private Date createTime;
+
+    private Integer createManager;
+
+    private Date updateTime;
+
+    private Integer updateManager;
 
     public Integer getId() {
         return id;
@@ -197,6 +205,14 @@ public class Device {
         this.hasSimCard = hasSimCard;
     }
 
+    public String getSimNum() {
+        return simNum;
+    }
+
+    public void setSimNum(String simNum) {
+        this.simNum = simNum;
+    }
+
     public Byte getDelFlag() {
         return delFlag;
     }
@@ -211,5 +227,29 @@ public class Device {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getCreateManager() {
+        return createManager;
+    }
+
+    public void setCreateManager(Integer createManager) {
+        this.createManager = createManager;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Integer getUpdateManager() {
+        return updateManager;
+    }
+
+    public void setUpdateManager(Integer updateManager) {
+        this.updateManager = updateManager;
     }
 }

@@ -21,13 +21,18 @@
     <result column="client_iD" jdbcType="VARCHAR" property="clientId" />
     <result column="protocol_type" jdbcType="VARCHAR" property="protocolType" />
     <result column="has_sim_Card" jdbcType="VARCHAR" property="hasSimCard" />
+    <result column="sim_num" jdbcType="VARCHAR" property="simNum" />
     <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_manager" jdbcType="INTEGER" property="createManager" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_manager" jdbcType="INTEGER" property="updateManager" />
   </resultMap>
   <sql id="Base_Column_List">
     id, server_id, dev_type, dev_serial, `name`, connect_point_id, service_mode, is_published, 
     `location`, longitude, latitude, end_user_info, end_user_name, industry_name, category_name, 
-    display_icon_id, client_iD, protocol_type, has_sim_Card, del_flag, create_time
+    display_icon_id, client_iD, protocol_type, has_sim_Card, sim_num, del_flag, create_time, 
+    create_manager, update_time, update_manager
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -46,16 +51,18 @@
       longitude, latitude, end_user_info, 
       end_user_name, industry_name, category_name, 
       display_icon_id, client_iD, protocol_type, 
-      has_sim_Card, del_flag, create_time
-      )
+      has_sim_Card, sim_num, del_flag, 
+      create_time, create_manager, update_time, 
+      update_manager)
     values (#{id,jdbcType=INTEGER}, #{serverId,jdbcType=VARCHAR}, #{devType,jdbcType=VARCHAR}, 
       #{devSerial,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{connectPointId,jdbcType=VARCHAR}, 
       #{serviceMode,jdbcType=VARCHAR}, #{isPublished,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
       #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{endUserInfo,jdbcType=VARCHAR}, 
       #{endUserName,jdbcType=VARCHAR}, #{industryName,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, 
       #{displayIconId,jdbcType=INTEGER}, #{clientId,jdbcType=VARCHAR}, #{protocolType,jdbcType=VARCHAR}, 
-      #{hasSimCard,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}
-      )
+      #{hasSimCard,jdbcType=VARCHAR}, #{simNum,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateManager,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.Device">
     insert into t_iot_device
@@ -117,11 +124,23 @@
       <if test="hasSimCard != null">
         has_sim_Card,
       </if>
+      <if test="simNum != null">
+        sim_num,
+      </if>
       <if test="delFlag != null">
         del_flag,
       </if>
       <if test="createTime != null">
         create_time,
+      </if>
+      <if test="createManager != null">
+        create_manager,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateManager != null">
+        update_manager,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -182,11 +201,23 @@
       <if test="hasSimCard != null">
         #{hasSimCard,jdbcType=VARCHAR},
       </if>
+      <if test="simNum != null">
+        #{simNum,jdbcType=VARCHAR},
+      </if>
       <if test="delFlag != null">
         #{delFlag,jdbcType=TINYINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createManager != null">
+        #{createManager,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManager != null">
+        #{updateManager,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -247,11 +278,23 @@
       <if test="hasSimCard != null">
         has_sim_Card = #{hasSimCard,jdbcType=VARCHAR},
       </if>
+      <if test="simNum != null">
+        sim_num = #{simNum,jdbcType=VARCHAR},
+      </if>
       <if test="delFlag != null">
         del_flag = #{delFlag,jdbcType=TINYINT},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createManager != null">
+        create_manager = #{createManager,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManager != null">
+        update_manager = #{updateManager,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -276,8 +319,12 @@
       client_iD = #{clientId,jdbcType=VARCHAR},
       protocol_type = #{protocolType,jdbcType=VARCHAR},
       has_sim_Card = #{hasSimCard,jdbcType=VARCHAR},
+      sim_num = #{simNum,jdbcType=VARCHAR},
       del_flag = #{delFlag,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_manager = #{createManager,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_manager = #{updateManager,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
