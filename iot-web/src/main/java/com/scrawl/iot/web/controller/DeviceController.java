@@ -96,9 +96,22 @@ public class DeviceController extends BaseController {
         return R.ok();
     }
 
-    @PostMapping("/syncDevice/{id}")
+    @PostMapping("/syncDevice")
     @ResponseBody
-    public R syncDevice(@PathVariable("id") Integer id) {
+    public R syncDevice(Integer id) {
+        try {
+            List<String> serverIds = getManagerServerIds();
+            if (null == serverIds || serverIds.size() == 0) {
+                throw new BizException("SYS10003");
+            }
+            deviceService.syncDevice(id, getManagerId());
+        } catch (BizException e) {
+            log.error("同步IoT设备异常：", e);
+            throw e;
+        } catch (Exception e) {
+            log.error("同步IoT设备异常：", e);
+            throw new BizException("SYS90001");
+        }
         return R.ok();
     }
 

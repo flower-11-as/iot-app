@@ -1,9 +1,12 @@
 package com.scrawl.iot.paper.http.response;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -12,7 +15,7 @@ import java.util.Date;
 @Setter
 @Getter
 public class IotDeviceResponse extends IotResponse {
-    private IotDeviceData deviceData;
+    private List<IotDeviceData> deviceData;
 
     private String devSerial;
     private String location;
@@ -27,8 +30,13 @@ public class IotDeviceResponse extends IotResponse {
     private String hasSimCard;
     private Date lastMessageTime;
     private String serviceMode;
+    private String protocolType;
+    private String simNum;
 
+    @Setter
+    @Getter
     public class IotDeviceData{
-
+        private String serviceId;
+        private Map<String, Object> serviceData;
     }
 }

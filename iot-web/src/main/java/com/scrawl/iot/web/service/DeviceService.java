@@ -21,7 +21,7 @@ public interface DeviceService {
 
     void syncDevices(List<String> serverIds, Integer managerId);
 
-    boolean syncDevice(Device device);
+    void syncDevice(Integer id, Integer managerId);
 
     boolean remove(Device device);
 

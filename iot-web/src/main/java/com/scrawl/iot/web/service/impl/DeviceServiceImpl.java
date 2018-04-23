@@ -2,6 +2,7 @@ package com.scrawl.iot.web.service.impl;
 
 import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.response.IotDeviceAllResponse;
+import com.scrawl.iot.paper.http.response.IotDeviceResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
 import com.scrawl.iot.web.dao.entity.*;
 import com.scrawl.iot.web.dao.mapper.*;
@@ -45,6 +46,9 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Autowired
     private DeviceBasicDetailMapper deviceBasicDetailMapper;
+
+    private final String SERVICE_ID_BATTERY = "Battery";
+    private final String SERVICE_ID_METER = "Meter";
 
     @Override
     public List<Device> list(DeviceListReqVO reqVO) {
@@ -199,10 +203,71 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public boolean syncDevice(Device device) {
-        // TODO:同步单个设备
+    @Transactional
+    public void syncDevice(Integer id, Integer ManagerId) {
+        Device device = deviceMapper.selectByPrimaryKey(id);
+        Account account = accountService.getAndAuthAccount(device.getServerId());
+        if (null == account) {
+            throw new BizException("IOT10001");
+        }
 
-        return false;
+        IotHeader header = new IotHeader();
+        header.setServerId(account.getServerId());
+        header.setAccessToken(account.getToken());
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("devSerial", device.getDevSerial());
+        IotDeviceResponse response = iotHttpService.getDevice(params, header);
+
+        device.setDevType(response.getDevType());
+        device.setDevSerial(response.getDevSerial());
+        device.setServiceMode(response.getServiceMode());
+        device.setName(response.getName());
+        device.setConnectPointId(response.getConnectPointId());
+        device.setIsPublished(response.getIsPublished());
+        device.setLocation(response.getLocation());
+        device.setLongitude(response.getLongitude());
+        device.setLatitude(response.getLatitude());
+        device.setEndUserInfo(response.getEndUserInfo());
+        device.setEndUserName(response.getEndUserName());
+        device.setHasSimCard(response.getHasSimCard());
+        device.setProtocolType(response.getProtocolType());
+        device.setSimNum(response.getSimNum());
+        device.setUpdateTime(new Date());
+        device.setUpdateManager(ManagerId);
+        deviceMapper.updateByPrimaryKeySelective(device);
+
+        // device sync落地
+        DeviceSync deviceSync = new DeviceSync();
+        deviceSync.setDeviceId(device.getId());
+        deviceSync.setType(DeviceSyncTypeEnum.MANAGER.getType());
+        deviceSync.setCreateTime(Optional.ofNullable(response.getLastMessageTime()).orElse(new Date()));
+        deviceSyncMapper.insertSelective(deviceSync);
+
+        response.getDeviceData().forEach(deviceData -> {
+            Map<String, Object> serviceData = deviceData.getServiceData();
+            if (null == serviceData) {
+                return;
+            }
+
+            if (deviceData.getServiceId().equals(SERVICE_ID_BATTERY)) {
+                addDeviceBasicDetail(device.getId(), deviceSync.getId(), "batteryLevel", serviceData.get("batteryLevel"));
+            } else if (deviceData.getServiceId().equals(SERVICE_ID_METER)) {
+                addDeviceBasicDetail(device.getId(), deviceSync.getId(), "signalStrength", serviceData.get("signalStrength"));
+            } else {
+                // 消息落地
+                DeviceMessage deviceMessage = new DeviceMessage();
+                deviceMessage.setDeviceId(device.getId());
+                deviceMessage.setSyncId(deviceSync.getId());
+                deviceMessage.setMessageId(deviceData.getServiceId());
+                deviceMessage.setCreateTime(new Date());
+                deviceMessageMapper.insertSelective(deviceMessage);
+
+                // 消息详情落地
+                deviceData.getServiceData().forEach((k, v) -> addDeviceMessageDetail(deviceMessage.getId(), k, v));
+            }
+        });
+
     }
 
     @Override

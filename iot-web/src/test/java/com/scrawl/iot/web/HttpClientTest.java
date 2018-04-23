@@ -94,4 +94,16 @@ public class HttpClientTest {
         IotDeviceAllResponse response = iotHttpService.getDevices(params, header);
         System.out.println(JSON.toJSONString(response));
     }
+
+    @Test
+    public void getDevice() {
+        IotHeader header = new IotHeader();
+        header.setServerId("jiayingdev01");
+        header.setAccessToken("43a7ba885a626980c51f3d6adb3475f6");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("devSerial", "863703036557655");
+        IotDeviceResponse response = iotHttpService.getDevice(params, header);
+        System.out.println(JSON.toJSONString(response));
+    }
 }
