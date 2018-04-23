@@ -47,6 +47,9 @@
     <entry key="SYS80002">设置设备消息ID错误</entry>
     <entry key="SYS80003">设置设备指令ID错误</entry>
 
+    <!--device-->
+    <entry key="SYS90001">同步IoT设备错误</entry>
+
     <!--iot-->
     <entry key="IOT10001">未获取到有效授权IoT账户</entry>
 

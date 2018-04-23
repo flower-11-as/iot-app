@@ -7,6 +7,8 @@ public class DeviceMessage {
 
     private Integer deviceId;
 
+    private String messageId;
+
     private Date createTime;
 
     public Integer getId() {
@@ -23,6 +25,14 @@ public class DeviceMessage {
 
     public void setDeviceId(Integer deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 
     public Date getCreateTime() {

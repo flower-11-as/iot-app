@@ -4,10 +4,11 @@
   <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.DeviceMessage">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="device_id" jdbcType="INTEGER" property="deviceId" />
+    <result column="message_id" jdbcType="VARCHAR" property="messageId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, device_id, create_time
+    id, device_id, message_id, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -20,12 +21,12 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.DeviceMessage">
-    insert into t_iot_device_message (id, device_id, create_time
-      )
-    values (#{id,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
-      )
+    insert into t_iot_device_message (id, device_id, message_id, 
+      create_time)
+    values (#{id,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER}, #{messageId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceMessage">
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceMessage" useGeneratedKeys="true" keyProperty="id">
     insert into t_iot_device_message
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -33,6 +34,9 @@
       </if>
       <if test="deviceId != null">
         device_id,
+      </if>
+      <if test="messageId != null">
+        message_id,
       </if>
       <if test="createTime != null">
         create_time,
@@ -45,6 +49,9 @@
       <if test="deviceId != null">
         #{deviceId,jdbcType=INTEGER},
       </if>
+      <if test="messageId != null">
+        #{messageId,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -56,6 +63,9 @@
       <if test="deviceId != null">
         device_id = #{deviceId,jdbcType=INTEGER},
       </if>
+      <if test="messageId != null">
+        message_id = #{messageId,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -65,6 +75,7 @@
   <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.DeviceMessage">
     update t_iot_device_message
     set device_id = #{deviceId,jdbcType=INTEGER},
+      message_id = #{messageId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

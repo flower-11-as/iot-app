@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -69,7 +68,7 @@ public class DevTypeServicesImpl implements DevTypeService {
             return;
         }
 
-        serverIds.forEach(serverId -> syncDevTypesByServerId(serverId));
+        serverIds.forEach(this::syncDevTypesByServerId);
     }
 
     // 根据账户同步产品型号
@@ -89,7 +88,7 @@ public class DevTypeServicesImpl implements DevTypeService {
         header.setAccessToken(account.getToken());
 
         Map<String, Object> params = new HashMap<>();
-        params.put("serverID", "account.getServerId()");
+        params.put("serverID", account.getServerId());
         IotDevTypeResponse response = iotHttpService.getDevTypes(params, header);
         response.getDevTypes().forEach(d -> {
             getSelfProxy().syncDevType(d, account);
@@ -140,17 +139,17 @@ public class DevTypeServicesImpl implements DevTypeService {
 
         // 设备消息
         response.getMessageList().forEach(iotMessageList -> {
-            addDevTypeMessage(devType, iotMessageList.getMessageName(), iotMessageList.getParamList());
+            syncDevTypeMessage(devType, iotMessageList.getMessageName(), iotMessageList.getParamList());
         });
 
         // 设备指令
         response.getCommandList().forEach(iotCommandList -> {
-            addDevTypeCommand(devType, iotCommandList.getCommandName(), DevTypeCommandTypeEnum.COMMAND_REQUEST, iotCommandList.getRequestParamList());
-            addDevTypeCommand(devType, iotCommandList.getCommandName(), DevTypeCommandTypeEnum.COMMAND_RESPONSE, iotCommandList.getResponseParamList());
+            syncDevTypeCommand(devType, iotCommandList.getCommandName(), DevTypeCommandTypeEnum.COMMAND_REQUEST, iotCommandList.getRequestParamList());
+            syncDevTypeCommand(devType, iotCommandList.getCommandName(), DevTypeCommandTypeEnum.COMMAND_RESPONSE, iotCommandList.getResponseParamList());
         });
     }
 
-    private void addDevTypeMessage(DevType devType, String messageName, List<IotDevTypeInfoResponse.IotParam> paramList) {
+    private void syncDevTypeMessage(DevType devType, String messageName, List<IotDevTypeInfoResponse.IotParam> paramList) {
         DevTypeMessage devTypeMessage = devTypeMessageMapper.selectByTypeIdAndName(devType.getId(), messageName);
 
         // 不存在该设备消息，添加
@@ -180,7 +179,7 @@ public class DevTypeServicesImpl implements DevTypeService {
         });
     }
 
-    private void addDevTypeCommand(DevType devType, String commandName, DevTypeCommandTypeEnum typeEnum, List<IotDevTypeInfoResponse.IotParam> paramList) {
+    private void syncDevTypeCommand(DevType devType, String commandName, DevTypeCommandTypeEnum typeEnum, List<IotDevTypeInfoResponse.IotParam> paramList) {
         DevTypeCommand devTypeCommand = devTypeCommandMapper.selectByTypeIdAndName(devType.getId(), commandName);
 
         // 不存在该设备消息，添加

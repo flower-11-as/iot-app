@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include::header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <div class="fixed-table-toolbar">
+                    <div class="columns pull-left">
+                        <button shiro:hasPermission="iot:device:syncDevices" type="button"
+                                class="btn btn-primary" onclick="syncDevices()">
+                            <i class="fa fa-plus hidden" aria-hidden="true"></i>同步IoT设备
+                        </button>
+                    </div>
+                    <div class="columns pull-right">
+                        <button class="btn btn-success" onclick="reLoad()">查询</button>
+                    </div>
+
+                    <div class="columns pull-right col-md-2 nopadding">
+                        <input id="name" type="text" class="form-control"
+                               placeholder="设备名">
+                    </div>
+                </div>
+
+                <table id="exampleTable" data-mobile-responsive="true">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <script type="text/javascript">
+        var s_add_h = 'hidden';
+        var s_view_h = 'hidden';
+        var s_edit_h = 'hidden';
+        var s_remove_h = 'hidden';
+        var s_syncDevice_h = 'hidden';
+    </script>
+</div>
+<div shiro:hasPermission="iot:device:add">
+    <script type="text/javascript">
+        s_add_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="iot:device:view">
+    <script type="text/javascript">
+        s_view_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="iot:device:edit">
+    <script type="text/javascript">
+        s_edit_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="iot:device:remove">
+    <script type="text/javascript">
+        s_remove_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="iot:device:syncDevice">
+    <script type="text/javascript">
+        s_syncDevice_h = '';
+    </script>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/iot-manage/js/appjs/iot/device/device.js"></script>
+</body>
+</html>
