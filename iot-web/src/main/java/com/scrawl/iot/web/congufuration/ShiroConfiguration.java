@@ -110,7 +110,8 @@ public class ShiroConfiguration {
             "/fonts/**",
             "/img/**",
             "/docs/**",
-            "/iotLogin"
+            "/iotLogin",
+            "/iot/callback/**"
     );
 
     /**

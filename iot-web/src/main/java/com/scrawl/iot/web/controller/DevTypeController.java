@@ -34,7 +34,7 @@ public class DevTypeController extends BaseController {
     private DevTypeInfoService devTypeInfoService;
 
     @GetMapping
-    public String server() {
+    public String devType() {
         return prefix + "/devType";
     }
 

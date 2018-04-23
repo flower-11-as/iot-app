@@ -6,7 +6,9 @@ import com.scrawl.iot.paper.http.request.IotLoginRequest;
 import com.scrawl.iot.paper.http.response.IotLoginResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
 import com.scrawl.iot.web.dao.entity.Account;
+import com.scrawl.iot.web.dao.entity.DevType;
 import com.scrawl.iot.web.dao.mapper.AccountMapper;
+import com.scrawl.iot.web.dao.mapper.DevTypeMapper;
 import com.scrawl.iot.web.enums.AccountStatusEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
@@ -34,6 +36,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private IotHttpService iotHttpService;
+
+    @Autowired
+    private DevTypeMapper devTypeMapper;
 
     @Override
     public List<Account> list(AccountListReqVO reqVO) {
@@ -80,7 +85,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean remove(Integer id) {
-        // TODO: 有业务数据的不能删除
+        Account account = get(id);
+
+        DevType devType = new DevType();
+        devType.setServerId(account.getServerId());
+        List<DevType> devTypes = devTypeMapper.selectBySelective(devType);
+        if (null != devTypes && devTypes.size() > 0) {
+            throw new BizException("SYS50002", "已绑定业务数据，不允许删除");
+        }
 
         return accountMapper.deleteByPrimaryKey(id) > 0;
     }

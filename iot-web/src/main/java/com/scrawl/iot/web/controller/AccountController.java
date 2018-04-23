@@ -70,6 +70,9 @@ public class AccountController extends BaseController {
     public R remove(Integer id) {
         try {
             accountService.remove(id);
+        } catch (BizException e) {
+            log.error("删除IoT账户异常：", e);
+            throw e;
         } catch (Exception e) {
             log.error("删除IoT账户异常：", e);
             throw new BizException("SYS50002");
