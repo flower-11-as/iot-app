@@ -49,6 +49,7 @@
 
     <!--device-->
     <entry key="SYS90001">同步IoT设备错误</entry>
+    <entry key="SYS90002">添加IoT设备错误</entry>
 
     <!--iot-->
     <entry key="IOT10001">未获取到有效授权IoT账户</entry>

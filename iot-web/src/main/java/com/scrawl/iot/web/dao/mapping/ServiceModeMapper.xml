@@ -114,4 +114,9 @@
   <delete id="deleteByServerId" parameterType="java.lang.String">
     delete from t_iot_service_mode where server_id= #{serverId}
   </delete>
+  <select id="selectByServerId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_iot_service_mode where server_id = #{serverId}
+  </select>
 </mapper>

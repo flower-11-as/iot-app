@@ -91,4 +91,9 @@ public class ServiceModeServiceImpl implements ServiceModeService {
             }
         }
     }
+
+    @Override
+    public List<ServiceMode> listByServerId(String serverId) {
+        return serviceModeMapper.selectByServerId(serverId);
+    }
 }

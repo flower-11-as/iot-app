@@ -23,6 +23,7 @@ public class IotConstant {
 	public static String DEV_TYPE = "/dev-manage/query-devType";
 	public static String DEVICE_ALL = "/devices/list-devices";
     public static String DEVICE = "/devices/query-device-allinfo";
+    public static String REG_DEVICE = "/devices/reg-device";
 
 	static{
 		resultCodeExplain=new HashMap<>();

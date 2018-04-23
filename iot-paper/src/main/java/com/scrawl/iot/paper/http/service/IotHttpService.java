@@ -4,6 +4,7 @@ import com.scrawl.iot.paper.http.client.IotHttpClient;
 import com.scrawl.iot.paper.http.constans.IotConstant;
 import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.request.IotLoginRequest;
+import com.scrawl.iot.paper.http.request.IotRegDeviceRequest;
 import com.scrawl.iot.paper.http.response.*;
 
 import java.util.HashMap;
@@ -59,6 +60,12 @@ public class IotHttpService {
     public IotDeviceResponse getDevice(Map<String, Object> urlParams, IotHeader header) {
         return iotHttpClient.doGet(withUrlParams(IotConstant.DEVICE, urlParams), header,
                 null, IotDeviceResponse.class);
+    }
+
+    // IoT注册设备信息
+    public IotResponse regDevice(IotHeader header, IotRegDeviceRequest request) {
+        return iotHttpClient.doPost(IotConstant.REG_DEVICE, header,
+                request, IotResponse.class);
     }
 
     private String withUrlParams(String url, Map<String, Object> urlParams) {

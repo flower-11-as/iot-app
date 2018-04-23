@@ -140,7 +140,7 @@ function add() {
         title: '增加' + localPageName,
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '350px'],
+        area: ['800px', '500px'],
         content: prefix + '/add'
     });
 }

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include::header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group">
+                            <label for="devSerial" class="col-sm-2 control-label"><em class="gg-star">*</em>序列号：</label>
+                            <div class="col-sm-4">
+                                <input id="devSerial" name="devSerial" class="form-control" type="text">
+                            </div>
+
+                            <label for="name" class="col-sm-2 control-label"><em class="gg-star">*</em>设备名称：</label>
+                            <div class="col-sm-4">
+                                <input id="name" name="name" class="form-control" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="devType" class="col-sm-2 control-label"><em class="gg-star">*</em>产品型号：</label>
+                            <div class="col-sm-4">
+                                <select data-placeholder="--选择产品型号--" name="devType" id="devType"
+                                        class="form-control chosen-select" tabindex="2" required>
+                                    <option value="">--选择产品型号--</option>
+                                    <option th:each="devType:${devTypes}" th:value="${devType.devType}" th:text="${devType.devType}"></option>
+                                </select>
+                            </div>
+
+                            <label for="location" class="col-sm-2 control-label">设备地址：</label>
+                            <div class="col-sm-4">
+                                <input id="location" name="location" class="form-control" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="connectPointId" class="col-sm-2 control-label"><em class="gg-star">*</em>设备连接点：</label>
+                            <div class="col-sm-4">
+                                <select data-placeholder="--选择设备连接点--" name="connectPointId" id="connectPointId" onchange="serverChange()"
+                                        class="form-control chosen-select" tabindex="2" required>
+                                    <option value="">--选择设备连接点--</option>
+                                    <option th:each="server:${servers}" th:value="${server.serverId}" th:text="${server.serverId}"></option>
+                                </select>
+                            </div>
+
+                            <label for="serviceMode" class="col-sm-2 control-label">服务模式：</label>
+                            <div class="col-sm-4">
+                                <select data-placeholder="--选择服务模式--" name="serviceMode" id="serviceMode"
+                                        class="form-control chosen-select" tabindex="2">
+                                    <option value="">--选择产品型号--</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endUserName" class="col-sm-2 control-label">户主：</label>
+                            <div class="col-sm-4">
+                                <input id="endUserName" name="endUserName" class="form-control" type="text">
+                            </div>
+
+                            <label for="endUserInfo" class="col-sm-2 control-label">户主号码：</label>
+                            <div class="col-sm-4">
+                                <input id="endUserInfo" name="endUserInfo" class="form-control" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="longitude" class="col-sm-2 control-label">经度：</label>
+                            <div class="col-sm-4">
+                                <input id="longitude" name="longitude" class="form-control" type="text">
+                            </div>
+
+                            <label for="latitude" class="col-sm-2 control-label">纬度：</label>
+                            <div class="col-sm-4">
+                                <input id="latitude" name="latitude" class="form-control" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/iot-manage/js/appjs/iot/device/add.js">
+</script>
+</body>
+</html>

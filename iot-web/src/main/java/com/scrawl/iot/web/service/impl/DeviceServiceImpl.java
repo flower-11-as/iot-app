@@ -1,14 +1,17 @@
 package com.scrawl.iot.web.service.impl;
 
 import com.scrawl.iot.paper.http.request.IotHeader;
+import com.scrawl.iot.paper.http.request.IotRegDeviceRequest;
 import com.scrawl.iot.paper.http.response.IotDeviceAllResponse;
 import com.scrawl.iot.paper.http.response.IotDeviceResponse;
+import com.scrawl.iot.paper.http.response.IotResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
 import com.scrawl.iot.web.dao.entity.*;
 import com.scrawl.iot.web.dao.mapper.*;
 import com.scrawl.iot.web.enums.DeviceSyncTypeEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
+import com.scrawl.iot.web.service.DevTypeService;
 import com.scrawl.iot.web.service.DeviceService;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +50,9 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DeviceBasicDetailMapper deviceBasicDetailMapper;
 
+    @Autowired
+    private DevTypeMapper devTypeMapper;
+
     private final String SERVICE_ID_BATTERY = "Battery";
     private final String SERVICE_ID_METER = "Meter";
 
@@ -61,10 +67,35 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public boolean save(Device device) {
+    public void save(Device device) {
         // TODO:调用iot接口
+        DevType devType = devTypeMapper.selectByDevType(device.getDevType());
 
-        return deviceMapper.insertSelective(device) > 0;
+        Account account = accountService.getAndAuthAccount(devType.getServerId());
+        if (null == account) {
+            throw new BizException("IOT10001");
+        }
+
+        IotHeader header = new IotHeader();
+        header.setServerId(account.getServerId());
+        header.setAccessToken(account.getToken());
+
+        IotRegDeviceRequest request = new IotRegDeviceRequest();
+        request.setDevSerial(device.getDevType());
+        request.setName(device.getName());
+        request.setDeviceType(device.getDevType());
+        request.setConnectPointId(device.getConnectPointId());
+        request.setServiceMode(device.getServiceMode());
+        request.setEndUserName(device.getEndUserName());
+        request.setEndUserInfo(device.getEndUserInfo());
+        request.setLocation(device.getLocation());
+        request.setLongitude(device.getLongitude());
+        request.setLatitude(device.getLatitude());
+
+        device.setServerId(account.getServerId());
+        iotHttpService.regDevice(header, request);
+
+        deviceMapper.insertSelective(device);
     }
 
     @Override

@@ -18,11 +18,12 @@
     <result column="industry_name" jdbcType="VARCHAR" property="industryName" />
     <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
     <result column="display_icon_id" jdbcType="INTEGER" property="displayIconId" />
-    <result column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="client_iD" jdbcType="VARCHAR" property="clientId" />
     <result column="protocol_type" jdbcType="VARCHAR" property="protocolType" />
-    <result column="has_sim_card" jdbcType="VARCHAR" property="hasSimCard" />
+    <result column="has_sim_Card" jdbcType="VARCHAR" property="hasSimCard" />
     <result column="sim_num" jdbcType="VARCHAR" property="simNum" />
     <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+    <result column="extend_type" jdbcType="VARCHAR" property="extendType" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_manager" jdbcType="INTEGER" property="createManager" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -31,8 +32,8 @@
   <sql id="Base_Column_List">
     id, server_id, dev_type, dev_serial, `name`, connect_point_id, service_mode, is_published, 
     `location`, longitude, latitude, end_user_info, end_user_name, industry_name, category_name, 
-    display_icon_id, client_id, protocol_type, has_sim_card, sim_num, del_flag, create_time, 
-    create_manager, update_time, update_manager
+    display_icon_id, client_iD, protocol_type, has_sim_Card, sim_num, del_flag, extend_type, 
+    create_time, create_manager, update_time, update_manager
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -50,10 +51,10 @@
       service_mode, is_published, `location`, 
       longitude, latitude, end_user_info, 
       end_user_name, industry_name, category_name, 
-      display_icon_id, client_id, protocol_type, 
-      has_sim_card, sim_num, del_flag, 
-      create_time, create_manager, update_time, 
-      update_manager)
+      display_icon_id, client_iD, protocol_type, 
+      has_sim_Card, sim_num, del_flag, 
+      extend_type, create_time, create_manager, 
+      update_time, update_manager)
     values (#{id,jdbcType=INTEGER}, #{serverId,jdbcType=VARCHAR}, #{devType,jdbcType=VARCHAR}, 
       #{devSerial,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{connectPointId,jdbcType=VARCHAR}, 
       #{serviceMode,jdbcType=VARCHAR}, #{isPublished,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
@@ -61,8 +62,8 @@
       #{endUserName,jdbcType=VARCHAR}, #{industryName,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, 
       #{displayIconId,jdbcType=INTEGER}, #{clientId,jdbcType=VARCHAR}, #{protocolType,jdbcType=VARCHAR}, 
       #{hasSimCard,jdbcType=VARCHAR}, #{simNum,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateManager,jdbcType=INTEGER})
+      #{extendType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateManager,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.Device" useGeneratedKeys="true" keyProperty="id">
     insert into t_iot_device
@@ -116,19 +117,22 @@
         display_icon_id,
       </if>
       <if test="clientId != null">
-        client_id,
+        client_iD,
       </if>
       <if test="protocolType != null">
         protocol_type,
       </if>
       <if test="hasSimCard != null">
-        has_sim_card,
+        has_sim_Card,
       </if>
       <if test="simNum != null">
         sim_num,
       </if>
       <if test="delFlag != null">
         del_flag,
+      </if>
+      <if test="extendType != null">
+        extend_type,
       </if>
       <if test="createTime != null">
         create_time,
@@ -207,6 +211,9 @@
       <if test="delFlag != null">
         #{delFlag,jdbcType=TINYINT},
       </if>
+      <if test="extendType != null">
+        #{extendType,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -270,19 +277,22 @@
         display_icon_id = #{displayIconId,jdbcType=INTEGER},
       </if>
       <if test="clientId != null">
-        client_id = #{clientId,jdbcType=VARCHAR},
+        client_iD = #{clientId,jdbcType=VARCHAR},
       </if>
       <if test="protocolType != null">
         protocol_type = #{protocolType,jdbcType=VARCHAR},
       </if>
       <if test="hasSimCard != null">
-        has_sim_card = #{hasSimCard,jdbcType=VARCHAR},
+        has_sim_Card = #{hasSimCard,jdbcType=VARCHAR},
       </if>
       <if test="simNum != null">
         sim_num = #{simNum,jdbcType=VARCHAR},
       </if>
       <if test="delFlag != null">
         del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+      <if test="extendType != null">
+        extend_type = #{extendType,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -316,11 +326,12 @@
       industry_name = #{industryName,jdbcType=VARCHAR},
       category_name = #{categoryName,jdbcType=VARCHAR},
       display_icon_id = #{displayIconId,jdbcType=INTEGER},
-      client_id = #{clientId,jdbcType=VARCHAR},
+      client_iD = #{clientId,jdbcType=VARCHAR},
       protocol_type = #{protocolType,jdbcType=VARCHAR},
-      has_sim_card = #{hasSimCard,jdbcType=VARCHAR},
+      has_sim_Card = #{hasSimCard,jdbcType=VARCHAR},
       sim_num = #{simNum,jdbcType=VARCHAR},
       del_flag = #{delFlag,jdbcType=TINYINT},
+      extend_type = #{extendType,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_manager = #{createManager,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -329,17 +340,18 @@
   </update>
   <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.iot.device.DeviceListReqVO" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from t_iot_device
     where 1=1
-    <include refid="select_page_where"/>
+    <include refid="select_page_where" />
+    order by create_time desc
     limit #{offset}, #{limit}
   </select>
   <select id="selectPageCount" parameterType="com.scrawl.iot.web.vo.iot.device.DeviceListReqVO" resultType="java.lang.Integer">
     select count(*)
     from t_iot_device
     where 1=1
-    <include refid="select_page_where"/>
+    <include refid="select_page_where" />
   </select>
   <sql id="select_page_where">
     <if test="serverId != null and serverId != ''">
@@ -354,16 +366,16 @@
     <if test="name != null and name != ''">
       and name = #{name}
     </if>
-    <if test="serverIds != null and serverIds.size() > 0">
+    <if test="serverIds != null and serverIds.size() &gt; 0">
       and server_id in
-      <foreach collection="serverIds" item="item" open="(" close=")" separator=",">
+      <foreach close=")" collection="serverIds" item="item" open="(" separator=",">
         #{item}
       </foreach>
     </if>
   </sql>
   <select id="selectByDevSerial" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from t_iot_device
     where dev_serial = #{devSerial}
   </select>

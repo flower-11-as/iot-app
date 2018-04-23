@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Description:
@@ -213,5 +210,21 @@ public class DevTypeServicesImpl implements DevTypeService {
     @Override
     public DevType get(Integer id) {
         return devTypeMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<DevType> getByServerIds(List<String> serverIds) {
+        List<DevType> devTypeList = new ArrayList<>();
+        if (null == serverIds) {
+            return devTypeList;
+        }
+
+        serverIds.forEach(serverId -> {
+            DevType record = new DevType();
+            record.setServerId(serverId);
+            devTypeList.addAll(devTypeMapper.selectBySelective(record));
+        });
+
+        return devTypeList;
     }
 }

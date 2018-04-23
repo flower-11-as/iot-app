@@ -1,16 +1,23 @@
 package com.scrawl.iot.web.controller;
 
+import com.scrawl.iot.web.dao.entity.DevType;
 import com.scrawl.iot.web.dao.entity.Device;
+import com.scrawl.iot.web.dao.mapper.ServiceModeMapper;
 import com.scrawl.iot.web.exception.BizException;
+import com.scrawl.iot.web.service.DevTypeService;
 import com.scrawl.iot.web.service.DeviceService;
+import com.scrawl.iot.web.service.ServerService;
+import com.scrawl.iot.web.service.ServiceModeService;
 import com.scrawl.iot.web.vo.PageRespVO;
 import com.scrawl.iot.web.vo.R;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +34,15 @@ public class DeviceController extends BaseController {
 
     @Autowired
     private DeviceService deviceService;
+
+    @Autowired
+    private DevTypeService devTypeService;
+
+    @Autowired
+    private ServerService serverService;
+
+    @Autowired
+    private ServiceModeService serviceModeService;
 
     @GetMapping
     public String device() {
@@ -45,13 +61,35 @@ public class DeviceController extends BaseController {
     }
 
     @GetMapping("/add")
-    public String add() {
+    public String add(Model model) {
+        List<String> serverIds = getManagerServerIds();
+        List<DevType> devTypes = devTypeService.getByServerIds(serverIds);
+        model.addAttribute("devTypes", devTypes);
+        model.addAttribute("servers", serverService.list());
         return prefix + "/add";
+    }
+
+    @PostMapping("/serverChange")
+    @ResponseBody
+    public R serverChange(String serverId) {
+        return R.ok(serviceModeService.listByServerId(serverId));
     }
 
     @PostMapping("/save")
     @ResponseBody
     public R save(Device device) {
+        device.setCreateManager(getManagerId());
+        device.setCreateTime(new Date());
+        device.setUpdateTime(new Date());
+        try {
+            deviceService.save(device);
+        }catch (BizException e) {
+            log.error("添加IoT设备异常：", e);
+            throw e;
+        } catch (Exception e) {
+            log.error("添加IoT设备异常：", e);
+            throw new BizException("SYS90002");
+        }
         return R.ok();
     }
 

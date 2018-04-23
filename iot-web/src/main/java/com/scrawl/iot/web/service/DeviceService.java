@@ -15,7 +15,7 @@ public interface DeviceService {
 
     int count(DeviceListReqVO reqVO);
 
-    boolean save(Device device);
+    void save(Device device);
 
     boolean update(Device device);
 

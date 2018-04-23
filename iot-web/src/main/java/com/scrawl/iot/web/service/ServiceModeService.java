@@ -13,4 +13,6 @@ public interface ServiceModeService {
     List<ServiceMode> list();
 
     void syncServiceModes();
+
+    List<ServiceMode> listByServerId(String serverId);
 }

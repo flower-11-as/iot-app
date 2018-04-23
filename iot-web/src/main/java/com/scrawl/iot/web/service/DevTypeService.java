@@ -23,4 +23,6 @@ public interface DevTypeService {
     void syncDevTypeInfo(DevType devType, Account account);
 
     DevType get(Integer id);
+
+    List<DevType> getByServerIds(List<String> serverIds);
 }

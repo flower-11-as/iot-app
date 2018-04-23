@@ -23,4 +23,6 @@ public interface DevTypeMapper {
     List<DevType> selectPageList(DevTypeListReqVO reqVO);
 
     int selectPageCount(DevTypeListReqVO reqVO);
+
+    DevType selectByDevType(String devType);
 }

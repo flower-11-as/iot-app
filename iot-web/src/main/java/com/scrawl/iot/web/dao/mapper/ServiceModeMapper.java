@@ -22,4 +22,6 @@ public interface ServiceModeMapper {
     int deleteAll();
 
     int deleteByServerId(String serverId);
+
+    List<ServiceMode> selectByServerId(String serverId);
 }

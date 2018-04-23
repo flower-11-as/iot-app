@@ -45,6 +45,8 @@ public class Device {
 
     private Byte delFlag;
 
+    private String extendType;
+
     private Date createTime;
 
     private Integer createManager;
@@ -219,6 +221,14 @@ public class Device {
 
     public void setDelFlag(Byte delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public String getExtendType() {
+        return extendType;
+    }
+
+    public void setExtendType(String extendType) {
+        this.extendType = extendType;
     }
 
     public Date getCreateTime() {
