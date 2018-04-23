@@ -49,9 +49,15 @@ public class IotHttpService {
                 null, IotDevTypeInfoResponse.class);
     }
 
-    // IoT获取产品型号信息
+    // IoT获取设备信息
     public IotDeviceAllResponse getDevices(Map<String, Object> urlParams, IotHeader header) {
         return iotHttpClient.doGet(withUrlParams(IotConstant.DEVICE_ALL, urlParams), header,
+                null, IotDeviceAllResponse.class);
+    }
+
+    // IoT获取单个设备信息
+    public IotDeviceAllResponse getDevice(Map<String, Object> urlParams, IotHeader header) {
+        return iotHttpClient.doGet(withUrlParams(IotConstant.DEVICE, urlParams), header,
                 null, IotDeviceAllResponse.class);
     }
 

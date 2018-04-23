@@ -30,9 +30,6 @@ var localColumns = [
         field: 'id',
         align: 'center',
         formatter: function (value, row, index) {
-            var d = '<a class="btn btn-primary btn-sm ' + s_add_h + '" href="#" title="新增设备"  mce_href="#" onclick="add(\''
-                + row.id
-                + '\')"><i class="fa fa-plus"></i></a> ';
             var e = '<a class="btn btn-success btn-sm ' + s_edit_h + '" href="#" title="编辑设备"  mce_href="#" onclick="edit(\''
                 + row.id
                 + '\')"><i class="fa fa-edit"></i></a> ';
@@ -45,7 +42,7 @@ var localColumns = [
             var h = '<a class="btn btn-warning btn-sm ' + s_syncDevice_h + '" href="#" title="同步设备"  mce_href="#" onclick="syncDevice(\''
                 + row.id
                 + '\')"><i class="fa fa-refresh"></i></a> ';
-            return d + e + f + h + g;
+            return e + f + h + g;
         }
     }];
 var localPageName = "设备";
@@ -81,6 +78,7 @@ function load() {
         queryParams: function (params) {
             localParams["limit"] = params.limit;
             localParams["offset"] = params.offset;
+            localParams["devSerial"] = $('#devSerial').val();
             localParams["name"] = $('#name').val();
             return localParams;
         },

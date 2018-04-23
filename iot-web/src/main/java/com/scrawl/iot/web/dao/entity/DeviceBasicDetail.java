@@ -2,14 +2,16 @@ package com.scrawl.iot.web.dao.entity;
 
 import java.util.Date;
 
-public class DeviceMessage {
+public class DeviceBasicDetail {
     private Integer id;
 
     private Integer deviceId;
 
     private Integer syncId;
 
-    private String messageId;
+    private String paramName;
+
+    private String paramValue;
 
     private Date createTime;
 
@@ -37,12 +39,20 @@ public class DeviceMessage {
         this.syncId = syncId;
     }
 
-    public String getMessageId() {
-        return messageId;
+    public String getParamName() {
+        return paramName;
     }
 
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
+    public void setParamName(String paramName) {
+        this.paramName = paramName;
+    }
+
+    public String getParamValue() {
+        return paramValue;
+    }
+
+    public void setParamValue(String paramValue) {
+        this.paramValue = paramValue;
     }
 
     public Date getCreateTime() {

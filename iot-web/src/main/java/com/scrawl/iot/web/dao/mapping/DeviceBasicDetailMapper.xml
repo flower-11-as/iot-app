@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.scrawl.iot.web.dao.mapper.DeviceMessageDetailMapper">
-  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.DeviceMessageDetail">
+<mapper namespace="com.scrawl.iot.web.dao.mapper.DeviceBasicDetailMapper">
+  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.DeviceBasicDetail">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="message_id" jdbcType="INTEGER" property="messageId" />
+    <result column="device_id" jdbcType="INTEGER" property="deviceId" />
+    <result column="sync_id" jdbcType="INTEGER" property="syncId" />
     <result column="param_name" jdbcType="VARCHAR" property="paramName" />
     <result column="param_value" jdbcType="VARCHAR" property="paramValue" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, message_id, param_name, param_value, create_time
+    id, device_id, sync_id, param_name, param_value, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_iot_device_message_detail
+    from t_iot_device_basic_detail
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from t_iot_device_message_detail
+    delete from t_iot_device_basic_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.DeviceMessageDetail">
-    insert into t_iot_device_message_detail (id, message_id, param_name, 
-      param_value, create_time)
-    values (#{id,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{paramName,jdbcType=VARCHAR}, 
-      #{paramValue,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.DeviceBasicDetail">
+    insert into t_iot_device_basic_detail (id, device_id, sync_id, 
+      param_name, param_value, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER}, #{syncId,jdbcType=INTEGER}, 
+      #{paramName,jdbcType=VARCHAR}, #{paramValue,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceMessageDetail">
-    insert into t_iot_device_message_detail
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceBasicDetail">
+    insert into t_iot_device_basic_detail
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="messageId != null">
-        message_id,
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="syncId != null">
+        sync_id,
       </if>
       <if test="paramName != null">
         param_name,
@@ -50,8 +56,11 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="messageId != null">
-        #{messageId,jdbcType=INTEGER},
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=INTEGER},
+      </if>
+      <if test="syncId != null">
+        #{syncId,jdbcType=INTEGER},
       </if>
       <if test="paramName != null">
         #{paramName,jdbcType=VARCHAR},
@@ -64,11 +73,14 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceMessageDetail">
-    update t_iot_device_message_detail
+  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceBasicDetail">
+    update t_iot_device_basic_detail
     <set>
-      <if test="messageId != null">
-        message_id = #{messageId,jdbcType=INTEGER},
+      <if test="deviceId != null">
+        device_id = #{deviceId,jdbcType=INTEGER},
+      </if>
+      <if test="syncId != null">
+        sync_id = #{syncId,jdbcType=INTEGER},
       </if>
       <if test="paramName != null">
         param_name = #{paramName,jdbcType=VARCHAR},
@@ -82,9 +94,10 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.DeviceMessageDetail">
-    update t_iot_device_message_detail
-    set message_id = #{messageId,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.DeviceBasicDetail">
+    update t_iot_device_basic_detail
+    set device_id = #{deviceId,jdbcType=INTEGER},
+      sync_id = #{syncId,jdbcType=INTEGER},
       param_name = #{paramName,jdbcType=VARCHAR},
       param_value = #{paramValue,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}

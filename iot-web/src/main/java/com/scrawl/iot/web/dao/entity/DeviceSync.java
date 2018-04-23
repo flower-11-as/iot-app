@@ -2,14 +2,12 @@ package com.scrawl.iot.web.dao.entity;
 
 import java.util.Date;
 
-public class DeviceMessage {
+public class DeviceSync {
     private Integer id;
 
     private Integer deviceId;
 
-    private Integer syncId;
-
-    private String messageId;
+    private Byte type;
 
     private Date createTime;
 
@@ -29,20 +27,12 @@ public class DeviceMessage {
         this.deviceId = deviceId;
     }
 
-    public Integer getSyncId() {
-        return syncId;
+    public Byte getType() {
+        return type;
     }
 
-    public void setSyncId(Integer syncId) {
-        this.syncId = syncId;
-    }
-
-    public String getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
+    public void setType(Byte type) {
+        this.type = type;
     }
 
     public Date getCreateTime() {

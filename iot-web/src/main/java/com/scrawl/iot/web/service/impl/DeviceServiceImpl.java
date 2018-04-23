@@ -3,14 +3,9 @@ package com.scrawl.iot.web.service.impl;
 import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.response.IotDeviceAllResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
-import com.scrawl.iot.web.dao.entity.Account;
-import com.scrawl.iot.web.dao.entity.Device;
-import com.scrawl.iot.web.dao.entity.DeviceMessage;
-import com.scrawl.iot.web.dao.entity.DeviceMessageDetail;
-import com.scrawl.iot.web.dao.mapper.DeviceMapper;
-import com.scrawl.iot.web.dao.mapper.DeviceMessageDetailMapper;
-import com.scrawl.iot.web.dao.mapper.DeviceMessageMapper;
-import com.scrawl.iot.web.enums.DeviceMessageTypeEnum;
+import com.scrawl.iot.web.dao.entity.*;
+import com.scrawl.iot.web.dao.mapper.*;
+import com.scrawl.iot.web.enums.DeviceSyncTypeEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
 import com.scrawl.iot.web.service.DeviceService;
@@ -18,6 +13,7 @@ import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -44,6 +40,12 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DeviceMessageDetailMapper deviceMessageDetailMapper;
 
+    @Autowired
+    private DeviceSyncMapper deviceSyncMapper;
+
+    @Autowired
+    private DeviceBasicDetailMapper deviceBasicDetailMapper;
+
     @Override
     public List<Device> list(DeviceListReqVO reqVO) {
         return deviceMapper.selectPageList(reqVO);
@@ -69,6 +71,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @Transactional
     public void syncDevices(List<String> serverIds, Integer managerId) {
         if (null == serverIds || serverIds.size() == 0) {
             return;
@@ -144,6 +147,17 @@ public class DeviceServiceImpl implements DeviceService {
             deviceMapper.updateByPrimaryKeySelective(device);
         }
 
+        // device sync落地
+        DeviceSync deviceSync = new DeviceSync();
+        deviceSync.setDeviceId(device.getId());
+        deviceSync.setType(DeviceSyncTypeEnum.MANAGER.getType());
+        deviceSync.setCreateTime(new Date());
+        deviceSyncMapper.insertSelective(deviceSync);
+
+        // 落地basic
+        addDeviceBasicDetail(device.getId(), deviceSync.getId(), "batteryLevel", iotDevice.getBatteryLevel());
+        addDeviceBasicDetail(device.getId(), deviceSync.getId(), "signalStrength", iotDevice.getSignalStrength());
+
         if (null == iotDevice.getDevMessage()) {
             return;
         }
@@ -153,22 +167,30 @@ public class DeviceServiceImpl implements DeviceService {
             // 消息落地
             DeviceMessage deviceMessage = new DeviceMessage();
             deviceMessage.setDeviceId(finalDevice.getId());
+            deviceMessage.setSyncId(deviceSync.getId());
             deviceMessage.setMessageId(deviceData.getServiceId());
             deviceMessage.setCreateTime(new Date());
             deviceMessageMapper.insertSelective(deviceMessage);
 
             // 消息详情落地
-            addDeviceMessageDetail(deviceMessage.getId(), DeviceMessageTypeEnum.BATTERY, "batteryLevel", iotDevice.getBatteryLevel());
-            addDeviceMessageDetail(deviceMessage.getId(), DeviceMessageTypeEnum.METER, "signalStrength", iotDevice.getSignalStrength());
-            deviceData.getServiceData().forEach((k, v) -> addDeviceMessageDetail(deviceMessage.getId(), DeviceMessageTypeEnum.MESSAGE, k, v));
+            deviceData.getServiceData().forEach((k, v) -> addDeviceMessageDetail(deviceMessage.getId(), k, v));
         });
     }
 
-    private void addDeviceMessageDetail(Integer messageId, DeviceMessageTypeEnum typeEnum, String paramName,
-                                        Object paramValue) {
+    private void addDeviceBasicDetail(Integer deviceId, Integer syncId, String paramName, Object paramValue) {
+        DeviceBasicDetail deviceBasicDetail = new DeviceBasicDetail();
+        deviceBasicDetail.setDeviceId(deviceId);
+        deviceBasicDetail.setSyncId(syncId);
+        deviceBasicDetail.setParamName(paramName);
+        deviceBasicDetail.setParamValue(null == paramValue ? "" : paramValue.toString());
+        deviceBasicDetail.setCreateTime(new Date());
+
+        deviceBasicDetailMapper.insertSelective(deviceBasicDetail);
+    }
+
+    private void addDeviceMessageDetail(Integer messageId, String paramName, Object paramValue) {
         DeviceMessageDetail deviceMessageDetail = new DeviceMessageDetail();
         deviceMessageDetail.setMessageId(messageId);
-        deviceMessageDetail.setType(typeEnum.getType());
         deviceMessageDetail.setParamName(paramName);
         deviceMessageDetail.setParamValue(paramValue.toString());
         deviceMessageDetail.setCreateTime(new Date());

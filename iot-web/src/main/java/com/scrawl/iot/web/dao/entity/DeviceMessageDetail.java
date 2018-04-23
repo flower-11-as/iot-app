@@ -11,8 +11,6 @@ public class DeviceMessageDetail {
 
     private String paramValue;
 
-    private Byte type;
-
     private Date createTime;
 
     public Integer getId() {
@@ -45,14 +43,6 @@ public class DeviceMessageDetail {
 
     public void setParamValue(String paramValue) {
         this.paramValue = paramValue;
-    }
-
-    public Byte getType() {
-        return type;
-    }
-
-    public void setType(Byte type) {
-        this.type = type;
     }
 
     public Date getCreateTime() {
