@@ -41,6 +41,10 @@ public class PaperHttpClient {
         return doRequest(RequestMethodEnum.GET, url, headers, params);
     }
 
+    public HttpResponse doDelete(String url, Map<String, Object> headers, Map<String, Object> params) {
+        return doRequest(RequestMethodEnum.DELETE, url, headers, params);
+    }
+
     private HttpResponse doRequest(RequestMethodEnum requestMethod, String url, Map<String, Object> headers, Map<String, Object> params) {
         HttpUriRequest httpRequest;
 
@@ -48,6 +52,9 @@ public class PaperHttpClient {
             StringEntity entity = createEntity(params);
             httpRequest = RequestBuilder.create(requestMethod.name()).setUri(url).setEntity(entity).build();
         } else if (requestMethod == RequestMethodEnum.GET) {
+            List<BasicNameValuePair> paris = createPairs(params);
+            httpRequest = RequestBuilder.create(requestMethod.name()).setUri(url).addParameters(paris.toArray(new BasicNameValuePair[0])).build();
+        } else if (requestMethod == RequestMethodEnum.DELETE) {
             List<BasicNameValuePair> paris = createPairs(params);
             httpRequest = RequestBuilder.create(requestMethod.name()).setUri(url).addParameters(paris.toArray(new BasicNameValuePair[0])).build();
         } else {
@@ -68,7 +75,8 @@ public class PaperHttpClient {
 
     enum RequestMethodEnum {
         POST,
-        GET
+        GET,
+        DELETE
     }
 
     private List<BasicNameValuePair> createPairs(Map<String, Object> params) {

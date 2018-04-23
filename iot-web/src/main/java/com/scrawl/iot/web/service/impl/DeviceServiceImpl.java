@@ -8,6 +8,7 @@ import com.scrawl.iot.paper.http.response.IotResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
 import com.scrawl.iot.web.dao.entity.*;
 import com.scrawl.iot.web.dao.mapper.*;
+import com.scrawl.iot.web.enums.DelFlagEnum;
 import com.scrawl.iot.web.enums.DeviceSyncTypeEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
@@ -81,7 +82,7 @@ public class DeviceServiceImpl implements DeviceService {
         header.setAccessToken(account.getToken());
 
         IotRegDeviceRequest request = new IotRegDeviceRequest();
-        request.setDevSerial(device.getDevType());
+        request.setDevSerial(device.getDevSerial());
         request.setName(device.getName());
         request.setDeviceType(device.getDevType());
         request.setConnectPointId(device.getConnectPointId());
@@ -302,10 +303,22 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public boolean remove(Device device) {
-        // TODO:删除设备
+    public void remove(Integer id, Integer managerId) {
+        Device device = deviceMapper.selectByPrimaryKey(id);
+        Account account = accountService.getAndAuthAccount(device.getServerId());
+        if (null == account) {
+            throw new BizException("IOT10001");
+        }
 
-        return false;
+        IotHeader header = new IotHeader();
+        header.setServerId(account.getServerId());
+        header.setAccessToken(account.getToken());
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("devSerial", device.getDevSerial());
+        iotHttpService.delDevice(params, header);
+
+        deviceMapper.deleteByPrimaryKey(id);
     }
 
     @Override

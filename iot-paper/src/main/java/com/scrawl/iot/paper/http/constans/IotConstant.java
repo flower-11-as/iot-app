@@ -24,6 +24,7 @@ public class IotConstant {
 	public static String DEVICE_ALL = "/devices/list-devices";
     public static String DEVICE = "/devices/query-device-allinfo";
     public static String REG_DEVICE = "/devices/reg-device";
+	public static String DEL_DEVICE = "/devices/del-device";
 
 	static{
 		resultCodeExplain=new HashMap<>();

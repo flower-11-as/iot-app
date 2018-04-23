@@ -53,12 +53,6 @@ function validateRule() {
             },
             connectPointId: {
                 required: true
-            },
-            longitude: {
-                required: true
-            },
-            latitude: {
-                required: true
             }
         },
         messages: {
@@ -73,12 +67,6 @@ function validateRule() {
             },
             connectPointId: {
                 required: icon + "请选择设备连接点"
-            },
-            longitude: {
-                required: icon + "请输入经度"
-            },
-            latitude: {
-                required: icon + "请输入纬度"
             }
         }
     })

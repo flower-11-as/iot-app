@@ -109,9 +109,18 @@ public class DeviceController extends BaseController {
         return R.ok();
     }
 
-    @PostMapping("/remove/{id}")
+    @PostMapping("/remove")
     @ResponseBody
-    public R remove(@PathVariable("id") Integer id) {
+    public R remove(Integer id) {
+        try {
+            deviceService.remove(id, getManagerId());
+        }catch (BizException e) {
+            log.error("删除IoT设备异常：", e);
+            throw e;
+        } catch (Exception e) {
+            log.error("删除IoT设备异常：", e);
+            throw new BizException("SYS90003");
+        }
         return R.ok();
     }
 

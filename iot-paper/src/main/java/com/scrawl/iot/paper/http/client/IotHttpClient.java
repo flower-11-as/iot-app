@@ -58,6 +58,20 @@ public class IotHttpClient {
         return convertResponse(httpResponse, t);
     }
 
+    public <T extends IotResponse> T doDelete(String url, Object headerRequest, Object paramRequest, Class<T> t) {
+        return doDelete(url, ContentType.APPLICATION_JSON, headerRequest, paramRequest, t);
+    }
+
+    public <T extends IotResponse> T doDelete(String url, ContentType contentType, Object headerRequest, Object paramRequest, Class<T> t) {
+        Map<String, Object> headers = BeanUtil.object2Map(headerRequest);
+        headers.put("Content-Type", contentType.getMimeType());
+
+        Map<String, Object> params = BeanUtil.object2Map(paramRequest);
+        HttpResponse httpResponse = httpClients.doDelete(iotProperties.getApiUri() + url, headers, params);
+
+        return convertResponse(httpResponse, t);
+    }
+
     private <T extends IotResponse> T convertResponse(HttpResponse httpResponse, Class<T> t) {
         HttpEntity entity = httpResponse.getEntity();
         String entityStr;

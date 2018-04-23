@@ -23,7 +23,7 @@ public interface DeviceService {
 
     void syncDevice(Integer id, Integer managerId);
 
-    boolean remove(Device device);
+    void remove(Integer id, Integer managerId);
 
     boolean sendCommand();
 }

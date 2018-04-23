@@ -68,6 +68,12 @@ public class IotHttpService {
                 request, IotResponse.class);
     }
 
+    // IoT删除设备信息
+    public IotResponse delDevice(Map<String, Object> urlParams, IotHeader header) {
+        return iotHttpClient.doDelete(withUrlParams(IotConstant.DEL_DEVICE, urlParams), header,
+                null, IotResponse.class);
+    }
+
     private String withUrlParams(String url, Map<String, Object> urlParams) {
         if (null == urlParams || urlParams.size() == 0) {
             return url;
