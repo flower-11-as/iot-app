@@ -210,7 +210,7 @@ function syncDevice(id) {
             },
             success: function (data) {
                 if (data.code === '0000') {
-                    layer.msg("删除成功");
+                    layer.msg("同步成功");
                     reLoad();
                 } else {
                     layer.alert(data.msg, {
