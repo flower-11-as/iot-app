@@ -27,7 +27,7 @@
     values (#{id,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
       #{reqCommandId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceCommand">
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceCommand" useGeneratedKeys="true" keyProperty="id">
     insert into t_iot_device_command
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

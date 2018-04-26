@@ -1,6 +1,8 @@
 package com.scrawl.iot.web;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.scrawl.iot.paper.http.request.IotCommandRequest;
 import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.request.IotLoginRequest;
 import com.scrawl.iot.paper.http.request.IotSubscribeRequest;
@@ -153,6 +155,25 @@ public class HttpClientTest {
         IotSubscribeRequest request = new IotSubscribeRequest();
         request.setCallbackUrl("http://104.224.159.254/iot/callback");
         IotResponse response = iotHttpService.subscribe(header, request);
+        System.out.println(JSON.toJSONString(response));
+    }
+
+    @Test
+    public void command() {
+        IotHeader header = new IotHeader();
+        header.setServerId("jiayingdev01");
+        header.setAccessToken("e5d3cc9b1557bac0cfd95a895e02eb5a");
+
+        IotCommandRequest request = new IotCommandRequest();
+        request.setDevSerial("863703036568751");
+        request.setMethod("DeviceCmd");
+
+        //控制命令参数
+        JSONObject params=new JSONObject();
+        params.put("Switch1", "off");
+        request.setParams(params);
+
+        IotCommandResponse response = iotHttpService.command(header, request);
         System.out.println(JSON.toJSONString(response));
     }
 }

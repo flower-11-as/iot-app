@@ -1,7 +1,9 @@
 package com.scrawl.iot.web.service.impl;
 
+import com.scrawl.iot.paper.http.request.IotCommandRequest;
 import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.request.IotRegDeviceRequest;
+import com.scrawl.iot.paper.http.response.IotCommandResponse;
 import com.scrawl.iot.paper.http.response.IotDeviceAllResponse;
 import com.scrawl.iot.paper.http.response.IotDeviceResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
@@ -60,6 +62,12 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Autowired
     private DevTypeMessageParamMapper devTypeMessageParamMapper;
+
+    @Autowired
+    private DeviceCommandMapper deviceCommandMapper;
+
+    @Autowired
+    private DeviceCommandDetailMapper deviceCommandDetailMapper;
 
     private final String SERVICE_ID_BATTERY = "Battery";
     private final String SERVICE_ID_METER = "Meter";
@@ -389,10 +397,40 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public boolean sendCommand() {
-        // TODO:发送指令
+    public void sendCommand(Map<String, Object> command, Integer deviceId, String commandId) {
+        Device device = get(deviceId);
+        Account account = accountService.getAndAuthAccount(device.getServerId());
+        if (null == account) {
+            throw new BizException("IOT10001");
+        }
 
-        return false;
+        IotHeader header = new IotHeader();
+        header.setServerId(account.getServerId());
+        header.setAccessToken(account.getToken());
+
+        IotCommandRequest request = new IotCommandRequest();
+        request.setMethod(commandId);
+        request.setDevSerial(device.getDevSerial());
+        request.setParams(command);
+        IotCommandResponse response = iotHttpService.command(header, request);
+
+        // 插入command，及其detail
+        DeviceCommand deviceCommand = new DeviceCommand();
+        deviceCommand.setDeviceId(deviceId);
+        deviceCommand.setReqCommandId(response.getCommandId());
+        deviceCommand.setStatus((byte) 0);
+        deviceCommand.setCreateTime(new Date());
+        deviceCommandMapper.insertSelective(deviceCommand);
+
+        // 插入detail
+        command.forEach((k, v) -> {
+            DeviceCommandDetail detail = new DeviceCommandDetail();
+            detail.setCommandId(deviceCommand.getId());
+            detail.setParamName(k);
+            detail.setParamValue(v.toString());
+            detail.setCreateTime(new Date());
+            deviceCommandDetailMapper.insertSelective(detail);
+        });
     }
 
     @Override

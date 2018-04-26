@@ -29,7 +29,7 @@ public interface DeviceService {
 
     void remove(Integer id, Integer managerId);
 
-    boolean sendCommand();
+    void sendCommand(Map<String, Object> command, Integer deviceId, String commandId);
 
     Device get(Integer id);
 

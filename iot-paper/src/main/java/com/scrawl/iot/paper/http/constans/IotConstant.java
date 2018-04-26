@@ -28,6 +28,7 @@ public class IotConstant {
 	public static String QUERY_SUBSCRIBE = "/query-subscribe-service-address";
 	public static String UN_SUBSCRIBE = "/unsubscribe-service-address";
 	public static String SUBSCRIBE = "/subscribe-service-address";
+	public static String COMMAND = "/dev-control/urt-command";
 
 	static{
 		resultCodeExplain=new HashMap<>();

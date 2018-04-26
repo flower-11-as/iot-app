@@ -2,10 +2,7 @@ package com.scrawl.iot.paper.http.service;
 
 import com.scrawl.iot.paper.http.client.IotHttpClient;
 import com.scrawl.iot.paper.http.constans.IotConstant;
-import com.scrawl.iot.paper.http.request.IotHeader;
-import com.scrawl.iot.paper.http.request.IotLoginRequest;
-import com.scrawl.iot.paper.http.request.IotRegDeviceRequest;
-import com.scrawl.iot.paper.http.request.IotSubscribeRequest;
+import com.scrawl.iot.paper.http.request.*;
 import com.scrawl.iot.paper.http.response.*;
 
 import java.util.HashMap;
@@ -91,6 +88,12 @@ public class IotHttpService {
     public IotResponse subscribe(IotHeader header, IotSubscribeRequest request) {
         return iotHttpClient.doPost(IotConstant.SUBSCRIBE, header,
                 request, IotResponse.class);
+    }
+
+    // IoT指令上报
+    public IotCommandResponse command(IotHeader header, IotCommandRequest request) {
+        return iotHttpClient.doPost(IotConstant.COMMAND, header,
+                request, IotCommandResponse.class);
     }
 
     private String withUrlParams(String url, Map<String, Object> urlParams) {
