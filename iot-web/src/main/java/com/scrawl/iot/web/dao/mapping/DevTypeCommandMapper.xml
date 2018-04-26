@@ -90,11 +90,11 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByTypeIdAndName" resultMap="BaseResultMap">
+  <select id="selectByTypeIdAndCommandId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from t_iot_dev_type_command
-    where dev_type_id = #{typeId} and command_name = #{name}
+    where dev_type_id = #{typeId} and command_id = #{commandId}
   </select>
   <select id="selectByTypeId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select

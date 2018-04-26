@@ -197,7 +197,7 @@ public class IotDataCastUtil {
     private static String binary16Reversion(String v) {
         StringBuilder sb = new StringBuilder();
         try {
-            for (int i = 0; i < v.length(); ) {
+            for (int i = 0; i < v.length(); i++) {
                 sb.append(NumericalUtil.int2CodeString((int) v.charAt(i), 16));
             }
         } catch (Exception e) {

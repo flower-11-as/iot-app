@@ -177,7 +177,7 @@ public class DevTypeServicesImpl implements DevTypeService {
     }
 
     private void syncDevTypeCommand(DevType devType, String commandName, DevTypeCommandTypeEnum typeEnum, List<IotDevTypeInfoResponse.IotParam> paramList) {
-        DevTypeCommand devTypeCommand = devTypeCommandMapper.selectByTypeIdAndName(devType.getId(), commandName);
+        DevTypeCommand devTypeCommand = devTypeCommandMapper.selectByTypeIdAndCommandId(devType.getId(), commandName);
 
         // 不存在该设备消息，添加
         if (null == devTypeCommand) {

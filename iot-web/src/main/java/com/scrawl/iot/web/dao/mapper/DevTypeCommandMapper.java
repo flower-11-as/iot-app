@@ -18,7 +18,7 @@ public interface DevTypeCommandMapper {
 
     int updateByPrimaryKey(DevTypeCommand record);
 
-    DevTypeCommand selectByTypeIdAndName(@Param("typeId") Integer typeId, @Param("name") String name);
+    DevTypeCommand selectByTypeIdAndCommandId(@Param("typeId") Integer typeId, @Param("commandId") String commandId);
 
     List<DevTypeCommand> selectByTypeId(Integer typeId);
 }

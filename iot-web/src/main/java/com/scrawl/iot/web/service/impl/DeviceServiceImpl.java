@@ -69,6 +69,12 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DeviceCommandDetailMapper deviceCommandDetailMapper;
 
+    @Autowired
+    private DevTypeCommandParamMapper devTypeCommandParamMapper;
+
+    @Autowired
+    private DevTypeCommandMapper devTypeCommandMapper;
+
     private final String SERVICE_ID_BATTERY = "Battery";
     private final String SERVICE_ID_METER = "Meter";
 
@@ -407,6 +413,13 @@ public class DeviceServiceImpl implements DeviceService {
         IotHeader header = new IotHeader();
         header.setServerId(account.getServerId());
         header.setAccessToken(account.getToken());
+
+        DevTypeCommand devTypeCommand = devTypeCommandMapper.selectByTypeIdAndCommandId(
+                devTypeMapper.selectByDevType(device.getDevType()).getId(), commandId);
+        command.forEach((k, v) -> {
+            DevTypeCommandParam commandParam = devTypeCommandParamMapper.selectByCommandIdAndName(devTypeCommand.getId(), k);
+            command.put(k, IotDataCastUtil.commonReversion(v.toString(), commandParam.getDataType()));
+        });
 
         IotCommandRequest request = new IotCommandRequest();
         request.setMethod(commandId);
