@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scrawl.iot.web.dao.mapper.DevTypeMessageParamExtMapper">
+  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.DevTypeMessageParamExt">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="message_param_id" jdbcType="INTEGER" property="messageParamId" />
+    <result column="json" jdbcType="VARCHAR" property="json" />
+    <result column="create_manager" jdbcType="INTEGER" property="createManager" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_manager" jdbcType="INTEGER" property="updateManager" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, message_param_id, json, create_manager, create_time, update_manager, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_iot_dev_type_message_param_ext
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_iot_dev_type_message_param_ext
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.DevTypeMessageParamExt">
+    insert into t_iot_dev_type_message_param_ext (id, message_param_id, json, 
+      create_manager, create_time, update_manager, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{messageParamId,jdbcType=INTEGER}, #{json,jdbcType=VARCHAR}, 
+      #{createManager,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateManager,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DevTypeMessageParamExt">
+    insert into t_iot_dev_type_message_param_ext
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="messageParamId != null">
+        message_param_id,
+      </if>
+      <if test="json != null">
+        json,
+      </if>
+      <if test="createManager != null">
+        create_manager,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateManager != null">
+        update_manager,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="messageParamId != null">
+        #{messageParamId,jdbcType=INTEGER},
+      </if>
+      <if test="json != null">
+        #{json,jdbcType=VARCHAR},
+      </if>
+      <if test="createManager != null">
+        #{createManager,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManager != null">
+        #{updateManager,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.DevTypeMessageParamExt">
+    update t_iot_dev_type_message_param_ext
+    <set>
+      <if test="messageParamId != null">
+        message_param_id = #{messageParamId,jdbcType=INTEGER},
+      </if>
+      <if test="json != null">
+        json = #{json,jdbcType=VARCHAR},
+      </if>
+      <if test="createManager != null">
+        create_manager = #{createManager,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManager != null">
+        update_manager = #{updateManager,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.DevTypeMessageParamExt">
+    update t_iot_dev_type_message_param_ext
+    set message_param_id = #{messageParamId,jdbcType=INTEGER},
+      json = #{json,jdbcType=VARCHAR},
+      create_manager = #{createManager,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_manager = #{updateManager,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

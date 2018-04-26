@@ -13,6 +13,8 @@ public class DevTypeCommandParam {
 
     private String dataType;
 
+    private String showName;
+
     private Integer pos;
 
     private Date createTime;
@@ -55,6 +57,14 @@ public class DevTypeCommandParam {
 
     public void setDataType(String dataType) {
         this.dataType = dataType;
+    }
+
+    public String getShowName() {
+        return showName;
+    }
+
+    public void setShowName(String showName) {
+        this.showName = showName;
     }
 
     public Integer getPos() {

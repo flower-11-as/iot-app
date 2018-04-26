@@ -1,9 +1,12 @@
 package com.scrawl.iot.web.service;
 
 import com.scrawl.iot.web.dao.entity.Device;
+import com.scrawl.iot.web.dao.entity.DeviceBasicDetail;
+import com.scrawl.iot.web.dao.entity.DeviceMessageDetail;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -26,4 +29,10 @@ public interface DeviceService {
     void remove(Integer id, Integer managerId);
 
     boolean sendCommand();
+
+    Device get(Integer id);
+
+    Map<String, DeviceBasicDetail> getBaseSensorInfo(Integer deviceId);
+
+    Map<String, DeviceMessageDetail> getMessageInfo(Integer deviceId);
 }

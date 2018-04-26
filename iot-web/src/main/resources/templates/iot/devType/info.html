@@ -74,12 +74,14 @@
                             <div class="panel-body">
                                 <table class="table">
                                     <tr>
-                                        <th>paramName</th>
-                                        <th>dataType</th>
+                                        <th>参数名称</th>
+                                        <th>显示名称</th>
+                                        <th>数据类型</th>
                                         <th>pos</th>
                                     </tr>
                                     <tr th:each="message:${messageInfo.messageList}">
                                         <td th:text="${message.paramName}"></td>
+                                        <td th:text="${message.showName}"></td>
                                         <td th:text="${message.dataType}"></td>
                                         <td th:text="${message.pos}"></td>
                                     </tr>
@@ -138,12 +140,14 @@
                                             <div class="panel-body">
                                                 <table class="table">
                                                     <tr>
-                                                        <th>paramName</th>
-                                                        <th>dataType</th>
+                                                        <th>参数名称</th>
+                                                        <th>显示名称</th>
+                                                        <th>数据类型</th>
                                                         <th>pos</th>
                                                     </tr>
                                                     <tr th:each="request:${commandInfo.requestList}">
                                                         <td th:text="${request.paramName}"></td>
+                                                        <td th:text="${request.showName}"></td>
                                                         <td th:text="${request.dataType}"></td>
                                                         <td th:text="${request.pos}"></td>
                                                     </tr>
@@ -156,12 +160,14 @@
                                             <div class="panel-body">
                                                 <table class="table">
                                                     <tr>
-                                                        <th>paramName</th>
-                                                        <th>dataType</th>
+                                                        <th>参数名称</th>
+                                                        <th>显示名称</th>
+                                                        <th>数据类型</th>
                                                         <th>pos</th>
                                                     </tr>
                                                     <tr th:each="response:${commandInfo.responseList}">
                                                         <td th:text="${response.paramName}"></td>
+                                                        <td th:text="${response.showName}"></td>
                                                         <td th:text="${response.dataType}"></td>
                                                         <td th:text="${response.pos}"></td>
                                                     </tr>

@@ -2,6 +2,8 @@ package com.scrawl.iot.web.dao.mapper;
 
 import com.scrawl.iot.web.dao.entity.DeviceBasicDetail;
 
+import java.util.List;
+
 public interface DeviceBasicDetailMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface DeviceBasicDetailMapper {
     int updateByPrimaryKeySelective(DeviceBasicDetail record);
 
     int updateByPrimaryKey(DeviceBasicDetail record);
+
+    List<DeviceBasicDetail> selectBaseSensorInfo(Integer deviceId);
 }

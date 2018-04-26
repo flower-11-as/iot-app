@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include::header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <!--ibox-->
+            <div class="ibox">
+                <!--ibox-title-->
+                <div class="ibox-title" style="padding-bottom: 0;">
+                    <h3 class="text-center" th:text="${device.name}"></h3>
+                    <div class="gg-nav">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#basic_info" data-toggle="tab">设备基本信息</a></li>
+                            <li><a href="#base_sensor_info" data-toggle="tab">基础传感器消息</a></li>
+                            <li><a href="#message_info" data-toggle="tab">设备消息</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!--ibox-content-->
+                <div class="tab-content">
+                    <div class="ibox-content tab-pane fade in active" id="basic_info">
+                        <form class="gg-form" role="form">
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>产品类型:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${device.devType}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>序列号:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${device.devSerial}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>连接平台:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${device.connectPointId}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>经度:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${device.longitude}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>纬度:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${device.latitude}"></u>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ibox-content tab-pane fade" id="base_sensor_info">
+                        <form class="gg-form" role="form">
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>信号强度:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${baseSensorInfo.signalStrength.paramValue}"></u> dB
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>电池电量:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${baseSensorInfo.batteryLevel.paramValue}"></u> %
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ibox-content tab-pane fade" id="message_info" >
+                        <div th:if="${#maps.size(messageInfo) == 0}">
+                            <div class="gg-formTitle">
+                                <strong>无上报消息</strong>
+                            </div>
+                            <div class="gg-formDetail">
+                            </div>
+                        </div>
+                        <div th:if="${#maps.size(messageInfo) != 0}">
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>开关一:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${messageInfo.Switch1.paramValue}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>开关一时段:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${messageInfo.Period1.paramValue}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>开关二:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${messageInfo.Switch2.paramValue}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>开关二时段:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${messageInfo.Period2.paramValue}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>开关一控制模式:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${messageInfo.SwitchMode1.paramValue}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>开关二控制模式:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${messageInfo.SwitchMode2.paramValue}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>功率:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${messageInfo.Power.paramValue}"></u> W
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>电压:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${messageInfo.Voltage.paramValue}"></u> V
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>电流:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${messageInfo.Current.paramValue}"></u> mA
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>GPS定位:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${messageInfo.GPS.paramValue}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>通用数据通道:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${messageInfo.GeneralDataBuffer.paramValue}"></u>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+</body>
+</html>

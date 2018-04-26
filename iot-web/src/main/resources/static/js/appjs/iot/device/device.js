@@ -30,10 +30,10 @@ var localColumns = [
         field: 'id',
         align: 'center',
         formatter: function (value, row, index) {
-            var e = '<a class="btn btn-success btn-sm ' + s_edit_h + '" href="#" title="编辑设备"  mce_href="#" onclick="edit(\''
-                + row.id
-                + '\')"><i class="fa fa-edit"></i></a> ';
-            var f = '<a class="btn btn-info btn-sm ' + s_view_h + '" href="#" title="查看设备"  mce_href="#" onclick="view(\''
+            // var e = '<a class="btn btn-success btn-sm ' + s_edit_h + '" href="#" title="编辑设备"  mce_href="#" onclick="edit(\''
+            //     + row.id
+            //     + '\')"><i class="fa fa-edit"></i></a> ';
+            var f = '<a class="btn btn-info btn-sm ' + s_view_h + '" href="#" title="查看设备"  mce_href="#" onclick="info(\''
                 + row.id
                 + '\')"><i class="fa fa-camera-retro"></i></a> ';
             var g = '<a class="btn btn-danger btn-sm ' + s_remove_h + '" href="#" title="删除设备"  mce_href="#" onclick="remove(\''
@@ -42,7 +42,7 @@ var localColumns = [
             var h = '<a class="btn btn-warning btn-sm ' + s_syncDevice_h + '" href="#" title="同步设备"  mce_href="#" onclick="syncDevice(\''
                 + row.id
                 + '\')"><i class="fa fa-refresh"></i></a> ';
-            return e + f + h + g;
+            return f + h + g;
         }
     }];
 var localPageName = "设备";
@@ -159,7 +159,7 @@ function edit(id) {
 }
 
 // 查看
-function view(id) {
+function info(id) {
     // iframe层
     layer.open({
         type: 2,
@@ -167,7 +167,7 @@ function view(id) {
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
         area: ['800px', '600px'],
-        content: prefix + '/view?id=' + id
+        content: prefix + '/info?id=' + id
     });
 }
 

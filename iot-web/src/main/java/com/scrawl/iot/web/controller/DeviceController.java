@@ -93,9 +93,14 @@ public class DeviceController extends BaseController {
         return R.ok();
     }
 
-    @GetMapping("/view/{id}")
-    public String view(@PathVariable("id") Integer id) {
-        return prefix + "/view";
+    @GetMapping("/info")
+    public String view(@RequestParam("id") Integer id, Model model) {
+        Device device = deviceService.get(id);
+        model.addAttribute("device", device);
+        model.addAttribute("baseSensorInfo", deviceService.getBaseSensorInfo(device.getId()));
+        model.addAttribute("messageInfo", deviceService.getMessageInfo(device.getId()));
+
+        return prefix + "/info";
     }
 
     @GetMapping("/edit/{id}")

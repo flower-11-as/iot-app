@@ -15,6 +15,7 @@ import com.scrawl.iot.web.service.AccountService;
 import com.scrawl.iot.web.vo.iot.account.AccountListReqVO;
 import com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,6 +40,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private DevTypeMapper devTypeMapper;
+
+    private final Integer AUTH_CONTINUE_HOUR = 8;
 
     @Override
     public List<Account> list(AccountListReqVO reqVO) {
@@ -148,6 +151,14 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAndAuthAccount(String serverId) {
         Account account = accountMapper.selectByServerId(serverId);
+
+        if (account.getStatus().equals(AccountStatusEnum.SUCCESS.getCode())) {
+            Date authEndTime = DateUtils.addHours(account.getLastLoginTime(), AUTH_CONTINUE_HOUR);
+            Date now = new Date();
+            if (!now.after(authEndTime)) {
+                return account;
+            }
+        }
 
         return iotLogin(account) ? account : null;
     }

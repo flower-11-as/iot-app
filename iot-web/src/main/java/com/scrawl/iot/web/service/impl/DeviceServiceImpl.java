@@ -6,6 +6,7 @@ import com.scrawl.iot.paper.http.response.IotDeviceAllResponse;
 import com.scrawl.iot.paper.http.response.IotDeviceResponse;
 import com.scrawl.iot.paper.http.response.IotResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
+import com.scrawl.iot.paper.utils.IotDataCastUtil;
 import com.scrawl.iot.web.dao.entity.*;
 import com.scrawl.iot.web.dao.mapper.*;
 import com.scrawl.iot.web.enums.DelFlagEnum;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -326,5 +329,25 @@ public class DeviceServiceImpl implements DeviceService {
         // TODO:发送指令
 
         return false;
+    }
+
+    @Override
+    public Device get(Integer id) {
+        return deviceMapper.selectByPrimaryKey(id);
+    }
+
+    public Map<String, DeviceBasicDetail> getBaseSensorInfo(Integer deviceId) {
+        List<DeviceBasicDetail> deviceBasicDetails = deviceBasicDetailMapper.selectBaseSensorInfo(deviceId);
+        return deviceBasicDetails.stream().collect(Collectors.toMap(DeviceBasicDetail::getParamName, DeviceBasicDetail -> DeviceBasicDetail));
+    }
+
+    @Override
+    public Map<String, DeviceMessageDetail> getMessageInfo(Integer deviceId) {
+        List<DeviceMessageDetail> deviceMessageDetails = deviceMessageDetailMapper.selectMessageInfo(deviceId);
+        deviceMessageDetails.forEach(deviceMessageDetail -> {
+            String dataType = deviceMessageDetailMapper.selectDataType(deviceMessageDetail.getId());
+            deviceMessageDetail.setParamValue(IotDataCastUtil.commonCast(deviceMessageDetail.getParamValue(), dataType));
+        });
+        return deviceMessageDetails.stream().collect(Collectors.toMap(DeviceMessageDetail::getParamName, Function.identity()));
     }
 }

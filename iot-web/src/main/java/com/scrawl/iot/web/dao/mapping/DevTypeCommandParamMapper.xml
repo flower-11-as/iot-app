@@ -7,11 +7,12 @@
     <result column="param_type" jdbcType="TINYINT" property="paramType" />
     <result column="param_name" jdbcType="VARCHAR" property="paramName" />
     <result column="data_type" jdbcType="VARCHAR" property="dataType" />
+    <result column="show_name" jdbcType="VARCHAR" property="showName" />
     <result column="pos" jdbcType="INTEGER" property="pos" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, command_id, param_type, param_name, data_type, pos, create_time
+    id, command_id, param_type, param_name, data_type, show_name, pos, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -25,11 +26,11 @@
   </delete>
   <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.DevTypeCommandParam">
     insert into t_iot_dev_type_command_param (id, command_id, param_type, 
-      param_name, data_type, pos, 
-      create_time)
-    values (#{id,jdbcType=INTEGER}, #{commandId,jdbcType=INTEGER}, #{paramType,jdbcType=TINYINT},
-      #{paramName,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR}, #{pos,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      param_name, data_type, show_name, 
+      pos, create_time)
+    values (#{id,jdbcType=INTEGER}, #{commandId,jdbcType=INTEGER}, #{paramType,jdbcType=TINYINT}, 
+      #{paramName,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR}, #{showName,jdbcType=VARCHAR}, 
+      #{pos,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DevTypeCommandParam">
     insert into t_iot_dev_type_command_param
@@ -48,6 +49,9 @@
       </if>
       <if test="dataType != null">
         data_type,
+      </if>
+      <if test="showName != null">
+        show_name,
       </if>
       <if test="pos != null">
         pos,
@@ -72,6 +76,9 @@
       <if test="dataType != null">
         #{dataType,jdbcType=VARCHAR},
       </if>
+      <if test="showName != null">
+        #{showName,jdbcType=VARCHAR},
+      </if>
       <if test="pos != null">
         #{pos,jdbcType=INTEGER},
       </if>
@@ -95,6 +102,9 @@
       <if test="dataType != null">
         data_type = #{dataType,jdbcType=VARCHAR},
       </if>
+      <if test="showName != null">
+        show_name = #{showName,jdbcType=VARCHAR},
+      </if>
       <if test="pos != null">
         pos = #{pos,jdbcType=INTEGER},
       </if>
@@ -110,19 +120,20 @@
       param_type = #{paramType,jdbcType=TINYINT},
       param_name = #{paramName,jdbcType=VARCHAR},
       data_type = #{dataType,jdbcType=VARCHAR},
+      show_name = #{showName,jdbcType=VARCHAR},
       pos = #{pos,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByCommandIdAndName" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from t_iot_dev_type_command_param
     where command_id=#{commandId} and param_name=#{name}
   </select>
   <select id="selectByCommandIdAndType" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from t_iot_dev_type_command_param
     where command_id=#{commandId} and param_type = #{type}
   </select>

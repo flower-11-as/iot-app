@@ -103,4 +103,10 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectBaseSensorInfo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_iot_device_basic_detail
+    WHERE `sync_id` = (SELECT MAX(id) FROM `t_iot_device_sync` WHERE device_id=#{deviceId});
+  </select>
 </mapper>
