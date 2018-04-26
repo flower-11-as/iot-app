@@ -3,13 +3,14 @@
 <mapper namespace="com.scrawl.iot.web.dao.mapper.DeviceCommandDetailMapper">
   <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.DeviceCommandDetail">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="commandId" jdbcType="INTEGER" property="commandid" />
+    <result column="command_id" jdbcType="INTEGER" property="commandId" />
     <result column="param_name" jdbcType="VARCHAR" property="paramName" />
     <result column="param_value" jdbcType="VARCHAR" property="paramValue" />
+    <result column="date_type" jdbcType="VARCHAR" property="dateType" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, commandId, param_name, param_value, create_time
+    id, command_id, param_name, param_value, date_type, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -22,10 +23,12 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.DeviceCommandDetail">
-    insert into t_iot_device_command_detail (id, commandId, param_name, 
-      param_value, create_time)
-    values (#{id,jdbcType=INTEGER}, #{commandid,jdbcType=INTEGER}, #{paramName,jdbcType=VARCHAR}, 
-      #{paramValue,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+    insert into t_iot_device_command_detail (id, command_id, param_name, 
+      param_value, date_type, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{commandId,jdbcType=INTEGER}, #{paramName,jdbcType=VARCHAR}, 
+      #{paramValue,jdbcType=VARCHAR}, #{dateType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceCommandDetail">
     insert into t_iot_device_command_detail
@@ -33,14 +36,17 @@
       <if test="id != null">
         id,
       </if>
-      <if test="commandid != null">
-        commandId,
+      <if test="commandId != null">
+        command_id,
       </if>
       <if test="paramName != null">
         param_name,
       </if>
       <if test="paramValue != null">
         param_value,
+      </if>
+      <if test="dateType != null">
+        date_type,
       </if>
       <if test="createTime != null">
         create_time,
@@ -50,14 +56,17 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="commandid != null">
-        #{commandid,jdbcType=INTEGER},
+      <if test="commandId != null">
+        #{commandId,jdbcType=INTEGER},
       </if>
       <if test="paramName != null">
         #{paramName,jdbcType=VARCHAR},
       </if>
       <if test="paramValue != null">
         #{paramValue,jdbcType=VARCHAR},
+      </if>
+      <if test="dateType != null">
+        #{dateType,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -67,14 +76,17 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceCommandDetail">
     update t_iot_device_command_detail
     <set>
-      <if test="commandid != null">
-        commandId = #{commandid,jdbcType=INTEGER},
+      <if test="commandId != null">
+        command_id = #{commandId,jdbcType=INTEGER},
       </if>
       <if test="paramName != null">
         param_name = #{paramName,jdbcType=VARCHAR},
       </if>
       <if test="paramValue != null">
         param_value = #{paramValue,jdbcType=VARCHAR},
+      </if>
+      <if test="dateType != null">
+        date_type = #{dateType,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -84,9 +96,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.DeviceCommandDetail">
     update t_iot_device_command_detail
-    set commandId = #{commandid,jdbcType=INTEGER},
+    set command_id = #{commandId,jdbcType=INTEGER},
       param_name = #{paramName,jdbcType=VARCHAR},
       param_value = #{paramValue,jdbcType=VARCHAR},
+      date_type = #{dateType,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

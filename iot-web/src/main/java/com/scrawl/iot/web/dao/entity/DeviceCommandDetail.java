@@ -5,11 +5,13 @@ import java.util.Date;
 public class DeviceCommandDetail {
     private Integer id;
 
-    private Integer commandid;
+    private Integer commandId;
 
     private String paramName;
 
     private String paramValue;
+
+    private String dateType;
 
     private Date createTime;
 
@@ -21,12 +23,12 @@ public class DeviceCommandDetail {
         this.id = id;
     }
 
-    public Integer getCommandid() {
-        return commandid;
+    public Integer getCommandId() {
+        return commandId;
     }
 
-    public void setCommandid(Integer commandid) {
-        this.commandid = commandid;
+    public void setCommandId(Integer commandId) {
+        this.commandId = commandId;
     }
 
     public String getParamName() {
@@ -43,6 +45,14 @@ public class DeviceCommandDetail {
 
     public void setParamValue(String paramValue) {
         this.paramValue = paramValue;
+    }
+
+    public String getDateType() {
+        return dateType;
+    }
+
+    public void setDateType(String dateType) {
+        this.dateType = dateType;
     }
 
     public Date getCreateTime() {

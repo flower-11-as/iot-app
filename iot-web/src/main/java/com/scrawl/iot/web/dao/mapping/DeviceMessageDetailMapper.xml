@@ -6,10 +6,11 @@
     <result column="message_id" jdbcType="INTEGER" property="messageId" />
     <result column="param_name" jdbcType="VARCHAR" property="paramName" />
     <result column="param_value" jdbcType="VARCHAR" property="paramValue" />
+    <result column="data_type" jdbcType="VARCHAR" property="dataType" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, message_id, param_name, param_value, create_time
+    id, message_id, param_name, param_value, data_type, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -23,9 +24,11 @@
   </delete>
   <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.DeviceMessageDetail">
     insert into t_iot_device_message_detail (id, message_id, param_name, 
-      param_value, create_time)
+      param_value, data_type, create_time
+      )
     values (#{id,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{paramName,jdbcType=VARCHAR}, 
-      #{paramValue,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+      #{paramValue,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceMessageDetail">
     insert into t_iot_device_message_detail
@@ -41,6 +44,9 @@
       </if>
       <if test="paramValue != null">
         param_value,
+      </if>
+      <if test="dataType != null">
+        data_type,
       </if>
       <if test="createTime != null">
         create_time,
@@ -59,6 +65,9 @@
       <if test="paramValue != null">
         #{paramValue,jdbcType=VARCHAR},
       </if>
+      <if test="dataType != null">
+        #{dataType,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -76,6 +85,9 @@
       <if test="paramValue != null">
         param_value = #{paramValue,jdbcType=VARCHAR},
       </if>
+      <if test="dataType != null">
+        data_type = #{dataType,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -87,12 +99,13 @@
     set message_id = #{messageId,jdbcType=INTEGER},
       param_name = #{paramName,jdbcType=VARCHAR},
       param_value = #{paramValue,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectMessageInfo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from t_iot_device_message_detail
     WHERE message_id = (
       SELECT MAX(id) FROM `t_iot_device_message` WHERE device_id=#{deviceId})
