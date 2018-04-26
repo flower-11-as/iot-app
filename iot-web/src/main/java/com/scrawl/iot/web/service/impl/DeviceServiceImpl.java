@@ -4,17 +4,15 @@ import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.request.IotRegDeviceRequest;
 import com.scrawl.iot.paper.http.response.IotDeviceAllResponse;
 import com.scrawl.iot.paper.http.response.IotDeviceResponse;
-import com.scrawl.iot.paper.http.response.IotResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
 import com.scrawl.iot.paper.utils.IotDataCastUtil;
 import com.scrawl.iot.web.dao.entity.*;
 import com.scrawl.iot.web.dao.mapper.*;
-import com.scrawl.iot.web.enums.DelFlagEnum;
 import com.scrawl.iot.web.enums.DeviceSyncTypeEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
-import com.scrawl.iot.web.service.DevTypeService;
 import com.scrawl.iot.web.service.DeviceService;
+import com.scrawl.iot.web.vo.iot.callback.IotDataReportReqVO;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +140,7 @@ public class DeviceServiceImpl implements DeviceService {
         Integer pageNum = 1;
         List<IotDeviceAllResponse.IotDevice> devicesAll = new ArrayList<>();
         Integer size = 0;
-        while(pageNum == 1 || size == 100) {
+        while (pageNum == 1 || size == 100) {
             params.put("pageNum", pageNum);
             IotDeviceAllResponse response = iotHttpService.getDevices(params, header);
             size = response.getDevices().size();
@@ -222,6 +220,54 @@ public class DeviceServiceImpl implements DeviceService {
 
             // 消息详情落地
             deviceData.getServiceData().forEach((k, v) -> addDeviceMessageDetail(deviceMessage.getId(), k, v, devTypeMessage));
+        });
+    }
+
+    @Override
+    public void deviceDataReport(IotDataReportReqVO reqVO) {
+        Device device = deviceMapper.selectByDevSerial(reqVO.getDevSerial());
+        if (null == device) {
+            return;
+        }
+
+        // device sync落地
+        DeviceSync deviceSync = new DeviceSync();
+        deviceSync.setDeviceId(device.getId());
+        deviceSync.setType(DeviceSyncTypeEnum.MANAGER.getType());
+        deviceSync.setCreateTime(new Date());
+        deviceSyncMapper.insertSelective(deviceSync);
+
+//        {'serviceId': 'Battery', 'serviceData': {'batteryLevel': 10}}, //电量
+//        {'serviceId': 'Meter', 'serviceData': {'signalStrength': -11}}, //信号
+
+        List<IotDataReportReqVO.IotDeviceData> serviceData = reqVO.getServiceData();
+        if (null == serviceData || serviceData.size() == 0) {
+            return;
+        }
+
+        serviceData.forEach(deviceData -> {
+            // 落地basic
+            if (("Meter").equals(deviceData.getServiceId())) {
+                addDeviceBasicDetail(device.getId(), deviceSync.getId(), "batteryLevel", deviceData.getServiceData().get("batteryLevel"));
+            } else if (("Battery").equals(deviceData.getServiceId())) {
+                addDeviceBasicDetail(device.getId(), deviceSync.getId(), "signalStrength", deviceData.getServiceData().get("signalStrength"));
+            }
+            // 落地message
+            else {
+                // 消息落地
+                DeviceMessage deviceMessage = new DeviceMessage();
+                deviceMessage.setDeviceId(device.getId());
+                deviceMessage.setSyncId(deviceSync.getId());
+                deviceMessage.setDevTypeMessageId(deviceData.getServiceId());
+                deviceMessage.setCreateTime(new Date());
+                deviceMessageMapper.insertSelective(deviceMessage);
+
+                // 根据message_id, dev_type 获取devTypeMessage
+                DevTypeMessage devTypeMessage = devTypeMessageMapper.selectByDevTypeAndMessageId(device.getDevType(), deviceData.getServiceId());
+
+                // 消息详情落地
+                deviceData.getServiceData().forEach((k, v) -> addDeviceMessageDetail(deviceMessage.getId(), k, v, devTypeMessage));
+            }
         });
     }
 

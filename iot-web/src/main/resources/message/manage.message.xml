@@ -54,6 +54,7 @@
 
     <!--iot-->
     <entry key="IOT10001">未获取到有效授权IoT账户</entry>
+    <entry key="IOT10002">指令响应回调错误</entry>
 
     <!--sys-->
     <entry key="SYS9999">服务器开小差了</entry>

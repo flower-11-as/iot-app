@@ -90,4 +90,11 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByDevSerialAndReqCommandId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_iot_device_command
+    where device_id=(select id from t_iot_device where dev_serial=#{devSerial})
+    and req_command_id = #{commandId}
+  </select>
 </mapper>
