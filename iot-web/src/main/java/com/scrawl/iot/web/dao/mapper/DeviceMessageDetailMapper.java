@@ -18,6 +18,4 @@ public interface DeviceMessageDetailMapper {
     int updateByPrimaryKey(DeviceMessageDetail record);
 
     List<DeviceMessageDetail> selectMessageInfo(Integer deviceId);
-
-    String selectDataType(Integer id);
 }

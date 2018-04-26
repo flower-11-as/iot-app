@@ -110,14 +110,4 @@
     WHERE message_id = (
       SELECT MAX(id) FROM `t_iot_device_message` WHERE device_id=#{deviceId})
   </select>
-  <select id="selectDataType" parameterType="java.lang.Integer" resultType="java.lang.String">
-    SELECT
-    f.`data_type` FROM t_iot_device_message_detail a
-    INNER JOIN `t_iot_device_message` b ON a.`message_id` = b.`id`
-    INNER JOIN `t_iot_device` c ON b.`device_id` = c.`id`
-    INNER JOIN `t_iot_dev_type` d ON c.`dev_type` = d.`dev_type`
-    INNER JOIN `t_iot_dev_type_message` e ON e.`dev_type_id`=d.`id` AND b.`message_id` = e.`message_id`
-    INNER JOIN `t_iot_dev_type_message_param` f ON f.`message_id`=e.`id` AND f.`param_name`=a.`param_name`
-    where a.id=#{id}
-  </select>
 </mapper>

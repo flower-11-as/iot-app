@@ -21,4 +21,6 @@ public interface DevTypeMessageMapper {
     DevTypeMessage selectByTypeIdAndName(@Param("typeId") Integer typeId, @Param("name") String name);
 
     List<DevTypeMessage> selectByTypeId(Integer typeId);
+
+    DevTypeMessage selectByDevTypeAndMessageId(@Param("devType") String devType, @Param("messageId") String messageId);
 }

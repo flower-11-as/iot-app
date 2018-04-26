@@ -57,6 +57,12 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DevTypeMapper devTypeMapper;
 
+    @Autowired
+    private DevTypeMessageMapper devTypeMessageMapper;
+
+    @Autowired
+    private DevTypeMessageParamMapper devTypeMessageParamMapper;
+
     private final String SERVICE_ID_BATTERY = "Battery";
     private final String SERVICE_ID_METER = "Meter";
 
@@ -207,12 +213,15 @@ public class DeviceServiceImpl implements DeviceService {
             DeviceMessage deviceMessage = new DeviceMessage();
             deviceMessage.setDeviceId(finalDevice.getId());
             deviceMessage.setSyncId(deviceSync.getId());
-            deviceMessage.setMessageId(deviceData.getServiceId());
+            deviceMessage.setDevTypeMessageId(deviceData.getServiceId());
             deviceMessage.setCreateTime(new Date());
             deviceMessageMapper.insertSelective(deviceMessage);
 
+            // 根据message_id, dev_type 获取devTypeMessage
+            DevTypeMessage devTypeMessage = devTypeMessageMapper.selectByDevTypeAndMessageId(finalDevice.getDevType(), deviceData.getServiceId());
+
             // 消息详情落地
-            deviceData.getServiceData().forEach((k, v) -> addDeviceMessageDetail(deviceMessage.getId(), k, v));
+            deviceData.getServiceData().forEach((k, v) -> addDeviceMessageDetail(deviceMessage.getId(), k, v, devTypeMessage));
         });
     }
 
@@ -227,10 +236,16 @@ public class DeviceServiceImpl implements DeviceService {
         deviceBasicDetailMapper.insertSelective(deviceBasicDetail);
     }
 
-    private void addDeviceMessageDetail(Integer messageId, String paramName, Object paramValue) {
+    private void addDeviceMessageDetail(Integer messageId, String paramName, Object paramValue, DevTypeMessage devTypeMessage) {
+        // data type, message_id,dev_type
+
         DeviceMessageDetail deviceMessageDetail = new DeviceMessageDetail();
         deviceMessageDetail.setMessageId(messageId);
         deviceMessageDetail.setParamName(paramName);
+        if (null != devTypeMessage) {
+            DevTypeMessageParam devTypeMessageParam = devTypeMessageParamMapper.selectByMessageIdAndName(devTypeMessage.getId(), paramName);
+            deviceMessageDetail.setDataType(Optional.ofNullable(devTypeMessageParam.getDataType()).orElse(null));
+        }
         deviceMessageDetail.setParamValue(paramValue.toString());
         deviceMessageDetail.setCreateTime(new Date());
 
@@ -294,12 +309,15 @@ public class DeviceServiceImpl implements DeviceService {
                 DeviceMessage deviceMessage = new DeviceMessage();
                 deviceMessage.setDeviceId(device.getId());
                 deviceMessage.setSyncId(deviceSync.getId());
-                deviceMessage.setMessageId(deviceData.getServiceId());
+                deviceMessage.setDevTypeMessageId(deviceData.getServiceId());
                 deviceMessage.setCreateTime(new Date());
                 deviceMessageMapper.insertSelective(deviceMessage);
 
+                // 根据message_id, dev_type 获取devTypeMessage
+                DevTypeMessage devTypeMessage = devTypeMessageMapper.selectByDevTypeAndMessageId(device.getDevType(), deviceData.getServiceId());
+
                 // 消息详情落地
-                deviceData.getServiceData().forEach((k, v) -> addDeviceMessageDetail(deviceMessage.getId(), k, v));
+                deviceData.getServiceData().forEach((k, v) -> addDeviceMessageDetail(deviceMessage.getId(), k, v, devTypeMessage));
             }
         });
 
@@ -345,8 +363,7 @@ public class DeviceServiceImpl implements DeviceService {
     public Map<String, DeviceMessageDetail> getMessageInfo(Integer deviceId) {
         List<DeviceMessageDetail> deviceMessageDetails = deviceMessageDetailMapper.selectMessageInfo(deviceId);
         deviceMessageDetails.forEach(deviceMessageDetail -> {
-            String dataType = deviceMessageDetailMapper.selectDataType(deviceMessageDetail.getId());
-            deviceMessageDetail.setParamValue(IotDataCastUtil.commonCast(deviceMessageDetail.getParamValue(), dataType));
+            deviceMessageDetail.setParamValue(IotDataCastUtil.commonCast(deviceMessageDetail.getParamValue(), deviceMessageDetail.getDataType()));
         });
         return deviceMessageDetails.stream().collect(Collectors.toMap(DeviceMessageDetail::getParamName, Function.identity()));
     }

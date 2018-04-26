@@ -102,4 +102,10 @@
     from t_iot_dev_type_message
     where dev_type_id=#{selectByTypeId}
   </select>
+  <select id="selectByDevTypeAndMessageId" resultType="java.lang.Integer">
+    select tm.id
+    from t_iot_dev_type_message tm
+    inner join t_iot_dev_type dt on tm.dev_type_id = dt.id
+    where tm.message_id = #{messageId} and dt.dev_type = #{devType}
+  </select>
 </mapper>

@@ -9,7 +9,7 @@ public class DeviceMessage {
 
     private Integer syncId;
 
-    private String messageId;
+    private String devTypeMessageId;
 
     private Date createTime;
 
@@ -37,12 +37,12 @@ public class DeviceMessage {
         this.syncId = syncId;
     }
 
-    public String getMessageId() {
-        return messageId;
+    public String getDevTypeMessageId() {
+        return devTypeMessageId;
     }
 
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
+    public void setDevTypeMessageId(String devTypeMessageId) {
+        this.devTypeMessageId = devTypeMessageId;
     }
 
     public Date getCreateTime() {

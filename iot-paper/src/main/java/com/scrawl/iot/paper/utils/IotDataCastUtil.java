@@ -59,7 +59,7 @@ public class IotDataCastUtil {
 
         IotTypeEnum typeEnum = IotTypeEnum.findEnumByCode(dataType);
         if (null == typeEnum) {
-            return "";
+            return v.toString();
         }
 
         String s;
@@ -84,12 +84,8 @@ public class IotDataCastUtil {
                 s = stringCast(v);
                 break;
             default:
-                s = null;
+                s = v.toString();
                 break;
-        }
-
-        if (s == null) {
-            return "";
         }
 
         return s;
@@ -141,10 +137,6 @@ public class IotDataCastUtil {
             default:
                 o = null;
                 break;
-        }
-
-        if (o == null) {
-            return "";
         }
 
         return o;
