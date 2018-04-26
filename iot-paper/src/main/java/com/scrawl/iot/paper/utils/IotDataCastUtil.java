@@ -239,9 +239,4 @@ public class IotDataCastUtil {
         }
         return sb.toString();
     }
-
-    public static void main(String[] args) {
-        String a = "3130322E393739343733343131382E37333231343733";
-        System.out.println(a.length());
-    }
 }

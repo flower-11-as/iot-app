@@ -168,7 +168,8 @@ public class DeviceController extends BaseController {
     }
 
     @GetMapping("/command")
-    public String command(@RequestParam("id") Integer id) {
+    public String command(@RequestParam("id") Integer id, Model model) {
+        model.addAttribute("deviceId", id);
         return prefix + "/command";
     }
 

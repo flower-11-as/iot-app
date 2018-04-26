@@ -2,7 +2,7 @@
 var prefix = "/iot-manage/iot/device";
 // ************个性化设置************
 
-$().ready(function () {
+$(function () {
     validateRule();
 });
 

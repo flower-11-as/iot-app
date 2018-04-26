@@ -22,18 +22,17 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <form class="form-horizontal m-t" id="signupForm">
-                                    <input type="hidden" name="deviceId" value="56">
+                                    <input type="hidden" name="deviceId" value="56" th:value="${deviceId}">
                                     <input type="hidden" name="commandId" value="DeviceCmd">
                                     <div class="form-group">
-                                        <label for="Switch1" class="col-sm-2 control-label">开关一：</label>
-                                        <div class="switch col-sm-4 text-center">
-                                            <div class="onoffswitch" style="margin-top:10px;">
-                                                <input id="Switch1" name="Switch1" checked="" type="checkbox" class="onoffswitch-checkbox">
-                                                <label class="onoffswitch-label" for="Switch1">
-                                                    <span class="onoffswitch-inner"></span>
-                                                    <span class="onoffswitch-switch"></span>
-                                                </label>
-                                            </div>
+                                        <label class="col-sm-2 control-label">开关一：</label>
+                                        <div class="controls col-sm-4">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="Switch1" value="on"> 开启
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="Switch1" value="off"> 关闭
+                                            </label>
                                         </div>
 
                                         <label for="Period1" class="col-sm-2 control-label">开关时段一：</label>
@@ -42,15 +41,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="Switch2" class="col-sm-2 control-label">开关二：</label>
-                                        <div class="switch col-sm-4 text-center">
-                                            <div class="onoffswitch"  style="margin-top:10px;">
-                                                <input id="Switch2" name="Switch2" checked="" type="checkbox" class="onoffswitch-checkbox">
-                                                <label class="onoffswitch-label" for="Switch2">
-                                                    <span class="onoffswitch-inner"></span>
-                                                    <span class="onoffswitch-switch"></span>
-                                                </label>
-                                            </div>
+                                        <label class="col-sm-2 control-label">开关二：</label>
+                                        <div class="controls col-sm-4" >
+                                            <label class="radio-inline">
+                                                <input type="radio" name="Switch2" value="on"> 开启
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="Switch2" value="off"> 关闭
+                                            </label>
                                         </div>
 
                                         <label for="Period2" class="col-sm-2 control-label">开关时段二：</label>
@@ -59,26 +57,24 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="SwitchMode1" class="col-sm-2 control-label">开关一控制模式：</label>
-                                        <div class="switch col-sm-4 text-center">
-                                            <div class="onoffswitch"  style="margin-top:10px;">
-                                                <input id="SwitchMode1" name="SwitchMode1" checked="" type="checkbox" class="onoffswitch-checkbox">
-                                                <label class="onoffswitch-label" for="SwitchMode1">
-                                                    <span class="onoffswitch-inner"></span>
-                                                    <span class="onoffswitch-switch"></span>
-                                                </label>
-                                            </div>
+                                        <label class="col-sm-2 control-label">开关一控制模式：</label>
+                                        <div class="controls col-sm-4" >
+                                            <label class="radio-inline">
+                                                <input type="radio" name="SwitchMode1" value="on"> 开启
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="SwitchMode1" value="off"> 关闭
+                                            </label>
                                         </div>
 
-                                        <label for="SwitchMode2" class="col-sm-2 control-label">开关二控制模式：</label>
-                                        <div class="col-sm-4">
-                                            <div class="onoffswitch"  style="margin-top:10px;">
-                                                <input id="SwitchMode2" name="SwitchMode2" checked="" type="checkbox" class="onoffswitch-checkbox">
-                                                <label class="onoffswitch-label" for="SwitchMode2">
-                                                    <span class="onoffswitch-inner"></span>
-                                                    <span class="onoffswitch-switch"></span>
-                                                </label>
-                                            </div>
+                                        <label class="col-sm-2 control-label">开关二控制模式：</label>
+                                        <div class="controls col-sm-4" >
+                                            <label class="radio-inline">
+                                                <input type="radio" name="SwitchMode2" value="on"> 开启
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="SwitchMode2" value="off"> 关闭
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="form-group">
