@@ -37,4 +37,6 @@ public interface AccountService {
     Account getAndAuthAccount(String serverId);
 
     List<Account> getManagerAccountList(Integer managerId);
+
+    boolean subscribe(Account account);
 }

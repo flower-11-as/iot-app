@@ -2,8 +2,11 @@ package com.scrawl.iot.web.service.impl;
 
 import com.scrawl.iot.paper.exception.IotHttpException;
 import com.scrawl.iot.paper.exception.PaperHttpException;
+import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.request.IotLoginRequest;
+import com.scrawl.iot.paper.http.request.IotSubscribeRequest;
 import com.scrawl.iot.paper.http.response.IotLoginResponse;
+import com.scrawl.iot.paper.http.response.IotResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
 import com.scrawl.iot.web.dao.entity.Account;
 import com.scrawl.iot.web.dao.entity.DevType;
@@ -166,5 +169,23 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<Account> getManagerAccountList(Integer managerId) {
         return accountMapper.selectManagerAccountList(managerId);
+    }
+
+    @Override
+    public boolean subscribe(Account account) {
+        Account authAccount = get(account.getId());
+        authAccount = getAndAuthAccount(authAccount.getServerId());
+
+        IotHeader header = new IotHeader();
+        header.setServerId(authAccount.getServerId());
+        header.setAccessToken(authAccount.getToken());
+
+        IotSubscribeRequest request = new IotSubscribeRequest();
+        String callbackUrl = account.getSubscribeUrl() + "/account" + account.getId();
+        request.setCallbackUrl(callbackUrl);
+        IotResponse response = iotHttpService.subscribe(header, request);
+
+        account.setSubscribeUrl(callbackUrl);
+        return accountMapper.updateByPrimaryKeySelective(account) > 0;
     }
 }

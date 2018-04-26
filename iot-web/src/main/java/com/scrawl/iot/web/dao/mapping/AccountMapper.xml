@@ -8,14 +8,15 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="token" jdbcType="VARCHAR" property="token" />
     <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="subscribe_url" jdbcType="VARCHAR" property="subscribeUrl" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_manager" jdbcType="INTEGER" property="createManager" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="update_manager" jdbcType="INTEGER" property="updateManager" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, server_id, `password`, `status`, token, last_login_time, create_time, create_manager, 
-    update_time, update_manager
+    id, server_id, `password`, `status`, token, last_login_time, subscribe_url, create_time, 
+    create_manager, update_time, update_manager
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -30,12 +31,12 @@
   <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.Account">
     insert into t_iot_account (id, server_id, `password`, 
       `status`, token, last_login_time, 
-      create_time, create_manager, update_time, 
-      update_manager)
+      subscribe_url, create_time, create_manager, 
+      update_time, update_manager)
     values (#{id,jdbcType=INTEGER}, #{serverId,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{status,jdbcType=TINYINT}, #{token,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateManager,jdbcType=INTEGER})
+      #{subscribeUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateManager,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.Account">
     insert into t_iot_account
@@ -57,6 +58,9 @@
       </if>
       <if test="lastLoginTime != null">
         last_login_time,
+      </if>
+      <if test="subscribeUrl != null">
+        subscribe_url,
       </if>
       <if test="createTime != null">
         create_time,
@@ -90,6 +94,9 @@
       <if test="lastLoginTime != null">
         #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="subscribeUrl != null">
+        #{subscribeUrl,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -122,6 +129,9 @@
       <if test="lastLoginTime != null">
         last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="subscribeUrl != null">
+        subscribe_url = #{subscribeUrl,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -144,6 +154,7 @@
       `status` = #{status,jdbcType=TINYINT},
       token = #{token,jdbcType=VARCHAR},
       last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      subscribe_url = #{subscribeUrl,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_manager = #{createManager,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -171,10 +182,10 @@
   </sql>
   <select id="selectListBySelective" parameterType="com.scrawl.iot.web.dao.entity.Account" resultMap="BaseResultMap">
     select
-      <include refid="Base_Column_List"/>
+      <include refid="Base_Column_List" />
     from t_iot_account
     where 1=1
-    <include refid="select_id_where"/>
+    <include refid="select_id_where" />
   </select>
   <sql id="select_id_where">
     <if test="serverId != null and serverId != ''">
@@ -185,24 +196,24 @@
     </if>
   </sql>
   <sql id="Alias_Column_List">
-    a.id, a.server_id as serverId, a.`password`, a.`status`, a.token, a.last_login_time as lastLoginTime,
+    a.id, a.server_id as serverId, a.`password`, a.`status`, a.token, a.last_login_time as lastLoginTime, a.subscribe_url as subscribeUrl,
     a.create_time as createTime, a.create_manager as createManager, a.update_time as updateTime, a.update_manager as updateManager
   </sql>
   <select id="selectAccountListByManager" parameterType="int" resultType="com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO">
     SELECT
-      <include refid="Alias_Column_List"/> ,
+      <include refid="Alias_Column_List" /> ,
     IF(
     (SELECT id FROM t_sys_manager_account ma WHERE ma.account_id = a.`id` AND ma.manager_id=#{managerId}) IS NOT NULL, 'true', 'false') AS accountSign
     FROM t_iot_account a
   </select>
   <select id="selectByServerId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
-      <include refid="Base_Column_List"/>
+      <include refid="Base_Column_List" />
     from t_iot_account where server_id=#{serverId}
   </select>
   <select id="selectManagerAccountList" parameterType="java.lang.Integer" resultType="com.scrawl.iot.web.dao.entity.Account">
     select
-      <include refid="Alias_Column_List"/>
+      <include refid="Alias_Column_List" />
     from t_iot_account a
     inner join t_sys_manager_account mr on a.id = mr.account_id
     where mr.manager_id=#{managerId}

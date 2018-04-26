@@ -15,6 +15,8 @@ public class Account {
 
     private Date lastLoginTime;
 
+    private String subscribeUrl;
+
     private Date createTime;
 
     private Integer createManager;
@@ -69,6 +71,14 @@ public class Account {
 
     public void setLastLoginTime(Date lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getSubscribeUrl() {
+        return subscribeUrl;
+    }
+
+    public void setSubscribeUrl(String subscribeUrl) {
+        this.subscribeUrl = subscribeUrl;
     }
 
     public Date getCreateTime() {

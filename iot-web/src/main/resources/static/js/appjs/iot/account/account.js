@@ -26,6 +26,10 @@ var localColumns = [
         }
     },
     {
+        field: 'subscribeUrl', // 列字段名
+        title: '订阅地址' // 列标题
+    },
+    {
         field: 'lastLoginTime', // 列字段名
         title: '最近登录时间' // 列标题
     },
@@ -34,16 +38,19 @@ var localColumns = [
         field: 'id',
         align: 'center',
         formatter: function (value, row, index) {
-            var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="#" title="删除"  mce_href="#" onclick="remove(\''
-                + row.id
-                + '\')"><i class="fa fa-remove"></i></a> ';
+            // var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="#" title="删除"  mce_href="#" onclick="remove(\''
+            //     + row.id
+            //     + '\')"><i class="fa fa-remove"></i></a> ';
             var f = '<a class="btn btn-success btn-sm ' + s_resetPwd_h + '" href="#" title="重置密码"  mce_href="#" onclick="resetPwd(\''
                 + row.id
                 + '\')"><i class="fa fa-key"></i></a> ';
             var g = '<a class="btn btn-info btn-sm ' + s_resetAuth_h + '" href="#" title="刷新授权"  mce_href="#" onclick="resetAuth(\''
                 + row.id
                 + '\')"><i class="fa fa-user-plus"></i></a> ';
-            return f + g + d;
+            var h = '<a class="btn btn-warning btn-sm ' + s_subscribe_h + '" href="#" title="注册订阅地址"  mce_href="#" onclick="subscribe(\''
+                + row.id
+                + '\')"><i class="fa fa-camera-retro"></i></a> ';
+            return f + g + h;
         }
     }];
 var localPageName = "账户";
@@ -180,4 +187,16 @@ function resetAuth(id) {
             }
         });
     })
+}
+
+// 订阅地址
+function subscribe(id) {
+    layer.open({
+        type: 2,
+        title: '注册订阅地址',
+        maxmin: true,
+        shadeClose: false, // 点击遮罩关闭层
+        area: ['400px', '260px'],
+        content: prefix + '/subscribe/' + id // iframe的url
+    });
 }

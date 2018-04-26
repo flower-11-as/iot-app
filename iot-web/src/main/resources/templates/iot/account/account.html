@@ -36,6 +36,7 @@
             var s_remove_h = 'hidden';
             var s_resetPwd_h = 'hidden';
             var s_resetAuth_h = 'hidden';
+            var s_subscribe_h = 'hidden';
         </script>
     </div>
     <div shiro:hasPermission="iot:account:remove">
@@ -51,6 +52,11 @@
     <div shiro:hasPermission="iot:account:resetAuth">
         <script type="text/javascript">
             s_resetAuth_h = '';
+        </script>
+    </div>
+    <div shiro:hasPermission="iot:account:subscribe">
+        <script type="text/javascript">
+            s_subscribe_h = '';
         </script>
     </div>
 

@@ -122,4 +122,20 @@ public class AccountController extends BaseController {
         }
         return R.ok();
     }
+
+    @GetMapping("/subscribe/{id}")
+    public String subscribe(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("id", id);
+        return prefix + "/subscribe";
+    }
+
+    @PostMapping("/subscribe")
+    @ResponseBody
+    public R subscribe(Account account) {
+        account.setUpdateManager(getManagerId());
+        account.setUpdateTime(new Date());
+
+        accountService.subscribe(account);
+        return R.ok();
+    }
 }
