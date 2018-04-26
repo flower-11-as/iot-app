@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include::header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <!--ibox-->
+            <div class="ibox">
+                <!--ibox-title-->
+                <div class="ibox-title" style="padding-bottom: 0;">
+                    <h3 class="text-center">MyLamp指令集</h3>
+                    <div class="gg-nav">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#command_info" data-toggle="tab">DeviceCmd</a></li>、
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="ibox-content tab-pane fade in active" id="command_info">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <form class="form-horizontal m-t" id="signupForm">
+                                    <input type="hidden" name="deviceId" value="56">
+                                    <input type="hidden" name="commandId" value="DeviceCMD">
+                                    <div class="form-group">
+                                        <label for="Switch1" class="col-sm-2 control-label">开关一：</label>
+                                        <div class="switch col-sm-4 text-center">
+                                            <div class="onoffswitch" style="margin-top:10px;">
+                                                <input id="Switch1" name="Switch1" checked="" type="checkbox" class="onoffswitch-checkbox">
+                                                <label class="onoffswitch-label" for="Switch1">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <label for="Period1" class="col-sm-2 control-label">开关时段一：</label>
+                                        <div class="col-sm-4">
+                                            <input id="Period1" name="Period1" class="form-control" type="text" value="09012101">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Switch2" class="col-sm-2 control-label">开关二：</label>
+                                        <div class="switch col-sm-4 text-center">
+                                            <div class="onoffswitch"  style="margin-top:10px;">
+                                                <input id="Switch2" name="Switch2" checked="" type="checkbox" class="onoffswitch-checkbox">
+                                                <label class="onoffswitch-label" for="Switch2">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <label for="Period2" class="col-sm-2 control-label">开关时段二：</label>
+                                        <div class="col-sm-4">
+                                            <input id="Period2" name="Period2" class="form-control" type="text" value="09022102">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SwitchMode1" class="col-sm-2 control-label">开关一控制模式：</label>
+                                        <div class="switch col-sm-4 text-center">
+                                            <div class="onoffswitch"  style="margin-top:10px;">
+                                                <input id="SwitchMode1" name="SwitchMode1" checked="" type="checkbox" class="onoffswitch-checkbox">
+                                                <label class="onoffswitch-label" for="SwitchMode1">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <label for="SwitchMode2" class="col-sm-2 control-label">开关二控制模式：</label>
+                                        <div class="col-sm-4">
+                                            <div class="onoffswitch"  style="margin-top:10px;">
+                                                <input id="SwitchMode2" name="SwitchMode2" checked="" type="checkbox" class="onoffswitch-checkbox">
+                                                <label class="onoffswitch-label" for="SwitchMode2">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="GPS" class="col-sm-2 control-label">GPS：</label>
+                                        <div class="col-sm-10">
+                                            <input id="GPS" name="GPS" class="form-control" type="text" value="140.979473448.75534124">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="GeneralDataBuffer" class="col-sm-2 control-label">通用数据通道：</label>
+                                        <div class="col-sm-10">
+                                            <input id="GeneralDataBuffer" name="GeneralDataBuffer" class="form-control imput-lg"
+                                                   type="text" value="no data">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-8 col-sm-offset-3">
+                                            <button type="submit" class="btn btn-primary">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/iot-manage/js/appjs/iot/device/command.js">
+</script>
+</body>
+</html>

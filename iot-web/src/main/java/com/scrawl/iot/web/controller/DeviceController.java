@@ -167,8 +167,15 @@ public class DeviceController extends BaseController {
         return R.ok();
     }
 
+    @GetMapping("/command")
+    public String command(@RequestParam("id") Integer id) {
+        return prefix + "/command";
+    }
+
     @PostMapping("/sendCommand")
-    public R sendCommand(@RequestBody Map<String, Object> command) {
+    @ResponseBody
+    public R sendCommand(@RequestParam Map<String, Object> command, @RequestParam Integer deviceId, @RequestParam String commandId) {
+
         return R.ok();
     }
 }

@@ -3,6 +3,7 @@ package com.scrawl.iot.web;
 import com.alibaba.fastjson.JSON;
 import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.request.IotLoginRequest;
+import com.scrawl.iot.paper.http.request.IotSubscribeRequest;
 import com.scrawl.iot.paper.http.response.*;
 import com.scrawl.iot.paper.http.service.IotHttpService;
 import com.scrawl.iot.web.service.DevTypeService;
@@ -116,6 +117,42 @@ public class HttpClientTest {
         Map<String, Object> params = new HashMap<>();
         params.put("devSerial", "test123");
         IotResponse response = iotHttpService.delDevice(params, header);
+        System.out.println(JSON.toJSONString(response));
+    }
+
+    @Test
+    public void querySubscribe() {
+        IotHeader header = new IotHeader();
+        header.setServerId("jiayingdev01");
+        header.setAccessToken("e5d3cc9b1557bac0cfd95a895e02eb5a");
+
+        Map<String, Object> params = new HashMap<>();
+//        params.put("devSerial", "test123");
+        IotQuerySubscribeResponse response = iotHttpService.querySubscribe(params, header);
+        System.out.println(JSON.toJSONString(response));
+    }
+
+    @Test
+    public void unSubscribe() {
+        IotHeader header = new IotHeader();
+        header.setServerId("jiayingdev01");
+        header.setAccessToken("e5d3cc9b1557bac0cfd95a895e02eb5a");
+
+        Map<String, Object> params = new HashMap<>();
+//        params.put("devSerial", "test123");
+        IotResponse response = iotHttpService.unSubscribe(params, header);
+        System.out.println(JSON.toJSONString(response));
+    }
+
+    @Test
+    public void subscribe() {
+        IotHeader header = new IotHeader();
+        header.setServerId("jiayingdev01");
+        header.setAccessToken("e5d3cc9b1557bac0cfd95a895e02eb5a");
+
+        IotSubscribeRequest request = new IotSubscribeRequest();
+        request.setCallbackUrl("http://104.224.159.254/iot/callback");
+        IotResponse response = iotHttpService.subscribe(header, request);
         System.out.println(JSON.toJSONString(response));
     }
 }

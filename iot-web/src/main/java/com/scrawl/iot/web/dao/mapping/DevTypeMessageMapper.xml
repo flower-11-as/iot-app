@@ -102,8 +102,8 @@
     from t_iot_dev_type_message
     where dev_type_id=#{selectByTypeId}
   </select>
-  <select id="selectByDevTypeAndMessageId" resultType="java.lang.Integer">
-    select tm.id
+  <select id="selectByDevTypeAndMessageId" resultType="com.scrawl.iot.web.dao.entity.DevTypeMessage">
+    select tm.id, tm.dev_type_id as devTypeId, tm.message_id as messageId, tm.message_name as messageName, tm.create_time as createTime
     from t_iot_dev_type_message tm
     inner join t_iot_dev_type dt on tm.dev_type_id = dt.id
     where tm.message_id = #{messageId} and dt.dev_type = #{devType}

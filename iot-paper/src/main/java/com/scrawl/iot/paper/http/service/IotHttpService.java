@@ -5,6 +5,7 @@ import com.scrawl.iot.paper.http.constans.IotConstant;
 import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.request.IotLoginRequest;
 import com.scrawl.iot.paper.http.request.IotRegDeviceRequest;
+import com.scrawl.iot.paper.http.request.IotSubscribeRequest;
 import com.scrawl.iot.paper.http.response.*;
 
 import java.util.HashMap;
@@ -72,6 +73,24 @@ public class IotHttpService {
     public IotResponse delDevice(Map<String, Object> urlParams, IotHeader header) {
         return iotHttpClient.doDelete(withUrlParams(IotConstant.DEL_DEVICE, urlParams), header,
                 null, IotResponse.class);
+    }
+
+    // IoT查询订阅地址
+    public IotQuerySubscribeResponse querySubscribe(Map<String, Object> urlParams, IotHeader header) {
+        return iotHttpClient.doGet(withUrlParams(IotConstant.QUERY_SUBSCRIBE, urlParams), header,
+                null, IotQuerySubscribeResponse.class);
+    }
+
+    // IoT查询订阅地址
+    public IotResponse unSubscribe(Map<String, Object> urlParams, IotHeader header) {
+        return iotHttpClient.doDelete(withUrlParams(IotConstant.UN_SUBSCRIBE, urlParams), header,
+                null, IotResponse.class);
+    }
+
+    // IoT注册订阅地址
+    public IotResponse subscribe(IotHeader header, IotSubscribeRequest request) {
+        return iotHttpClient.doPost(IotConstant.SUBSCRIBE, header,
+                request, IotResponse.class);
     }
 
     private String withUrlParams(String url, Map<String, Object> urlParams) {

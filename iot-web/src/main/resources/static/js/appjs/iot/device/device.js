@@ -42,7 +42,10 @@ var localColumns = [
             var h = '<a class="btn btn-warning btn-sm ' + s_syncDevice_h + '" href="#" title="同步设备"  mce_href="#" onclick="syncDevice(\''
                 + row.id
                 + '\')"><i class="fa fa-refresh"></i></a> ';
-            return f + h + g;
+            var i = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="下发指令"  mce_href="#" onclick="command(\''
+                + row.id
+                + '\')"><i class="fa fa-cloud-upload"></i></a> ';
+            return f + i + h + g;
         }
     }];
 var localPageName = "设备";
@@ -223,3 +226,14 @@ function syncDevice(id) {
     })
 }
 
+function command(id) {
+    // iframe层
+    layer.open({
+        type: 2,
+        title: localPageName + "指令信息",
+        maxmin: true,
+        shadeClose: false, // 点击遮罩关闭层
+        area: ['800px', '600px'],
+        content: prefix + '/command?id=' + id
+    });
+}
