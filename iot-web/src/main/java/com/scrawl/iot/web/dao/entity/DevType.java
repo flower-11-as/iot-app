@@ -11,6 +11,8 @@ public class DevType {
 
     private Byte delFlag;
 
+    private String alarmService;
+
     private Date createTime;
 
     public Integer getId() {
@@ -43,6 +45,14 @@ public class DevType {
 
     public void setDelFlag(Byte delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public String getAlarmService() {
+        return alarmService;
+    }
+
+    public void setAlarmService(String alarmService) {
+        this.alarmService = alarmService;
     }
 
     public Date getCreateTime() {

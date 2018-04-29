@@ -2,6 +2,7 @@ package com.scrawl.iot.web.dao.mapper;
 
 import com.scrawl.iot.web.dao.entity.DevType;
 import com.scrawl.iot.web.vo.iot.devType.DevTypeListReqVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,5 +25,5 @@ public interface DevTypeMapper {
 
     int selectPageCount(DevTypeListReqVO reqVO);
 
-    DevType selectByDevType(String devType);
+    DevType selectByServerIdAndDevType(@Param("serverId") String serverId, @Param("devType") String devType);
 }

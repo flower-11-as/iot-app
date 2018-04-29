@@ -91,7 +91,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public void save(Device device) {
         // TODO:调用iot接口
-        DevType devType = devTypeMapper.selectByDevType(device.getDevType());
+        DevType devType = devTypeMapper.selectByServerIdAndDevType(device.getServerId(), device.getDevType());
 
         Account account = accountService.getAndAuthAccount(devType.getServerId());
         if (null == account) {
@@ -415,7 +415,7 @@ public class DeviceServiceImpl implements DeviceService {
         header.setAccessToken(account.getToken());
 
         DevTypeCommand devTypeCommand = devTypeCommandMapper.selectByTypeIdAndCommandId(
-                devTypeMapper.selectByDevType(device.getDevType()).getId(), commandId);
+                devTypeMapper.selectByServerIdAndDevType(account.getServerId(), device.getDevType()).getId(), commandId);
         command.forEach((k, v) -> {
             DevTypeCommandParam commandParam = devTypeCommandParamMapper.selectByCommandIdAndName(devTypeCommand.getId(), k);
             command.put(k, IotDataCastUtil.commonReversion(v.toString(), commandParam.getDataType()));

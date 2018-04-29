@@ -23,6 +23,10 @@ public class ApplicationContextHelper implements ApplicationContextAware {
         return applicationContext.getBean(type);
     }
 
+    public static <T> T getBean(String name) {
+        return (T) applicationContext.getBean(name);
+    }
+
     public static <T> Map<String, T> getBeansOfType(Class<T> type) {
         return applicationContext.getBeansOfType(type);
     }
