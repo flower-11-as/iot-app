@@ -22,7 +22,7 @@
     is_concurrent, description, create_manager, create_time, update_manager, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_sys_task
     where id = #{id,jdbcType=BIGINT}
@@ -38,7 +38,7 @@
       description, create_manager, create_time, 
       update_manager, update_time)
     values (#{id,jdbcType=BIGINT}, #{cronExpression,jdbcType=VARCHAR}, #{jobName,jdbcType=VARCHAR}, 
-      #{jobGroup,jdbcType=VARCHAR}, #{jobStatus,jdbcType=VARCHAR}, #{springBean,jdbcType=VARCHAR}, 
+      #{jobGroup,jdbcType=VARCHAR}, #{jobStatus,jdbcType=VARCHAR}, #{springBean,jdbcType=VARCHAR},
       #{beanClass,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, #{isConcurrent,jdbcType=TINYINT}, 
       #{description,jdbcType=VARCHAR}, #{createManager,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateManager,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP})
@@ -196,4 +196,35 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.sys.job.JobListReqVO" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_task
+    where 1=1
+    <include refid="select_page_where"/>
+    limit #{offset}, #{limit}
+  </select>
+  <select id="selectCountList" parameterType="com.scrawl.iot.web.vo.sys.job.JobListReqVO" resultType="java.lang.Integer">
+    select count(*)
+    from t_sys_task
+    where 1=1
+    <include refid="select_page_where"/>
+  </select>
+  <sql id="select_page_where">
+    <if test="jobName != null and jobName != ''">
+      and job_name = #{jobName}
+    </if>
+  </sql>
+  <select id="selectBySelective" parameterType="com.scrawl.iot.web.dao.entity.Task" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sys_task
+    where 1=1
+    <include refid="select_list_where"/>
+  </select>
+  <sql id="select_list_where">
+    <if test="jobName != null and jobName != ''">
+      and job_name = #{jobName}
+    </if>
+  </sql>
 </mapper>

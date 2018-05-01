@@ -52,6 +52,12 @@
     <entry key="SYS90002">添加IoT设备错误</entry>
     <entry key="SYS90003">删除IoT设备错误</entry>
 
+    <!--job-->
+    <entry key="SYS11001">添加job错误</entry>
+    <entry key="SYS11002">编辑job错误</entry>
+    <entry key="SYS11003">删除job错误</entry>
+    <entry key="SYS11004">停止启动job错误</entry>
+
     <!--iot-->
     <entry key="IOT10001">未获取到有效授权IoT账户</entry>
     <entry key="IOT10002">指令响应回调错误</entry>

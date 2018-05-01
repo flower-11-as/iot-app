@@ -12,10 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @title: QuartzManager.java
- * @description: 计划任务管理
- */
 @Service
 @Slf4j
 public class QuartzManager {
@@ -26,14 +22,13 @@ public class QuartzManager {
     /**
      * 添加任务
      *
-     * @param job
+     * @param job 任务
      */
     public void addJob(Task job) {
         try {
             // 创建jobDetail实例，绑定Job实现类
             // 指明job的名称，所在组的名称，以及绑定job类
-
-            Class<? extends Job> jobClass = (Class<? extends Job>) (Class.forName(job.getBeanClass()).newInstance().getClass());
+            Class<? extends Job> jobClass = (Class<? extends Job>) Class.forName(job.getBeanClass());
             JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(job.getJobName(), job.getJobGroup())// 任务名称和组构成任务key
                     .build();
             // 定义调度触发规则
@@ -48,7 +43,7 @@ public class QuartzManager {
                 scheduler.start();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("添加job异常", e);
         }
     }
 
@@ -142,7 +137,6 @@ public class QuartzManager {
     public void deleteJob(Task scheduleJob) throws SchedulerException {
         JobKey jobKey = JobKey.jobKey(scheduleJob.getJobName(), scheduleJob.getJobGroup());
         scheduler.deleteJob(jobKey);
-
     }
 
     /**
