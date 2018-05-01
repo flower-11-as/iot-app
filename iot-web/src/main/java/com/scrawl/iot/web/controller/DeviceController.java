@@ -188,4 +188,26 @@ public class DeviceController extends BaseController {
         deviceService.sendCommand(command, deviceId, commandId);
         return R.ok();
     }
+
+    @GetMapping("/alarmConfig/{id}")
+    public String alarmConfig(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("device", deviceService.get(id));
+        model.addAttribute("alarmConfigs", deviceService.getAlarmConfig(id));
+        return prefix + "/alarmConfig";
+    }
+
+    @PostMapping("/saveAlarmConfig")
+    @ResponseBody
+    public R saveAlarmConfig(@RequestParam Map<String, String> params) {
+        try {
+            Integer deviceId = Integer.valueOf(params.get("deviceId"));
+            params.remove("deviceId");
+
+            deviceService.saveAlarmConfig(deviceId, params, getManagerId());
+        } catch (Exception e) {
+            log.error("保存设备预警配置异常：", e);
+            throw new BizException("SYS90004");
+        }
+        return R.ok();
+    }
 }

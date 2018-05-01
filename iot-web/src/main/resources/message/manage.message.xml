@@ -51,6 +51,7 @@
     <entry key="SYS90001">同步IoT设备错误</entry>
     <entry key="SYS90002">添加IoT设备错误</entry>
     <entry key="SYS90003">删除IoT设备错误</entry>
+    <entry key="SYS90004">保存设备预警配置错误</entry>
 
     <!--job-->
     <entry key="SYS11001">添加job错误</entry>

@@ -14,10 +14,13 @@ import com.scrawl.iot.web.enums.DeviceSyncTypeEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
 import com.scrawl.iot.web.service.DeviceService;
+import com.scrawl.iot.web.service.ParamService;
 import com.scrawl.iot.web.vo.iot.callback.IotDataReportReqVO;
+import com.scrawl.iot.web.vo.iot.device.DeviceAlarmConfigVO;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
 import com.scrawl.iot.web.vo.iot.device.DeviceListRespVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,6 +81,12 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Autowired
     private DeviceExtMapper deviceExtMapper;
+
+    @Autowired
+    private ParamService paramService;
+
+    @Autowired
+    private DeviceAlarmConfigMapper deviceAlarmConfigMapper;
 
     private final String SERVICE_ID_BATTERY = "Battery";
     private final String SERVICE_ID_METER = "Meter";
@@ -483,5 +492,67 @@ public class DeviceServiceImpl implements DeviceService {
             deviceMessageDetail.setParamValue(IotDataCastUtil.commonCast(deviceMessageDetail.getParamValue(), deviceMessageDetail.getDataType()));
         });
         return deviceMessageDetails.stream().collect(Collectors.toMap(DeviceMessageDetail::getParamName, Function.identity()));
+    }
+
+    @Override
+    public List<DeviceAlarmConfigVO> getAlarmConfig(Integer deviceId) {
+        Device device = get(deviceId);
+
+        DevType devType = devTypeMapper.selectByServerIdAndDevType(device.getServerId(), device.getDevType());
+
+        Param record = new Param();
+        record.setGroup("dev-type-alarm-" + devType.getId());
+        List<Param> params = paramService.list(record);
+
+        List<DeviceAlarmConfigVO> alarmConfigs = new ArrayList<>();
+        params.forEach(param -> {
+            DeviceAlarmConfigVO alarmConfig = new DeviceAlarmConfigVO();
+            alarmConfig.setDescription(param.getDescription());
+            alarmConfig.setParamKey(param.getParamKey());
+            alarmConfig.setSysParamValue(param.getParamValue());
+
+            DeviceAlarmConfig deviceAlarmConfig = deviceAlarmConfigMapper.selectByDeviceIdAndParamKey(deviceId, param.getParamKey());
+            alarmConfig.setParamValue(null != deviceAlarmConfig ? deviceAlarmConfig.getParamValue() : "");
+
+            alarmConfigs.add(alarmConfig);
+        });
+
+        return alarmConfigs;
+    }
+
+    @Override
+    @Transactional
+    public void saveAlarmConfig(Integer deviceId, Map<String, String> params, Integer managerId) {
+        if (null == params) {
+            return;
+        }
+
+        Date now = new Date();
+        params.forEach((k, v) -> {
+            Param param = paramService.get(k);
+            if (null == param || StringUtils.isEmpty(v)) {
+                return;
+            }
+
+            DeviceAlarmConfig deviceAlarmConfig = deviceAlarmConfigMapper.selectByDeviceIdAndParamKey(deviceId, k);
+            if (null == deviceAlarmConfig) {
+                deviceAlarmConfig = new DeviceAlarmConfig();
+                deviceAlarmConfig.setDeviceId(deviceId);
+                deviceAlarmConfig.setParamKey(k);
+                deviceAlarmConfig.setParamValue(v);
+                deviceAlarmConfig.setDescription(param.getDescription());
+                deviceAlarmConfig.setCreateManager(managerId);
+                deviceAlarmConfig.setCreateTime(now);
+                deviceAlarmConfig.setUpdateTime(now);
+
+                deviceAlarmConfigMapper.insertSelective(deviceAlarmConfig);
+            } else {
+                deviceAlarmConfig.setParamValue(v);
+                deviceAlarmConfig.setUpdateManager(managerId);
+                deviceAlarmConfig.setUpdateTime(now);
+
+                deviceAlarmConfigMapper.updateByPrimaryKeySelective(deviceAlarmConfig);
+            }
+        });
     }
 }

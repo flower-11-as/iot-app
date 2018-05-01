@@ -1,9 +1,11 @@
 package com.scrawl.iot.web.service;
 
 import com.scrawl.iot.web.dao.entity.Device;
+import com.scrawl.iot.web.dao.entity.DeviceAlarmConfig;
 import com.scrawl.iot.web.dao.entity.DeviceBasicDetail;
 import com.scrawl.iot.web.dao.entity.DeviceMessageDetail;
 import com.scrawl.iot.web.vo.iot.callback.IotDataReportReqVO;
+import com.scrawl.iot.web.vo.iot.device.DeviceAlarmConfigVO;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
 import com.scrawl.iot.web.vo.iot.device.DeviceListRespVO;
 
@@ -39,4 +41,8 @@ public interface DeviceService {
     Map<String, DeviceMessageDetail> getMessageInfo(Integer deviceId);
 
     void deviceDataReport(IotDataReportReqVO reqVO);
+
+    List<DeviceAlarmConfigVO> getAlarmConfig(Integer deviceId);
+
+    void saveAlarmConfig(Integer deviceId, Map<String, String> params, Integer managerId);
 }

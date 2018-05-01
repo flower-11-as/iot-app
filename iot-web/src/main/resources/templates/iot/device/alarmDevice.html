@@ -35,6 +35,7 @@
         var s_view_h = 'hidden';
         var s_syncDevice_h = 'hidden';
         var s_command_h = 'hidden';
+        var s_alarmConfig_h = 'hidden';
     </script>
 </div>
 <div shiro:hasPermission="iot:device:view">
@@ -50,6 +51,11 @@
 <div shiro:hasPermission="iot:device:command">
     <script type="text/javascript">
         s_command_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="iot:device:alarmConfig">
+    <script type="text/javascript">
+        s_alarmConfig_h = '';
     </script>
 </div>
 <div th:include="include::footer"></div>

@@ -139,4 +139,10 @@
       update_manager = #{updateManager,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByDeviceIdAndParamKey" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_iot_device_alarm_config
+    where device_id = #{deviceId} and param_key = #{paramKey}
+  </select>
 </mapper>

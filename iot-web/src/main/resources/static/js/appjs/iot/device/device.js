@@ -41,19 +41,23 @@ var localColumns = [
             // var e = '<a class="btn btn-success btn-sm ' + s_edit_h + '" href="#" title="编辑设备"  mce_href="#" onclick="edit(\''
             //     + row.id
             //     + '\')"><i class="fa fa-edit"></i></a> ';
-            var f = '<a class="btn btn-info btn-sm ' + s_view_h + '" href="#" title="查看设备"  mce_href="#" onclick="info(\''
+            var a = '<a class="btn btn-info btn-sm ' + s_view_h + '" href="#" title="查看设备"  mce_href="#" onclick="info(\''
                 + row.id
-                + '\')"><i class="fa fa-camera-retro"></i></a> ';
-            var g = '<a class="btn btn-danger btn-sm ' + s_remove_h + '" href="#" title="删除设备"  mce_href="#" onclick="remove(\''
+                + '\')">查看</a> ';
+            var b = '<a class="btn btn-info btn-sm ' + s_alarmConfig_h + '" href="#" title="预警配置"  mce_href="#" onclick="alarmConfig(\''
                 + row.id
-                + '\')"><i class="fa fa-remove"></i></a> ';
-            var h = '<a class="btn btn-warning btn-sm ' + s_syncDevice_h + '" href="#" title="同步设备"  mce_href="#" onclick="syncDevice(\''
+                + '\')">配置</a> ';
+            var c = '<a class="btn btn-success btn-sm ' + s_syncDevice_h + '" href="#" title="同步设备"  mce_href="#" onclick="syncDevice(\''
                 + row.id
-                + '\')"><i class="fa fa-refresh"></i></a> ';
-            var i = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="下发指令"  mce_href="#" onclick="command(\''
+                + '\')">同步</a> ';
+            var d = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="下发指令"  mce_href="#" onclick="command(\''
                 + row.id
-                + '\')"><i class="fa fa-cloud-upload"></i></a> ';
-            return f + i + h + g;
+                + '\')">指令</a> ';
+            var e = '<a class="btn btn-danger btn-sm ' + s_remove_h + '" href="#" title="删除设备"  mce_href="#" onclick="remove(\''
+                + row.id
+                + '\')">删除</a> ';
+
+            return a + b + c + d + e;
         }
     }];
 var localPageName = "设备";
@@ -235,6 +239,7 @@ function syncDevice(id) {
     })
 }
 
+// 下发指令
 function command(id) {
     // iframe层
     layer.open({
@@ -244,5 +249,18 @@ function command(id) {
         shadeClose: false, // 点击遮罩关闭层
         area: ['800px', '600px'],
         content: prefix + '/command?id=' + id
+    });
+}
+
+// 预警配置
+function alarmConfig(id) {
+    // iframe层
+    layer.open({
+        type: 2,
+        title: localPageName + "预警配置",
+        maxmin: true,
+        shadeClose: false, // 点击遮罩关闭层
+        area: ['800px', '400px'],
+        content: prefix + '/alarmConfig/' + id
     });
 }
