@@ -11,6 +11,7 @@ import com.scrawl.iot.web.service.ServiceModeService;
 import com.scrawl.iot.web.vo.PageRespVO;
 import com.scrawl.iot.web.vo.R;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
+import com.scrawl.iot.web.vo.iot.device.DeviceListRespVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,10 +52,10 @@ public class DeviceController extends BaseController {
 
     @PostMapping("/list")
     @ResponseBody
-    public PageRespVO<Device> list(@RequestBody DeviceListReqVO reqVO) {
+    public PageRespVO<DeviceListRespVO> list(@RequestBody DeviceListReqVO reqVO) {
         reqVO.setServerIds(getManagerServerIds());
 
-        PageRespVO<Device> respVO = new PageRespVO<>();
+        PageRespVO<DeviceListRespVO> respVO = new PageRespVO<>();
         respVO.setRows(deviceService.list(reqVO));
         respVO.setTotal(deviceService.count(reqVO));
         return respVO;

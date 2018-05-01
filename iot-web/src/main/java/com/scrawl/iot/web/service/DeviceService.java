@@ -5,6 +5,7 @@ import com.scrawl.iot.web.dao.entity.DeviceBasicDetail;
 import com.scrawl.iot.web.dao.entity.DeviceMessageDetail;
 import com.scrawl.iot.web.vo.iot.callback.IotDataReportReqVO;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
+import com.scrawl.iot.web.vo.iot.device.DeviceListRespVO;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 public interface DeviceService {
 
-    List<Device> list(DeviceListReqVO reqVO);
+    List<DeviceListRespVO> list(DeviceListReqVO reqVO);
 
     int count(DeviceListReqVO reqVO);
 

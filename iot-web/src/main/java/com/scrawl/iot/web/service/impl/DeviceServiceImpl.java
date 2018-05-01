@@ -16,6 +16,7 @@ import com.scrawl.iot.web.service.AccountService;
 import com.scrawl.iot.web.service.DeviceService;
 import com.scrawl.iot.web.vo.iot.callback.IotDataReportReqVO;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
+import com.scrawl.iot.web.vo.iot.device.DeviceListRespVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,11 +76,14 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DevTypeCommandMapper devTypeCommandMapper;
 
+    @Autowired
+    private DeviceExtMapper deviceExtMapper;
+
     private final String SERVICE_ID_BATTERY = "Battery";
     private final String SERVICE_ID_METER = "Meter";
 
     @Override
-    public List<Device> list(DeviceListReqVO reqVO) {
+    public List<DeviceListRespVO> list(DeviceListReqVO reqVO) {
         return deviceMapper.selectPageList(reqVO);
     }
 
@@ -90,7 +94,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public void save(Device device) {
-        // TODO:调用iot接口
+        // 调用iot接口
         DevType devType = devTypeMapper.selectByServerIdAndDevType(device.getServerId(), device.getDevType());
 
         Account account = accountService.getAndAuthAccount(devType.getServerId());
@@ -118,6 +122,14 @@ public class DeviceServiceImpl implements DeviceService {
         iotHttpService.regDevice(header, request);
 
         deviceMapper.insertSelective(device);
+
+        // 插入设备扩展
+        DeviceExt deviceExt = new DeviceExt();
+        deviceExt.setDeviceId(device.getId());
+        deviceExt.setCreateTime(device.getCreateTime());
+        deviceExt.setUpdateTime(device.getCreateTime());
+
+        deviceExtMapper.insertSelective(deviceExt);
     }
 
     @Override
@@ -198,6 +210,14 @@ public class DeviceServiceImpl implements DeviceService {
             device.setUpdateTime(new Date());
 
             deviceMapper.insertSelective(device);
+
+            // 插入设备扩展
+            DeviceExt deviceExt = new DeviceExt();
+            deviceExt.setDeviceId(device.getId());
+            deviceExt.setCreateTime(device.getCreateTime());
+            deviceExt.setUpdateTime(device.getCreateTime());
+
+            deviceExtMapper.insertSelective(deviceExt);
         } else {
             device.setUpdateManager(managerId);
             device.setUpdateTime(new Date());

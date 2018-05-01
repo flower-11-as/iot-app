@@ -18,7 +18,7 @@
     <result column="industry_name" jdbcType="VARCHAR" property="industryName" />
     <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
     <result column="display_icon_id" jdbcType="INTEGER" property="displayIconId" />
-    <result column="client_iD" jdbcType="VARCHAR" property="clientId" />
+    <result column="client_id" jdbcType="VARCHAR" property="clientId" />
     <result column="protocol_type" jdbcType="VARCHAR" property="protocolType" />
     <result column="has_sim_Card" jdbcType="VARCHAR" property="hasSimCard" />
     <result column="sim_num" jdbcType="VARCHAR" property="simNum" />
@@ -32,7 +32,7 @@
   <sql id="Base_Column_List">
     id, server_id, dev_type, dev_serial, `name`, connect_point_id, service_mode, is_published, 
     `location`, longitude, latitude, end_user_info, end_user_name, industry_name, category_name, 
-    display_icon_id, client_iD, protocol_type, has_sim_Card, sim_num, del_flag, extend_type, 
+    display_icon_id, client_id, protocol_type, has_sim_Card, sim_num, del_flag, extend_type, 
     create_time, create_manager, update_time, update_manager
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -51,7 +51,7 @@
       service_mode, is_published, `location`, 
       longitude, latitude, end_user_info, 
       end_user_name, industry_name, category_name, 
-      display_icon_id, client_iD, protocol_type, 
+      display_icon_id, client_id, protocol_type, 
       has_sim_Card, sim_num, del_flag, 
       extend_type, create_time, create_manager, 
       update_time, update_manager)
@@ -117,7 +117,7 @@
         display_icon_id,
       </if>
       <if test="clientId != null">
-        client_iD,
+        client_id,
       </if>
       <if test="protocolType != null">
         protocol_type,
@@ -277,7 +277,7 @@
         display_icon_id = #{displayIconId,jdbcType=INTEGER},
       </if>
       <if test="clientId != null">
-        client_iD = #{clientId,jdbcType=VARCHAR},
+        client_id = #{clientId,jdbcType=VARCHAR},
       </if>
       <if test="protocolType != null">
         protocol_type = #{protocolType,jdbcType=VARCHAR},
@@ -326,7 +326,7 @@
       industry_name = #{industryName,jdbcType=VARCHAR},
       category_name = #{categoryName,jdbcType=VARCHAR},
       display_icon_id = #{displayIconId,jdbcType=INTEGER},
-      client_iD = #{clientId,jdbcType=VARCHAR},
+      client_id = #{clientId,jdbcType=VARCHAR},
       protocol_type = #{protocolType,jdbcType=VARCHAR},
       has_sim_Card = #{hasSimCard,jdbcType=VARCHAR},
       sim_num = #{simNum,jdbcType=VARCHAR},
@@ -338,39 +338,50 @@
       update_manager = #{updateManager,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.iot.device.DeviceListReqVO" resultMap="BaseResultMap">
+  <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.iot.device.DeviceListReqVO"
+          resultType="com.scrawl.iot.web.vo.iot.device.DeviceListRespVO">
     select
-    <include refid="Base_Column_List" />
-    from t_iot_device
-    where 1=1 and del_flag=0
+    d.id, d.server_id as serverId, d.dev_type as devType, d.dev_serial as devSerial, d.`name`, d.connect_point_id as connectPointId,
+    d.service_mode as serviceMode, d.is_published as isPublished, d.`location`, d.longitude, d.latitude, d.end_user_info as endUserInfo,
+    d.end_user_name as endUserName, d.industry_name as industryName, d.category_name as categoryName, d.display_icon_id as displayIconId,
+    d.client_id as clientId, d.protocol_type as protocolType, d.has_sim_Card as hasSimCard, d.sim_num as simNum, d.del_flag as delFlag,
+    d.extend_type as extendType, d.create_time as createTime, d.create_manager as createManager, d.update_time as updateTime,
+    d.update_manager as updateManager, ifnull(de.alarm_status, 0) as alarmStatus, de.alarm_desc as alarmDesc
+    from t_iot_device d
+    left join t_iot_device_ext de on de.device_id = d.id
+    where 1=1 and d.del_flag=0
     <include refid="select_page_where" />
-    order by create_time desc
+    order by d.create_time desc
     limit #{offset}, #{limit}
   </select>
   <select id="selectPageCount" parameterType="com.scrawl.iot.web.vo.iot.device.DeviceListReqVO" resultType="java.lang.Integer">
     select count(*)
-    from t_iot_device
-    where 1=1 and del_flag=0
+    from t_iot_device d
+    left join t_iot_device_ext de on de.device_id = d.id
+    where 1=1 and d.del_flag=0
     <include refid="select_page_where" />
   </select>
   <sql id="select_page_where">
     <if test="serverId != null and serverId != ''">
-      and server_id = #{serverId}
+      and d.server_id = #{serverId}
     </if>
     <if test="devType != null and devType != ''">
-      and dev_type = #{devType}
+      and d.dev_type = #{devType}
     </if>
     <if test="devSerial != null and devSerial != ''">
-      and dev_serial = #{devSerial}
+      and d.dev_serial = #{devSerial}
     </if>
     <if test="name != null and name != ''">
-      and name = #{name}
+      and d.`name` = #{name}
     </if>
     <if test="serverIds != null and serverIds.size() &gt; 0">
-      and server_id in
+      and d.server_id in
       <foreach close=")" collection="serverIds" item="item" open="(" separator=",">
         #{item}
       </foreach>
+    </if>
+    <if test="alarmStatus != null">
+      and de.alarm_status = #{alarmStatus}
     </if>
   </sql>
   <select id="selectByDevSerial" parameterType="java.lang.String" resultMap="BaseResultMap">

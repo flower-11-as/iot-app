@@ -18,8 +18,16 @@ var localColumns = [
         title: '产品型号' // 列标题
     },
     {
-        field: 'serverId', // 列字段名
-        title: 'IoT创建者' // 列标题
+        field: 'alarmStatus', // 列字段名
+        title: '预警状态', // 列标题,
+        align: "center",
+        formatter: function (value, row, index) {
+            if (value && value === 1) {
+                return '<span class="label label-danger">预警中</span>';
+            } else {
+                return '<span class="label label-primary">正常</span>';
+            }
+        }
     },
     {
         field: 'createTime', // 列字段名
@@ -83,6 +91,7 @@ function load() {
             localParams["offset"] = params.offset;
             localParams["devSerial"] = $('#devSerial').val();
             localParams["name"] = $('#name').val();
+            localParams["alarmStatus"] = $('#alarmStatus').val();
             return localParams;
         },
         // //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果

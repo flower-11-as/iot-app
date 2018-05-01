@@ -2,6 +2,7 @@ package com.scrawl.iot.web.dao.mapper;
 
 import com.scrawl.iot.web.dao.entity.Device;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
+import com.scrawl.iot.web.vo.iot.device.DeviceListRespVO;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface DeviceMapper {
 
     int updateByPrimaryKey(Device record);
 
-    List<Device> selectPageList(DeviceListReqVO reqVO);
+    List<DeviceListRespVO> selectPageList(DeviceListReqVO reqVO);
 
     int selectPageCount(DeviceListReqVO reqVO);
 
