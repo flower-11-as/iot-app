@@ -4,12 +4,15 @@ import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.response.IotDevTypeInfoResponse;
 import com.scrawl.iot.paper.http.response.IotDevTypeResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
+import com.scrawl.iot.web.constants.ParamConstant;
 import com.scrawl.iot.web.dao.entity.*;
 import com.scrawl.iot.web.dao.mapper.*;
+import com.scrawl.iot.web.enums.DelFlagEnum;
 import com.scrawl.iot.web.enums.DevTypeCommandTypeEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
 import com.scrawl.iot.web.service.DevTypeService;
+import com.scrawl.iot.web.service.ParamService;
 import com.scrawl.iot.web.vo.iot.devType.DevTypeListReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -48,6 +52,9 @@ public class DevTypeServicesImpl implements DevTypeService {
 
     @Autowired
     private DevTypeCommandParamMapper devTypeCommandParamMapper;
+
+    @Autowired
+    private ParamService paramService;
 
     @Override
     public List<DevType> list(DevTypeListReqVO reqVO) {
@@ -226,5 +233,19 @@ public class DevTypeServicesImpl implements DevTypeService {
         });
 
         return devTypeList;
+    }
+
+    @Override
+    public List<DevType> getAlarmDevTypes() {
+        DevType devTypeParam = new DevType();
+        devTypeParam.setDelFlag(DelFlagEnum.YES.getCode());
+        List<DevType> devTypes = devTypeMapper.selectBySelective(devTypeParam);
+        List<DevType> alarmDevTypes = devTypes.stream().filter(devType -> {
+            Param param = new Param();
+            param.setGroup(ParamConstant.PARAM_DEV_TYPE_ALARM_PREFIX + devType.getId());
+            return paramService.list(param).size() > 0;
+        }).collect(Collectors.toList());
+
+        return alarmDevTypes;
     }
 }

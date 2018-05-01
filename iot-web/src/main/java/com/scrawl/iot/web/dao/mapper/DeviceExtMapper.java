@@ -14,4 +14,6 @@ public interface DeviceExtMapper {
     int updateByPrimaryKeySelective(DeviceExt record);
 
     int updateByPrimaryKey(DeviceExt record);
+
+    DeviceExt selectByDeviceId(Integer deviceId);
 }

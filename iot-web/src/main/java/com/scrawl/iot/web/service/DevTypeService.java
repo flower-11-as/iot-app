@@ -25,4 +25,6 @@ public interface DevTypeService {
     DevType get(Integer id);
 
     List<DevType> getByServerIds(List<String> serverIds);
+
+    List<DevType> getAlarmDevTypes();
 }

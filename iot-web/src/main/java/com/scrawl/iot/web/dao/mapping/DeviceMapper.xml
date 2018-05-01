@@ -390,4 +390,10 @@
     from t_iot_device
     where dev_serial = #{devSerial}
   </select>
+  <select id="selectByServerAndDevType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_iot_device
+    where server_id = #{serverId} and dev_type = #{devType}
+  </select>
 </mapper>

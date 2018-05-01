@@ -2,9 +2,9 @@
 var prefix = "/iot-manage/iot/device";
 var localParams = {};
 var localColumns = [
-    {
-        checkbox: true
-    },
+    // {
+    //     checkbox: true
+    // },
     {
         field: 'devSerial', // 列字段名
         title: '序列号' // 列标题

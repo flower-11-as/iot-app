@@ -3,6 +3,7 @@ package com.scrawl.iot.web.dao.mapper;
 import com.scrawl.iot.web.dao.entity.Device;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
 import com.scrawl.iot.web.vo.iot.device.DeviceListRespVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface DeviceMapper {
     int selectPageCount(DeviceListReqVO reqVO);
 
     Device selectByDevSerial(String devSerial);
+
+    List<Device> selectByServerAndDevType(@Param("serverId") String serverId, @Param("devType") String devType);
 }

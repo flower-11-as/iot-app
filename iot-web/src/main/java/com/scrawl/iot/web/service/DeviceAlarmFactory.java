@@ -25,7 +25,7 @@ public class DeviceAlarmFactory {
     @Autowired
     private DevTypeMapper devTypeMapper;
 
-    public DeviceAlarmService getAlarmService(Integer deviceId) {
+    public DeviceAlarmService getAlarmServiceByDevice(Integer deviceId) {
         Assert.notNull(deviceId, "设备id不能为空");
 
         Device device = deviceMapper.selectByPrimaryKey(deviceId);
@@ -39,6 +39,20 @@ public class DeviceAlarmFactory {
             return null;
         }
 
-        return ApplicationContextHelper.getBean(device.getDevType());
+        return ApplicationContextHelper.getBean(devType.getAlarmService());
+    }
+
+    public DeviceAlarmService getAlarmServiceByDevType(Integer devTypeId) {
+        Assert.notNull(devTypeId, "设备型号不能为空");
+
+        DevType devType = devTypeMapper.selectByPrimaryKey(devTypeId);
+        Assert.notNull(devType, "产品型号不能为空");
+
+        if (StringUtils.isEmpty(devType.getAlarmService())) {
+            log.info("产品型号[{}]未设置告警接口", devTypeId);
+            return null;
+        }
+
+        return ApplicationContextHelper.getBean(devType.getAlarmService());
     }
 }

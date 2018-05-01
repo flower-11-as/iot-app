@@ -2,9 +2,9 @@
 var prefix = "/iot-manage/iot/device";
 var localParams = {};
 var localColumns = [
-    {
-        checkbox: true
-    },
+    // {
+    //     checkbox: true
+    // },
     {
         field: 'devSerial', // 列字段名
         title: '序列号' // 列标题
@@ -50,10 +50,10 @@ var localColumns = [
                 + '\')">配置</a> ';
             var c = '<a class="btn btn-success btn-sm ' + s_syncDevice_h + '" href="#" title="同步设备"  mce_href="#" onclick="syncDevice(\''
                 + row.id
-                + '\')">指令</a> ';
+                + '\')">同步</a> ';
             var d = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="下发指令"  mce_href="#" onclick="command(\''
                 + row.id
-                + '\')">下发</a> ';
+                + '\')">指令</a> ';
 
             return a + b + c + d;
         }

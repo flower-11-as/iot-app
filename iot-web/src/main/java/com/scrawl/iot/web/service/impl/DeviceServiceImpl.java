@@ -8,6 +8,7 @@ import com.scrawl.iot.paper.http.response.IotDeviceAllResponse;
 import com.scrawl.iot.paper.http.response.IotDeviceResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
 import com.scrawl.iot.paper.utils.IotDataCastUtil;
+import com.scrawl.iot.web.constants.ParamConstant;
 import com.scrawl.iot.web.dao.entity.*;
 import com.scrawl.iot.web.dao.mapper.*;
 import com.scrawl.iot.web.enums.DeviceSyncTypeEnum;
@@ -501,7 +502,7 @@ public class DeviceServiceImpl implements DeviceService {
         DevType devType = devTypeMapper.selectByServerIdAndDevType(device.getServerId(), device.getDevType());
 
         Param record = new Param();
-        record.setGroup("dev-type-alarm-" + devType.getId());
+        record.setGroup(ParamConstant.PARAM_DEV_TYPE_ALARM_PREFIX + devType.getId());
         List<Param> params = paramService.list(record);
 
         List<DeviceAlarmConfigVO> alarmConfigs = new ArrayList<>();
@@ -554,5 +555,10 @@ public class DeviceServiceImpl implements DeviceService {
                 deviceAlarmConfigMapper.updateByPrimaryKeySelective(deviceAlarmConfig);
             }
         });
+    }
+
+    @Override
+    public List<Device> getByServerAndDevType(String serverId, String devType) {
+        return deviceMapper.selectByServerAndDevType(serverId, devType);
     }
 }
