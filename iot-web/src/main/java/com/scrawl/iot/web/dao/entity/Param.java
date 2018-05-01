@@ -9,6 +9,10 @@ public class Param {
 
     private String paramValue;
 
+    private String description;
+
+    private String group;
+
     private Date createTime;
 
     private Date updateTime;
@@ -39,6 +43,22 @@ public class Param {
 
     public void setParamValue(String paramValue) {
         this.paramValue = paramValue;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     public Date getCreateTime() {
