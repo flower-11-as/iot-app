@@ -8,11 +8,7 @@ $(function() {
             type: 2,
 			title:'图标列表',
             content: '/iot-manage/FontIcoList.html',
-            area: ['480px', '90%'],
-            success: function(layero, index){
-                //var body = layer.getChildFrame('.ico-list', index);
-                //console.log(layero, index);
-            }
+            area: ['480px', '90%']
         });
     });
 
