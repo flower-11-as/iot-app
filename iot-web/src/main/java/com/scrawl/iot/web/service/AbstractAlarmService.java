@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class AbstractAlarmService implements DeviceAlarmService {
 
     @Override
-    public void alarm(Integer deviceId, Integer devTypeId) {
+    public void alarm(Integer deviceId) {
 
     }
 }

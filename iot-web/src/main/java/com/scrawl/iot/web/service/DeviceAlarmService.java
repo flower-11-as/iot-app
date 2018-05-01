@@ -6,5 +6,5 @@ package com.scrawl.iot.web.service;
  */
 public interface DeviceAlarmService {
 
-    void alarm(Integer deviceId, Integer devTypeId);
+    void alarm(Integer deviceId);
 }

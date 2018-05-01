@@ -41,7 +41,7 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
     private final String LAMP_ALARM_LOG_PREFIX = "Lamp产品型号";
 
     @Override
-    public void alarm(Integer deviceId, Integer devTypeId) {
+    public void alarm(Integer deviceId) {
         Assert.notNull(deviceId, "设备id不能为空");
         log.info(LAMP_ALARM_LOG_PREFIX + "设备[{}]预警", deviceId);
 
@@ -52,6 +52,7 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
         Map<String, DeviceMessageDetail> messageDetailMap = deviceService.getMessageInfo(deviceId);
         if (null == messageDetailMap) {
             log.info(LAMP_ALARM_LOG_PREFIX + "设备[{}]无消息上报", deviceId);
+            alarmHandler(deviceId, (byte) 0, "");
             return;
         }
 
@@ -61,6 +62,7 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
         if (switch1Message.getParamValue().equals("off") &&
                 switch2Message.getParamValue().equals("off")) {
             log.info(LAMP_ALARM_LOG_PREFIX + "设备[{}]所有开关未开启无需预警处理", deviceId);
+            alarmHandler(deviceId, (byte) 0, "");
             return;
         }
 
@@ -70,7 +72,7 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
             current = new BigDecimal(messageDetailMap.get("Current").getParamValue());
         } catch (NumberFormatException e) {
             log.error(LAMP_ALARM_LOG_PREFIX + "设备[{}]获取电流消息异常", e);
-            alarmHandler(deviceId, (byte) 0, "设备消息获取电流信息异常");
+            alarmHandler(deviceId, (byte) 1, "设备消息获取电流信息异常");
             return;
         }
 
@@ -78,20 +80,30 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
         List<DeviceAlarmConfigVO> alarmConfigs = deviceService.getAlarmConfig(deviceId);
         if (null == alarmConfigs || alarmConfigs.size() == 0) {
             log.info(LAMP_ALARM_LOG_PREFIX + "设备[{}]未获取到预警配置", deviceId);
+            alarmHandler(deviceId, (byte) 0, "");
             return;
         }
 
-        Map<String, DeviceAlarmConfigVO> alarmConfigMap = alarmConfigs.stream().collect(
-                Collectors.toMap(DeviceAlarmConfigVO::getParamKey, Function.identity()));
+        BigDecimal minCurrent, maxCurrent;
 
-        DeviceAlarmConfigVO minCurrentConfig = alarmConfigMap.get("minCurrent");
-        DeviceAlarmConfigVO maxCurrentConfig = alarmConfigMap.get("maxCurrent");
+        try {
+            Map<String, DeviceAlarmConfigVO> alarmConfigMap = alarmConfigs.stream().collect(
+                    Collectors.toMap(DeviceAlarmConfigVO::getParamKey, Function.identity()));
 
-        BigDecimal minCurrent = StringUtils.isEmpty(minCurrentConfig.getParamValue()) ?
-                new BigDecimal(minCurrentConfig.getSysParamValue()) : new BigDecimal(minCurrentConfig.getParamKey());
+            DeviceAlarmConfigVO minCurrentConfig = alarmConfigMap.get("minCurrent");
+            DeviceAlarmConfigVO maxCurrentConfig = alarmConfigMap.get("maxCurrent");
 
-        BigDecimal maxCurrent = StringUtils.isEmpty(maxCurrentConfig.getParamValue()) ?
-                new BigDecimal(maxCurrentConfig.getSysParamValue()) : new BigDecimal(maxCurrentConfig.getParamKey());
+            minCurrent = StringUtils.isEmpty(minCurrentConfig.getParamValue()) ?
+                    new BigDecimal(minCurrentConfig.getSysParamValue()) : new BigDecimal(minCurrentConfig.getParamKey());
+
+            maxCurrent = StringUtils.isEmpty(maxCurrentConfig.getParamValue()) ?
+                    new BigDecimal(maxCurrentConfig.getSysParamValue()) : new BigDecimal(maxCurrentConfig.getParamKey());
+        } catch (Exception e) {
+            log.error(LAMP_ALARM_LOG_PREFIX + "设备[{}]获取预警电流配置异常", e);
+            alarmHandler(deviceId, (byte) 1, "获取预警电流配置异常");
+            return;
+        }
+
         // 3、判断是否需要预警
         if (current.compareTo(minCurrent) >= 0 || current.compareTo(maxCurrent) <= 0) {
             alarmHandler(deviceId, (byte) 0, "");
@@ -99,7 +111,7 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
         }
 
         // 4、预警处理
-        alarmHandler(deviceId, (byte) 1,String.format("设备消息电流信息在预警范围之外(min[%s], max[%s])", minCurrent.toPlainString(),
+        alarmHandler(deviceId, (byte) 1, String.format("设备消息电流信息在预警范围之外(min[%s], max[%s])", minCurrent.toPlainString(),
                 maxCurrent.toPlainString()));
     }
 
