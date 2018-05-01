@@ -238,7 +238,7 @@ public class DevTypeServicesImpl implements DevTypeService {
     @Override
     public List<DevType> getAlarmDevTypes() {
         DevType devTypeParam = new DevType();
-        devTypeParam.setDelFlag(DelFlagEnum.YES.getCode());
+        devTypeParam.setDelFlag(DelFlagEnum.NO.getCode());
         List<DevType> devTypes = devTypeMapper.selectBySelective(devTypeParam);
         List<DevType> alarmDevTypes = devTypes.stream().filter(devType -> {
             Param param = new Param();

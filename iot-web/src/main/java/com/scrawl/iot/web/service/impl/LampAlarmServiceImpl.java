@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * Description:
  * Created by as on 2018/5/1.
  */
-@Service
+@Service("lampAlarmService")
 @Slf4j
 public class LampAlarmServiceImpl extends AbstractAlarmService {
 
@@ -94,10 +94,10 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
             DeviceAlarmConfigVO maxCurrentConfig = alarmConfigMap.get("maxCurrent");
 
             minCurrent = StringUtils.isEmpty(minCurrentConfig.getParamValue()) ?
-                    new BigDecimal(minCurrentConfig.getSysParamValue()) : new BigDecimal(minCurrentConfig.getParamKey());
+                    new BigDecimal(minCurrentConfig.getSysParamValue()) : new BigDecimal(minCurrentConfig.getParamValue());
 
             maxCurrent = StringUtils.isEmpty(maxCurrentConfig.getParamValue()) ?
-                    new BigDecimal(maxCurrentConfig.getSysParamValue()) : new BigDecimal(maxCurrentConfig.getParamKey());
+                    new BigDecimal(maxCurrentConfig.getSysParamValue()) : new BigDecimal(maxCurrentConfig.getParamValue());
         } catch (Exception e) {
             log.error(LAMP_ALARM_LOG_PREFIX + "设备[{}]获取预警电流配置异常", e);
             alarmHandler(deviceId, (byte) 1, "获取预警电流配置异常");
@@ -105,7 +105,7 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
         }
 
         // 3、判断是否需要预警
-        if (current.compareTo(minCurrent) >= 0 || current.compareTo(maxCurrent) <= 0) {
+        if (current.compareTo(minCurrent) >= 0 && current.compareTo(maxCurrent) <= 0) {
             alarmHandler(deviceId, (byte) 0, "");
             return;
         }

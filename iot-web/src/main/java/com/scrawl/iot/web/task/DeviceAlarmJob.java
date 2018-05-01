@@ -56,9 +56,9 @@ public class DeviceAlarmJob implements Job {
 
             devices.forEach(device -> {
                 try {
-                    deviceAlarmService.alarm(device.getId(), devType.getId());
+                    deviceAlarmService.alarm(device.getId());
                 } catch (Exception e) {
-                    log.error(JOB_LOG_PREFIX + "产品型号[{}]设备[{}]告警异常", devType.getId(), device.getDevSerial());
+                    log.error(JOB_LOG_PREFIX + "产品型号["+ devType.getId() +"]设备["+ device.getId() +"]告警异常", e);
                 }
             });
 
