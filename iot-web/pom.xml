@@ -8,6 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <packaging>war</packaging>
 
     <artifactId>iot-web</artifactId>
 
@@ -114,6 +115,13 @@
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
         </dependency>
+
+        <!-- tomcat -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
@@ -141,7 +149,7 @@
                 </excludes>
             </resource>
         </resources>
-        <finalName>lamp-manage</finalName>
+        <finalName>iot-manage</finalName>
         <plugins>
             <!--<plugin>-->
             <!--<groupId>org.springframework.boot</groupId>-->

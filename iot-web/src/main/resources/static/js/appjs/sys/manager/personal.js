@@ -1,64 +1,56 @@
-var prefix = "/sys/user"
+var prefix = "/iot-manage/sys/manager";
 $(function () {
-    laydate({
-        elem : '#birth'
-    });
+    validateRule();
 });
 /**
  * 基本信息提交
  */
 $("#base_save").click(function () {
-    var hobbyStr = getHobbyStr();
-    $("#hobby").val(hobbyStr);
-    if($("#basicInfoForm").valid()){
-            $.ajax({
-                cache : true,
-                type : "POST",
-                url :"/sys/user/updatePeronal",
-                data : $('#basicInfoForm').serialize(),
-                async : false,
-                error : function(request) {
-                    layer.alert("Connection error");
-                },
-                success : function(data) {
-                    if (data.code == 0) {
-                        parent.layer.msg("更新成功");
-                    } else {
-                        parent.layer.alert(data.msg)
-                    }
-                }
-            });
-        }
-
-});
-$("#pwd_save").click(function () {
-    if($("#modifyPwd").valid()){
+    if ($("#basicInfoForm").valid()) {
         $.ajax({
-            cache : true,
-            type : "POST",
-            url :"/sys/user/resetPwd",
-            data : $('#modifyPwd').serialize(),
-            async : false,
-            error : function(request) {
-                parent.layer.alert("Connection error");
+            cache: true,
+            type: "POST",
+            url: prefix + "/updatePersonal",
+            data: $('#basicInfoForm').serialize(),
+            async: false,
+            error: function (request) {
+                layer.alert("Connection error");
             },
-            success : function(data) {
-                if (data.code == 0) {
-                    parent.layer.alert("更新密码成功");
-                    $("#photo_info").click();
+            success: function (data) {
+                if (data.code === '0000') {
+                    parent.layer.msg("更新成功");
                 } else {
-                    parent.layer.alert(data.msg)
+                    parent.layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
                 }
             }
         });
     }
 });
-function getHobbyStr(){
-    var hobbyStr ="";
-    $(".hobby").each(function () {
-        if($(this).is(":checked")){
-            hobbyStr+=$(this).val()+";";
-        }
-    });
-   return hobbyStr;
-}
+
+$("#pwd_save").click(function () {
+    if ($("#modifyPwd").valid()) {
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: prefix + "/resetPersonalPwd",
+            data: $('#modifyPwd').serialize(),
+            async: false,
+            error: function (request) {
+                parent.layer.alert("Connection error");
+            },
+            success: function (data) {
+                if (data.code === '0000') {
+                    parent.layer.msg("更新成功");
+                } else {
+                    parent.layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
+                }
+            }
+        });
+    }
+});

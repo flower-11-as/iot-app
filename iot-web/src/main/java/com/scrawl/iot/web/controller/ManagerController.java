@@ -9,10 +9,7 @@ import com.scrawl.iot.web.service.ManagerService;
 import com.scrawl.iot.web.service.RoleService;
 import com.scrawl.iot.web.vo.PageRespVO;
 import com.scrawl.iot.web.vo.R;
-import com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO;
-import com.scrawl.iot.web.vo.sys.manager.ManagerListReqVO;
-import com.scrawl.iot.web.vo.sys.manager.ManagerReqVO;
-import com.scrawl.iot.web.vo.sys.manager.ManagerRoleRespVO;
+import com.scrawl.iot.web.vo.sys.manager.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
@@ -162,6 +159,54 @@ public class ManagerController extends BaseController {
         } catch (Exception e) {
             log.error("重置管理员密码异常：", e);
             throw new BizException("SYS30004");
+        }
+        return R.ok();
+    }
+
+    @GetMapping("/personal")
+    public String personal(Model model) {
+        Manager manager = managerService.get(getManagerId());
+        model.addAttribute("manager", manager);
+        return prefix + "/personal";
+    }
+
+    @PostMapping("/updatePersonal")
+    @ResponseBody
+    R updatePersonal(Manager manager) {
+        try {
+            manager.setUpdateManager(getManagerId());
+            manager.setUpdateTime(new Date());
+            if (!managerService.update(manager)) {
+                throw new BizException("SYS30005");
+            }
+        } catch (Exception e) {
+            log.error("编辑个人信息异常：", e);
+            throw new BizException("SYS30005");
+        }
+
+        return R.ok();
+    }
+
+    @PostMapping("/resetPersonalPwd")
+    @ResponseBody
+    public R resetPersonalPwd(ResetPwdReqVO reqVO) {
+        try {
+            Manager manager = managerService.get(reqVO.getId());
+            String pwdOldHash = new SimpleHash("md5", reqVO.getPwdOld(),
+                    ByteSource.Util.bytes(""), 2).toHex();
+            if (!manager.getPassword().equals(pwdOldHash)) {
+                throw new BizException("SYS30006");
+            }
+
+            manager.setPassword(new SimpleHash("md5", reqVO.getPwdNew(),
+                    ByteSource.Util.bytes(""), 2).toHex());
+            manager.setUpdateManager(getManagerId());
+            manager.setUpdateTime(new Date());
+
+            managerService.update(manager);
+        } catch (Exception e) {
+            log.error("修改密码异常：", e);
+            throw new BizException("SYS30006");
         }
         return R.ok();
     }
