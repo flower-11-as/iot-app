@@ -11,6 +11,8 @@ public class DeviceExt {
 
     private String alarmDesc;
 
+    private Date alarmTime;
+
     private Date createTime;
 
     private Date updateTime;
@@ -45,6 +47,14 @@ public class DeviceExt {
 
     public void setAlarmDesc(String alarmDesc) {
         this.alarmDesc = alarmDesc;
+    }
+
+    public Date getAlarmTime() {
+        return alarmTime;
+    }
+
+    public void setAlarmTime(Date alarmTime) {
+        this.alarmTime = alarmTime;
     }
 
     public Date getCreateTime() {

@@ -346,7 +346,7 @@
     d.end_user_name as endUserName, d.industry_name as industryName, d.category_name as categoryName, d.display_icon_id as displayIconId,
     d.client_id as clientId, d.protocol_type as protocolType, d.has_sim_Card as hasSimCard, d.sim_num as simNum, d.del_flag as delFlag,
     d.extend_type as extendType, d.create_time as createTime, d.create_manager as createManager, d.update_time as updateTime,
-    d.update_manager as updateManager, ifnull(de.alarm_status, 0) as alarmStatus, de.alarm_desc as alarmDesc
+    d.update_manager as updateManager, ifnull(de.alarm_status, 0) as alarmStatus, de.alarm_desc as alarmDesc, de.alarm_time as alarmTime
     from t_iot_device d
     left join t_iot_device_ext de on de.device_id = d.id
     where 1=1 and d.del_flag=0

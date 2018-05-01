@@ -6,11 +6,12 @@
     <result column="device_id" jdbcType="INTEGER" property="deviceId" />
     <result column="alarm_status" jdbcType="TINYINT" property="alarmStatus" />
     <result column="alarm_desc" jdbcType="VARCHAR" property="alarmDesc" />
+    <result column="alarm_time" jdbcType="TIMESTAMP" property="alarmTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, device_id, alarm_status, alarm_desc, create_time, update_time
+    id, device_id, alarm_status, alarm_desc, alarm_time, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,11 +25,11 @@
   </delete>
   <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.DeviceExt">
     insert into t_iot_device_ext (id, device_id, alarm_status, 
-      alarm_desc, create_time, update_time
-      )
+      alarm_desc, alarm_time, create_time, 
+      update_time)
     values (#{id,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER}, #{alarmStatus,jdbcType=TINYINT}, 
-      #{alarmDesc,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+      #{alarmDesc,jdbcType=VARCHAR}, #{alarmTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceExt">
     insert into t_iot_device_ext
@@ -44,6 +45,9 @@
       </if>
       <if test="alarmDesc != null">
         alarm_desc,
+      </if>
+      <if test="alarmTime != null">
+        alarm_time,
       </if>
       <if test="createTime != null">
         create_time,
@@ -65,6 +69,9 @@
       <if test="alarmDesc != null">
         #{alarmDesc,jdbcType=VARCHAR},
       </if>
+      <if test="alarmTime != null">
+        #{alarmTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -85,6 +92,9 @@
       <if test="alarmDesc != null">
         alarm_desc = #{alarmDesc,jdbcType=VARCHAR},
       </if>
+      <if test="alarmTime != null">
+        alarm_time = #{alarmTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -99,6 +109,7 @@
     set device_id = #{deviceId,jdbcType=INTEGER},
       alarm_status = #{alarmStatus,jdbcType=TINYINT},
       alarm_desc = #{alarmDesc,jdbcType=VARCHAR},
+      alarm_time = #{alarmTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

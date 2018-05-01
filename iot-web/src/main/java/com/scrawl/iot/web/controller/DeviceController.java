@@ -50,6 +50,11 @@ public class DeviceController extends BaseController {
         return prefix + "/device";
     }
 
+    @GetMapping("/alarm")
+    public String alarmDevice() {
+        return prefix + "/alarmDevice";
+    }
+
     @PostMapping("/list")
     @ResponseBody
     public PageRespVO<DeviceListRespVO> list(@RequestBody DeviceListReqVO reqVO) {
