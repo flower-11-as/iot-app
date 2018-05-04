@@ -111,8 +111,8 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
         }
 
         // 4、预警处理
-        alarmHandler(deviceId, (byte) 1, String.format("设备消息电流信息在预警范围之外(min[%s], max[%s])", minCurrent.toPlainString(),
-                maxCurrent.toPlainString()));
+        alarmHandler(deviceId, (byte) 1, String.format("设备电流信息[%smA]在预警范围之外(min[%smA], max[%smA])", current.toPlainString(),
+                minCurrent.toPlainString(), maxCurrent.toPlainString()));
     }
 
     private void alarmHandler(Integer deviceId, Byte alarmStatus, String desc) {
