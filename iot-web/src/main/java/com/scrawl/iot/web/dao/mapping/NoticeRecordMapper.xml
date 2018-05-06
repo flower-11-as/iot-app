@@ -3,6 +3,7 @@
 <mapper namespace="com.scrawl.iot.web.dao.mapper.NoticeRecordMapper">
   <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.NoticeRecord">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="manager_id" jdbcType="INTEGER" property="managerId" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="content" jdbcType="VARCHAR" property="content" />
@@ -11,7 +12,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `type`, title, content, `status`, read_time, create_time
+    id, manager_id, `type`, title, content, `status`, read_time, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,18 +25,21 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.NoticeRecord">
-    insert into t_sys_notice_record (id, `type`, title, 
-      content, `status`, read_time, 
-      create_time)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, #{title,jdbcType=VARCHAR}, 
-      #{content,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{readTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP})
+    insert into t_sys_notice_record (id, manager_id, `type`, 
+      title, content, `status`, 
+      read_time, create_time)
+    values (#{id,jdbcType=INTEGER}, #{managerId,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, 
+      #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{readTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.NoticeRecord">
     insert into t_sys_notice_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="managerId != null">
+        manager_id,
       </if>
       <if test="type != null">
         `type`,
@@ -60,6 +64,9 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="managerId != null">
+        #{managerId,jdbcType=INTEGER},
+      </if>
       <if test="type != null">
         #{type,jdbcType=TINYINT},
       </if>
@@ -83,6 +90,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.NoticeRecord">
     update t_sys_notice_record
     <set>
+      <if test="managerId != null">
+        manager_id = #{managerId,jdbcType=INTEGER},
+      </if>
       <if test="type != null">
         `type` = #{type,jdbcType=TINYINT},
       </if>
@@ -106,7 +116,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.NoticeRecord">
     update t_sys_notice_record
-    set `type` = #{type,jdbcType=TINYINT},
+    set manager_id = #{managerId,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=TINYINT},
       title = #{title,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=TINYINT},
@@ -116,20 +127,23 @@
   </update>
   <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.sys.notice.NoticeRecordListReqVO" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from t_sys_notice_record
     where 1=1
-    <include refid="select_page_where"/>
+    <include refid="select_page_where" />
   </select>
   <select id="selectPageCount" parameterType="com.scrawl.iot.web.vo.sys.notice.NoticeRecordListReqVO" resultType="java.lang.Integer">
     select count(*)
     from t_sys_notice_record
     where 1=1
-    <include refid="select_page_where"/>
+    <include refid="select_page_where" />
   </select>
   <sql id="select_page_where">
     <if test="title != null and title != ''">
       and title = #{title}
+    </if>
+    <if test="managerId != null">
+      and manager_id = #{managerId}
     </if>
   </sql>
 </mapper>

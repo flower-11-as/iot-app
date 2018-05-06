@@ -13,6 +13,8 @@ import java.util.List;
 public interface ManagerService {
     List<Manager> list(ManagerListReqVO reqVO);
 
+    List<Manager> list(Manager manager);
+
     Integer count(ManagerListReqVO reqVO);
 
     Manager get(Integer id);

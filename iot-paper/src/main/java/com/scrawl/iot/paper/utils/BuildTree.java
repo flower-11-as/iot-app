@@ -11,7 +11,6 @@ import java.util.Map;
 public class BuildTree {
 
     public static <T> Tree<T> build(List<Tree<T>> nodes) {
-
         if (nodes == null) {
             return null;
         }
@@ -32,6 +31,9 @@ public class BuildTree {
                     parent.getChildren().add(children);
                     children.setHasParent(true);
                     parent.setHasChildren(true);
+                    if (null != parent.getState()) {
+                        parent.getState().remove("selected");
+                    }
                 }
             }
 
@@ -77,6 +79,9 @@ public class BuildTree {
                     parent.getChildren().add(children);
                     children.setHasParent(true);
                     parent.setHasChildren(true);
+                    if (null != parent.getState()) {
+                        parent.getState().remove("selected");
+                    }
                 }
             }
 

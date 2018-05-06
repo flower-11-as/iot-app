@@ -15,6 +15,8 @@ public interface NoticeRecordService {
 
     int count(NoticeRecordListReqVO reqVO);
 
+    NoticeRecord get(Integer id);
+
     boolean save(NoticeRecord noticeRecord);
 
     boolean update(NoticeRecord noticeRecord);

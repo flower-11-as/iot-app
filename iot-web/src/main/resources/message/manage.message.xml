@@ -69,6 +69,10 @@
     <!--notice-->
     <entry key="SYS13001">发送通知错误，未查询到通知信息</entry>
     <entry key="SYS13002">发送通知错误，无有效接收人</entry>
+    <entry key="SYS13003">添加通知错误</entry>
+    <entry key="SYS13004">编辑通知错误</entry>
+    <entry key="SYS13005">删除通知错误</entry>
+    <entry key="SYS13006">发送通知错误</entry>
 
     <!--iot-->
     <entry key="IOT10001">未获取到有效授权IoT账户</entry>

@@ -12,6 +12,7 @@ $.validator.setDefaults({
 });
 
 function loadMenuTree(menuTree) {
+    console.log(JSON.stringify(menuTree));
     $('#menuTree').jstree({
         "plugins": ["wholerow", "checkbox"],
         'core': {

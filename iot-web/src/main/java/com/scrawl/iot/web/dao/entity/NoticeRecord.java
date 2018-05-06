@@ -5,6 +5,8 @@ import java.util.Date;
 public class NoticeRecord {
     private Integer id;
 
+    private Integer managerId;
+
     private Byte type;
 
     private String title;
@@ -23,6 +25,14 @@ public class NoticeRecord {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Integer managerId) {
+        this.managerId = managerId;
     }
 
     public Byte getType() {

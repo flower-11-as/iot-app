@@ -24,4 +24,6 @@ public interface ManagerMapper {
     List<Manager> selectPageList(ManagerListReqVO reqVO);
 
     int selectPageCount(ManagerListReqVO reqVO);
+
+    List<Manager> selectBySelective(Manager record);
 }

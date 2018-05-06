@@ -47,6 +47,11 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
+    public List<Manager> list(Manager manager) {
+        return managerMapper.selectBySelective(manager);
+    }
+
+    @Override
     public Integer count(ManagerListReqVO reqVO) {
         return managerMapper.selectPageCount(reqVO);
     }
