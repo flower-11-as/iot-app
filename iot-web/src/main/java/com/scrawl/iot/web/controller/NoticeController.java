@@ -114,7 +114,7 @@ public class NoticeController extends BaseController {
 
     @GetMapping("/toSendNotice/{id}")
     public String toSendNotice(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("id", id);
+        model.addAttribute("notice", noticeService.get(id));
         return prefix + "/sendNotice";
     }
 
