@@ -5,6 +5,7 @@ import com.scrawl.iot.web.dao.mapper.NoticeMapper;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.NoticeService;
 import com.scrawl.iot.web.vo.sys.notice.NoticeListReqVO;
+import com.scrawl.iot.web.vo.sys.notice.NoticeSendReqVO;
 import groovy.util.logging.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,17 +54,17 @@ public class NoticeServiceTest implements NoticeService {
     }
 
     @Override
-    public void sendNotice(Integer id, List<Integer> managerIds) {
-        Notice notice = this.get(id);
+    public void sendNotice(NoticeSendReqVO reqVO) {
+        Notice notice = this.get(reqVO.getId());
         if (null == notice) {
             throw new BizException("SYS13001");
         }
 
-        if (null == managerIds || managerIds.size() == 0) {
+        if (null == reqVO.getManagerIds() || reqVO.getManagerIds().size() == 0) {
             throw new BizException("SYS13002");
         }
 
-        managerIds.forEach(managerId -> {
+        reqVO.getManagerIds().forEach(managerId -> {
             // TODO:发送通知
         });
     }

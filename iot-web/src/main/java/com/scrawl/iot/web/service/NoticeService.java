@@ -2,6 +2,7 @@ package com.scrawl.iot.web.service;
 
 import com.scrawl.iot.web.dao.entity.Notice;
 import com.scrawl.iot.web.vo.sys.notice.NoticeListReqVO;
+import com.scrawl.iot.web.vo.sys.notice.NoticeSendReqVO;
 
 import java.util.List;
 
@@ -23,5 +24,5 @@ public interface NoticeService {
 
     boolean remove(Integer id);
 
-    void sendNotice(Integer id, List<Integer> managerIds);
+    void sendNotice(NoticeSendReqVO reqVO);
 }

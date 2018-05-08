@@ -10,6 +10,7 @@ import com.scrawl.iot.web.service.NoticeService;
 import com.scrawl.iot.web.vo.PageRespVO;
 import com.scrawl.iot.web.vo.R;
 import com.scrawl.iot.web.vo.sys.notice.NoticeListReqVO;
+import com.scrawl.iot.web.vo.sys.notice.NoticeSendReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -130,14 +131,17 @@ public class NoticeController extends BaseController {
 
             trees.add(managerTree);
         });
-        return BuildTree.build(trees);
+
+        Tree<Manager> rs = BuildTree.build(trees);
+        rs.setText("管理员");
+        return rs;
     }
 
     @PostMapping("/sendNotice")
     @ResponseBody
-    public R sendNotice(Integer id, List<Integer> managerIds) {
+    public R sendNotice(NoticeSendReqVO reqVO) {
         try {
-            noticeService.sendNotice(id, managerIds);
+            noticeService.sendNotice(reqVO);
         } catch (Exception e) {
             log.error("发送通知异常：", e);
             throw new BizException("SYS13006");

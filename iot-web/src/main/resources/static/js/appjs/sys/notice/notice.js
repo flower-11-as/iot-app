@@ -3,9 +3,6 @@ var prefix = "/iot-manage/sys/notice";
 var localParams = {};
 var localColumns = [
     {
-        checkbox: true
-    },
-    {
         field: 'id', // 列字段名
         title: '序号' // 列标题
     },
@@ -18,9 +15,9 @@ var localColumns = [
         title: '通知类型', // 列标题
         align: 'center',
         formatter: function (value, row, index) {
-            if (value === 0) {
+            if (value === 1) {
                 return '<span class="label label-info">系统通知</span>';
-            } else if (value === 1) {
+            } else if (value === 2) {
                 return '<span class="label label-danger">系统预警</span>';
             }
         }
@@ -30,15 +27,15 @@ var localColumns = [
         field: 'id',
         align: 'center',
         formatter: function (value, row, index) {
-            var a = '<a class="btn btn-info btn-sm ' + s_add_h + '" href="#" title="编辑通知"  mce_href="#" onclick="add(\''
+            var a = '<a class="btn btn-success btn-sm ' + s_edit_h + '" href="#" title="编辑通知"  mce_href="#" onclick="edit(\''
                 + row.id
-                + '\')"><i class="fa fa-key"></i></a> ';
-            var b = '<a class="btn btn-info btn-sm ' + s_sendNotice_h + '" href="#" title="发送通知"  mce_href="#" onclick="sendNotice(\''
+                + '\')"><i class="fa fa fa-edit">编辑</i></a> ';
+            var b = '<a class="btn btn-success btn-sm ' + s_sendNotice_h + '" href="#" title="发送通知"  mce_href="#" onclick="sendNotice(\''
                 + row.id
-                + '\')"><i class="fa fa-camera-retro"></i></a> ';
+                + '\')"><i class="fa fa fa-send-o">发送</i></a> ';
             var c = '<a class="btn btn-danger btn-sm ' + s_remove_h + '" href="#" title="删除通知"  mce_href="#" onclick="remove(\''
                 + row.id
-                + '\')"><i class="fa fa-user-plus"></i></a> ';
+                + '\')"><i class="fa fa-remove">删除</i></a> ';
             return a + b + c;
         }
     }];
@@ -106,11 +103,26 @@ function add() {
     // iframe层
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '增加' + localPageName,
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['60%', '70%'],
+        area: ['75%', '75%'],
         content: prefix + '/add'
+    });
+}
+
+// 编辑
+function edit(id) {
+    // iframe层
+    layer.open({
+        type: 2,
+        skin: 'layui-layer-lan',
+        title: '编辑' + localPageName,
+        maxmin: true,
+        shadeClose: false, // 点击遮罩关闭层
+        area: ['75%', '75%'],
+        content: prefix + '/edit/' + id
     });
 }
 
@@ -140,52 +152,16 @@ function remove(id) {
     })
 }
 
-// 重置密码
-function resetPwd(id) {
+// 发送通知
+function sendNotice(id) {
+    // iframe层
     layer.open({
         type: 2,
-        title: '重置密码',
+        skin: 'layui-layer-lan',
+        title: '发送' + localPageName,
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['400px', '260px'],
-        content: prefix + '/resetPwd/' + id // iframe的url
-    });
-}
-
-// 刷新登录授权
-function resetAuth(id) {
-    layer.confirm('确定要刷新选中记录的授权信息？', {
-        btn: ['确定', '取消']
-    }, function () {
-        $.ajax({
-            url: prefix + "/resetAuth",
-            type: "post",
-            data: {
-                'id': id
-            },
-            success: function (data) {
-                if (data.code === '0000') {
-                    layer.msg("授权成功");
-                    reLoad();
-                } else {
-                    layer.alert(data.msg, {
-                        title: '提示',
-                        icon: 2
-                    });
-                }
-            }
-        });
-    })
-}
-
-// 订阅地址
-function subscribe(id) {
-    layer.open({
-        type: 2,
-        title: '注册订阅地址',
-        maxmin: true,
-        shadeClose: false, // 点击遮罩关闭层
-        area: ['400px', '260px'],
-        content: prefix + '/subscribe/' + id // iframe的url
+        area: ['75%', '75%'],
+        content: prefix + '/toSendNotice/' + id
     });
 }
