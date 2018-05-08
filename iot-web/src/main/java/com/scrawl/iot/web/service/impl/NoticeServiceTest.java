@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Service
 @Log4j
-public class NoticeServiceImpl implements NoticeService {
+public class NoticeServiceTest implements NoticeService {
 
     @Autowired
     private NoticeMapper noticeMapper;

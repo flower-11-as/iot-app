@@ -36,7 +36,6 @@ public class BuildTree {
                     }
                 }
             }
-
         }
 
         Tree<T> root = new Tree<>();
