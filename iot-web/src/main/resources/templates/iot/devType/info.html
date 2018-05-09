@@ -186,7 +186,7 @@
 </div>
 <div th:include="include::footer"></div>
 <script type="text/javascript">
-    var prefix = "/iot-manage/iot/devType";
+    var prefix = content_path + "iot/devType";
     function fillMessageId(id, index) {
         var messageId = $('#message_id_'+index).val();
         if (!messageId) {

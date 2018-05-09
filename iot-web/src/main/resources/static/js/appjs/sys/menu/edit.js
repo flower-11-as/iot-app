@@ -1,4 +1,4 @@
-var prefix = "/iot-manage/sys/menu";
+var prefix = content_path + "sys/menu";
 $(function() {
 	validateRule();
 
@@ -7,7 +7,7 @@ $(function() {
         layer.open({
             type: 2,
 			title:'图标列表',
-            content: '/iot-manage/FontIcoList.html',
+            content: content_path + 'FontIcoList.html',
             area: ['480px', '90%']
         });
     });

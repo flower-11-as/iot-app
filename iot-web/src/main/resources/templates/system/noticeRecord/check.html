@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include::header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">通知类型</label>
+                            <div class="col-sm-8">
+                                <span class="label label-info" th:if="${noticeRecord.type == 1}">系统通知</span>
+                                <span class="label label-danger" th:if="${noticeRecord.type == 2}">系统预警</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">标题</label>
+                            <div class="col-sm-8">
+                                <input name="title" class="form-control" type="text" th:value="${noticeRecord.title}" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">内容</label>
+                            <div class="col-sm-8">
+                                <textarea name="content" class="form-control" th:text="${noticeRecord.content}" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">发送时间</label>
+                            <div class="col-sm-8">
+                                <input name="readTime" class="form-control" type="text" th:value="${#dates.format(noticeRecord.readTime, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
 </body>
 </html>

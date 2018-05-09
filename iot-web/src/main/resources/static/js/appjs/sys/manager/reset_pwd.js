@@ -1,5 +1,5 @@
 // ************个性化设置************
-var prefix = "/iot-manage/sys/manager";
+var prefix = content_path + "sys/manager";
 // ************个性化设置************
 
 $(function () {

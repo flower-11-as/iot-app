@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-
 <head>
     <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>IoT管理</title>
     <meta name="keywords" content="IoT管理系统">
     <meta name="description" content="IoT管理系统">
-    <link rel="shortcut icon" href="img/iot.png">
-    <link href="/iot-manage/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/iot-manage/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
-    <link href="/iot-manage/css/animate.css" rel="stylesheet">
-    <link href="/iot-manage/css/style.css" rel="stylesheet">
-    <link href="/iot-manage/css/login.css" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{/img/iot.png}">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/login.css}" rel="stylesheet">
     <!--[if lt IE 9]>
     <meta http-equiv="refresh" content="0;ie.html"/>
     <![endif]-->
@@ -59,17 +56,20 @@
     </div>
 </div>
 <!-- 全局js -->
-<script src="/iot-manage/js/jquery.min.js?v=2.1.4"></script>
-<script src="/iot-manage/js/bootstrap.min.js?v=3.3.6"></script>
-
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
 <!-- 自定义js -->
-<script src="/iot-manage/js/content.js?v=1.0.0" th:src="@{/js/content.js}"></script>
-
+<script th:src="@{/js/content.js}"></script>
 <!-- jQuery Validation plugin javascript-->
-<script src="/iot-manage/js/ajax-util.js"></script>
-<script src="/iot-manage/js/plugins/validate/jquery.validate.min.js"></script>
-<script src="/iot-manage/js/plugins/validate/messages_zh.min.js"></script>
-<script src="/iot-manage/js/plugins/layer/layer.min.js"></script>
+<script th:src="@{/js/ajax-util.js}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/plugins/layer/layer.min.js}"></script>
+<script th:inline="javascript">//引用
+    /*<![CDATA[*/
+    var content_path = /*[[@{/}]]*/;//取值
+    /*]]>*/
+</script>
 <script type="text/javascript">
     $(document).ready(function () {
         validateRule();
@@ -84,14 +84,14 @@
     function login() {
         $.ajax({
             type: "post",
-            url: "/iot-manage/iotLogin",
+            url: content_path + "iotLogin",
             data: $('#signupForm').serialize(),
             success: function (r) {
                 if (r.code === '0000') {
                     layer.load(1, {
                         shade: [0.1,'#fff'] //0.1透明度的白色背景
                     });
-                    parent.location.href = '/iot-manage/index';
+                    parent.location.href = content_path + 'index';
                 } else {
                     layer.msg(r.msg);
                 }

@@ -1,4 +1,4 @@
-var prefix = "/iot-manage/sys/param";
+var prefix = content_path + "sys/param";
 
 $().ready(function () {
     validateRule();

@@ -1,4 +1,4 @@
-var prefix = "/iot-manage/sys/menu";
+var prefix = content_path + "sys/menu";
 $(function() {
 	validateRule();
 	//打开图标列表
@@ -6,7 +6,7 @@ $(function() {
         layer.open({
             type: 2,
 			title:'图标列表',
-            content: '/iot-manage/FontIcoList.html',
+            content: content_path + 'FontIcoList.html',
             area: ['480px', '90%'],
             success: function(layero, index){
                 //var body = layer.getChildFrame('.ico-list', index);

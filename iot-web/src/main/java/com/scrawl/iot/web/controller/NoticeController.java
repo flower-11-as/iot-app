@@ -141,6 +141,7 @@ public class NoticeController extends BaseController {
     @ResponseBody
     public R sendNotice(NoticeSendReqVO reqVO) {
         try {
+            reqVO.getManagerIds().remove(new Integer(-1));
             noticeService.sendNotice(reqVO);
         } catch (Exception e) {
             log.error("发送通知异常：", e);

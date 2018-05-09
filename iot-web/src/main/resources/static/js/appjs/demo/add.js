@@ -1,5 +1,5 @@
 // ************个性化设置************
-var prefix = "/iot-manage/demo";
+var prefix = content_path + "demo";
 // ************个性化设置************
 
 $().ready(function () {

@@ -1,5 +1,5 @@
 // ************个性化设置************
-var prefix = "/iot-manage/iot/device";
+var prefix = content_path + "iot/device";
 // ************个性化设置************
 
 $().ready(function () {

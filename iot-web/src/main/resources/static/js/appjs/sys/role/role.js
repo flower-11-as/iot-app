@@ -1,4 +1,4 @@
-var prefix = "/iot-manage/sys/role";
+var prefix = content_path + "sys/role";
 $(function () {
     load();
 });

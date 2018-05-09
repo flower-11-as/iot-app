@@ -1,5 +1,5 @@
 // ************个性化设置************
-var prefix = "/iot-manage/iot/account";
+var prefix = content_path + "iot/account";
 // ************个性化设置************
 
 $().ready(function () {

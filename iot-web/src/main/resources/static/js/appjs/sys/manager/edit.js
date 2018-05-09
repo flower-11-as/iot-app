@@ -8,7 +8,7 @@ $.validator.setDefaults({
         $.ajax({
             cache: true,
             type: "POST",
-            url: "/iot-manage/sys/manager/update",
+            url: content_path + "sys/manager/update",
             data: $('#signupForm').serialize(),// 你的formid
             async: false,
             error: function () {

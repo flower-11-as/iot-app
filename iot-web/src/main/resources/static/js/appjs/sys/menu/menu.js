@@ -1,4 +1,4 @@
-var prefix = "/iot-manage/sys/menu";
+var prefix = content_path + "sys/menu";
 $(document).ready(function () {
     load();
 });

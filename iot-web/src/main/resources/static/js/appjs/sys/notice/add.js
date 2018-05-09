@@ -1,5 +1,5 @@
 // ************个性化设置************
-var prefix = "/iot-manage/sys/notice";
+var prefix = content_path + "sys/notice";
 // ************个性化设置************
 
 $().ready(function () {

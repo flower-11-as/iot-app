@@ -1,4 +1,4 @@
-var prefix = "/iot-manage/sys/role";
+var prefix = content_path + "sys/role";
 var menuIds;
 $(function () {
     getMenuTreeData();
@@ -24,7 +24,7 @@ function getAllSelectNodes() {
 function getMenuTreeData() {
     $.ajax({
         type: "GET",
-        url: "/iot-manage/sys/menu/tree",
+        url: content_path + "sys/menu/tree",
         success: function (menuTree) {
             loadMenuTree(menuTree);
         }

@@ -1,5 +1,5 @@
 // ************个性化设置************
-var prefix = "/iot-manage/iot/serviceMode";
+var prefix = content_path + "iot/serviceMode";
 var localParams = {};
 var localColumns = [
     {

@@ -1,6 +1,5 @@
 package com.scrawl.iot.web.controller;
 
-import com.scrawl.iot.web.dao.entity.Notice;
 import com.scrawl.iot.web.dao.entity.NoticeRecord;
 import com.scrawl.iot.web.enums.NoticeRecordStatusEnum;
 import com.scrawl.iot.web.service.NoticeRecordService;
@@ -22,7 +21,7 @@ import java.util.Date;
 @RequestMapping("/sys/noticeRecord")
 @Controller
 @Slf4j
-public class NoticeRecordController {
+public class NoticeRecordController extends BaseController {
     private String prefix = "/system/noticeRecord";
 
     @Autowired
@@ -36,6 +35,7 @@ public class NoticeRecordController {
     @PostMapping("/list")
     @ResponseBody
     public PageRespVO<NoticeRecord> list(@RequestBody NoticeRecordListReqVO reqVO) {
+        reqVO.setManagerId(getManagerId());
         PageRespVO<NoticeRecord> pageRespVO = new PageRespVO<>();
         pageRespVO.setRows(noticeRecordService.list(reqVO));
         pageRespVO.setTotal(noticeRecordService.count(reqVO));

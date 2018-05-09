@@ -96,9 +96,9 @@
 </div>
 <div th:include="include::footer"></div>
 <!--校验插件-->
-<script type="text/javascript" src="/iot-manage/js/plugins/validate/jquery.validate.min.js"></script>
-<script type="text/javascript" src="/iot-manage/js/plugins/validate/jquery.validate.extend.js"></script>
-<script type="text/javascript" src="/iot-manage/js/plugins/validate/messages_zh.min.js"></script>
-<script type="text/javascript" src="/iot-manage/js/appjs/sys/manager/personal.js"></script>
+<script type="text/javascript" th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/validate/jquery.validate.extend.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/appjs/sys/manager/personal.js}"></script>
 </body>
 </html>

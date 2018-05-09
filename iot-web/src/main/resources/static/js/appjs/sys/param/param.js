@@ -1,5 +1,5 @@
 // ************个性化设置************
-var prefix = "/iot-manage/sys/param";
+var prefix = content_path + "sys/param";
 var localParams = {};
 var localColumns = [
     {
