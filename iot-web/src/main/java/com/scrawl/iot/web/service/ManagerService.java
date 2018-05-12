@@ -30,4 +30,6 @@ public interface ManagerService {
     void remove(Integer managerId);
 
     void batchRemove(Integer[] managerIds);
+
+    List<Manager> listOnlineManager();
 }

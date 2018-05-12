@@ -20,4 +20,6 @@ public interface NoticeRecordService {
     boolean save(NoticeRecord noticeRecord);
 
     boolean update(NoticeRecord noticeRecord);
+
+    void sendNotice(NoticeRecord noticeRecord);
 }

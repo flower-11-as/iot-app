@@ -105,13 +105,13 @@
                             </li>
                             <li>
                                 <div class="text-center link-block">
-                                    <!--<a class="J_menuItem" href="/oa/notify/selfNotify"> <i-->
-                                    <!--class="fa fa-envelope"></i> <strong> 查看所有消息</strong>-->
-                                    <!--</a>-->
-                                    <audio id="voiceAA" src="/iot-manage/voice/song.ogg" controls="controls">
+                                    <a class="J_menuItem" th:href="@{/sys/noticeRecord}">
+                                        <i class="fa fa-envelope"></i>
+                                        <strong> 查看所有消息</strong>
+                                    </a>
+                                    <audio id="voiceAA" src="/iot-manage/voice/song.ogg">
                                     Your browser does not support the audio element.
                                     </audio>
-                                    <input type="button" value="开始/暂停" id="voiceCt">
                                 </div>
                             </li>
                         </ul>
@@ -268,6 +268,9 @@
 <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
 <!-- vue -->
 <script th:src="@{/js/vue.min.js}"></script>
+<!-- socket -->
+<script th:src="@{/js/plugins/webSocket/sockjs.min.js}"></script>
+<script th:src="@{/js/plugins/webSocket/stomp.min.js}"></script>
 <!-- Toastr script -->
 <script th:src="@{/js/plugins/toastr/toastr.min.js}"></script>
 <script th:inline="javascript">//引用
@@ -276,6 +279,53 @@ var content_path = /*[[@{/}]]*/;//取值
 /*]]>*/
 </script>
 <script type="text/javascript">
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "progressBar": true,
+        "positionClass": "toast-bottom-right",
+        "onclick": null,
+        "showDuration": "400",
+        "hideDuration": "1000",
+        "timeOut": "80000",
+        "extendedTimeOut": "20000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+        "onShown": function() {
+            var audio = $('#voiceAA')[0];
+            audio.currentTime = 0;
+            audio.play();
+        }
+    };
+    $(function () {
+        connect();
+    });
+
+    function connect() {
+        var sock = new SockJS(content_path + "endpointChat");
+        var stomp = Stomp.over(sock);
+        stomp.connect({}, function(frame) {
+            /**  订阅了/user/queue/notifications 发送的消息,这里雨在控制器的 convertAndSendToUser 定义的地址保持一致, 
+             *  这里多用了一个/user,并且这个user 是必须的,使用user 才会发送消息到指定的用户。 
+             *  */
+            stomp.subscribe("/user/queue/notifications", handleNotification);
+            stomp.subscribe('/topic/getResponse', function (response) { //订阅/topic/getResponse 目标发送的消息。这个是在控制器的@SendTo中定义的。
+                toastr.info(JSON.parse(response.body).responseMessage);
+            });
+        });
+        function handleNotification(message) {
+            wrapper.notify();
+            var notice = JSON.parse(message.body);
+            if (notice['type'] === 1) {
+                toastr.success(notice['content']);
+            } else {
+                toastr.error(notice['content']);
+            }
+        }
+    }
+
     var wrapper = new Vue({
         el: '#wrapper',
         data: {
@@ -284,65 +334,32 @@ var content_path = /*[[@{/}]]*/;//取值
         },
         methods: {
             notify: function () {
-                $.getJSON(content_path + 'oa/notify/message', function (r) {
-                    wrapper.total = r.total;
-                    wrapper.rows = r.rows;
+                $.ajax({
+                    url: content_path + "sys/noticeRecord/list",
+                    type: "post",
+                    dataType: "json",
+                    contentType:"application/json",
+                    data: JSON.stringify({'status': 0}),
+                    success: function (r) {
+                        wrapper.total = r.total;
+                        wrapper.rows = r.rows;
+                    }
                 });
             },
             personal: function () {
-                // layer.open({
-                //     type: 2,
-                //     title: '个人设置',
-                //     maxmin: true,
-                //     shadeClose: false,
-                //     area: ['50%', '70%'],
-                //     content: content_path + 'sys/manager/personal'
-                // });
-                toastr.options = {
-                    "closeButton": true,
-                    "debug": true,
-                    "progressBar": true,
-                    "positionClass": "toast-bottom-right",
-                    "onclick": null,
-                    "showDuration": "400",
-                    "hideDuration": "1000",
-                    "timeOut": "8000",
-                    "extendedTimeOut": "2000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut",
-                    "onShown": function() {
-                        var audio = $('#voiceAA')[0];
-                        // if (audio.paused) {
-                        audio.currentTime = 0;
-                        audio.play();
-                        // }
-                    },
-                    "onHidden": function() {
-                        var audio = $('#voiceAA')[0];
-                        // if (!audio.paused) {
-                        //     audio.pause();
-                        // }
-                    }
-                };
-                toastr.info("hello world");
+                layer.open({
+                    type: 2,
+                    title: '个人设置',
+                    maxmin: true,
+                    shadeClose: false,
+                    area: ['50%', '70%'],
+                    content: content_path + 'sys/manager/personal'
+                });
             }
         },
         created: function () {
-//            this.notify()
+            this.notify();
         }
-    })
-
-    $(function(){
-        $('#voiceCt').click(function(){
-            var audio = $('#voiceAA')[0];
-            if(audio.paused)                     {
-                audio.play();//audio.play();// 这个就是播放
-            }else{
-                audio.pause();// 这个就是暂停
-            }
-        });
     });
 </script>
 </body>

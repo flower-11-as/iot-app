@@ -6,12 +6,14 @@ import com.scrawl.iot.web.dao.mapper.DeviceAlarmRecordMapper;
 import com.scrawl.iot.web.dao.mapper.DeviceExtMapper;
 import com.scrawl.iot.web.service.AbstractAlarmService;
 import com.scrawl.iot.web.service.DeviceService;
+import com.scrawl.iot.web.service.NoticeRecordService;
 import com.scrawl.iot.web.service.ParamService;
 import com.scrawl.iot.web.vo.iot.device.DeviceAlarmConfigVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -38,9 +40,13 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
     @Autowired
     private DeviceAlarmRecordMapper deviceAlarmRecordMapper;
 
+    @Autowired
+    private NoticeRecordService noticeRecordService;
+
     private final String LAMP_ALARM_LOG_PREFIX = "Lamp产品型号";
 
     @Override
+    @Transactional
     public void alarm(Integer deviceId) {
         Assert.notNull(deviceId, "设备id不能为空");
         log.info(LAMP_ALARM_LOG_PREFIX + "设备[{}]预警", deviceId);
@@ -111,8 +117,10 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
         }
 
         // 4、预警处理
-        alarmHandler(deviceId, (byte) 1, String.format("设备电流信息[%smA]在预警范围之外(min[%smA], max[%smA])", current.toPlainString(),
+        alarmHandler(deviceId, (byte) 1, String.format("设备[%s]电流信息[%smA]在预警范围之外(min[%smA], max[%smA])", device.getDevSerial(), current.toPlainString(),
                 minCurrent.toPlainString(), maxCurrent.toPlainString()));
+
+        // 5、添加通知
     }
 
     private void alarmHandler(Integer deviceId, Byte alarmStatus, String desc) {
@@ -140,5 +148,9 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
 
             deviceAlarmRecordMapper.insertSelective(alarmRecord);
         }
+    }
+
+    private void sendNotice() {
+
     }
 }

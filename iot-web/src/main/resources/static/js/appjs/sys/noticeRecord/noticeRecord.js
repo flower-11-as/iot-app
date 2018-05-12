@@ -122,6 +122,9 @@ function check(id) {
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
         area: ['75%', '75%'],
-        content: prefix + '/check/' + id
+        content: prefix + '/check/' + id,
+        success: function(elem) {
+            reLoad();
+        }
     });
 }

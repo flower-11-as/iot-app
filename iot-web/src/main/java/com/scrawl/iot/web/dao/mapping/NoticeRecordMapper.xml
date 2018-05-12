@@ -131,6 +131,7 @@
     from t_sys_notice_record
     where 1=1
     <include refid="select_page_where" />
+    order by id desc
   </select>
   <select id="selectPageCount" parameterType="com.scrawl.iot.web.vo.sys.notice.NoticeRecordListReqVO" resultType="java.lang.Integer">
     select count(*)
@@ -144,6 +145,9 @@
     </if>
     <if test="managerId != null">
       and manager_id = #{managerId}
+    </if>
+    <if test="status != null">
+      and status = #{status}
     </if>
   </sql>
 </mapper>

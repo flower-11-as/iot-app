@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PageReqVO {
-    protected int limit;
-    protected int offset;
+    protected int limit = 10;
+    protected int offset = 0;
 }

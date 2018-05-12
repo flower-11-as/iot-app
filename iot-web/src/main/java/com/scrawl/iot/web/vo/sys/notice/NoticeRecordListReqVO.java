@@ -13,4 +13,5 @@ import lombok.Setter;
 public class NoticeRecordListReqVO extends PageReqVO{
     private String title;
     private Integer managerId;
+    private Byte status;
 }

@@ -1,6 +1,5 @@
 package com.scrawl.iot.web.service.impl;
 
-import com.scrawl.iot.web.dao.entity.Account;
 import com.scrawl.iot.web.dao.entity.Manager;
 import com.scrawl.iot.web.dao.entity.ManagerAccount;
 import com.scrawl.iot.web.dao.entity.ManagerRole;
@@ -14,14 +13,15 @@ import com.scrawl.iot.web.vo.sys.manager.ManagerReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +40,9 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Autowired
     private ManagerAccountMapper managerAccountMapper;
+
+    @Autowired
+    private SessionDAO sessionDAO;
 
     @Override
     public List<Manager> list(ManagerListReqVO reqVO) {
@@ -173,5 +176,22 @@ public class ManagerServiceImpl implements ManagerService {
         if (ArrayUtils.isNotEmpty(managerIds)) {
             Arrays.stream(managerIds).forEach(this::remove);
         }
+    }
+
+    @Override
+    public List<Manager> listOnlineManager() {
+        List<Manager> list = new ArrayList<>();
+        Collection<Session> sessions = sessionDAO.getActiveSessions();
+        Optional.ofNullable(sessions).orElse(new ArrayList<>()).forEach(session -> {
+            if (session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY) == null) {
+                return;
+            }
+
+            SimplePrincipalCollection principalCollection = (SimplePrincipalCollection) session
+                    .getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+            Manager userDO = (Manager) principalCollection.getPrimaryPrincipal();
+            list.add(userDO);
+        });
+        return list;
     }
 }

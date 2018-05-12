@@ -112,4 +112,21 @@ public class Manager {
     public void setUpdateManager(Integer updateManager) {
         this.updateManager = updateManager;
     }
+
+    @Override
+    public String toString() {
+        return "Manager{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", status=" + status +
+                ", salt='" + salt + '\'' +
+                ", createTime=" + createTime +
+                ", createManager=" + createManager +
+                ", updateTime=" + updateTime +
+                ", updateManager=" + updateManager +
+                '}';
+    }
 }

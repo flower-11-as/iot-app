@@ -7,18 +7,20 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.SessionListener;
+import org.apache.shiro.session.mgt.eis.MemorySessionDAO;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description:
@@ -60,6 +62,7 @@ public class ShiroConfiguration {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(iotShiroRealm());
         securityManager.setCacheManager(ehCacheManager());
+        securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
 
@@ -144,5 +147,22 @@ public class ShiroConfiguration {
         EhCacheManager em = new EhCacheManager();
         em.setCacheManagerConfigFile("classpath:config/ehcache.xml");
         return em;
+    }
+
+    /**
+     * shiro session的管理
+     */
+    @Bean
+    public DefaultWebSessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionDAO(sessionDAO());
+        Collection<SessionListener> listeners = new ArrayList<>();
+        sessionManager.setSessionListeners(listeners);
+        return sessionManager;
+    }
+
+    @Bean
+    public SessionDAO sessionDAO(){
+        return new MemorySessionDAO();
     }
 }
