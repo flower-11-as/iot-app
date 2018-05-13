@@ -14,6 +14,7 @@ import com.scrawl.iot.web.dao.mapper.*;
 import com.scrawl.iot.web.enums.DeviceSyncTypeEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
+import com.scrawl.iot.web.service.DeviceMessageService;
 import com.scrawl.iot.web.service.DeviceService;
 import com.scrawl.iot.web.service.ParamService;
 import com.scrawl.iot.web.vo.iot.callback.IotDataReportReqVO;
@@ -89,12 +90,20 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DeviceAlarmConfigMapper deviceAlarmConfigMapper;
 
+    @Autowired
+    private DeviceMessageService deviceMessageService;
+
     private final String SERVICE_ID_BATTERY = "Battery";
     private final String SERVICE_ID_METER = "Meter";
 
     @Override
     public List<DeviceListRespVO> list(DeviceListReqVO reqVO) {
-        return deviceMapper.selectPageList(reqVO);
+        List<DeviceListRespVO> list = deviceMapper.selectPageList(reqVO);
+        list.forEach(device -> {
+            DeviceSync deviceSync = deviceMessageService.getLastDeviceSync(device.getId());
+            device.setLastReportTime(null != deviceSync ? deviceSync.getCreateTime() : null);
+        });
+        return list;
     }
 
     @Override

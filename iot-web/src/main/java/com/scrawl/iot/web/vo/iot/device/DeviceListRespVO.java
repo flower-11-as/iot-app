@@ -18,4 +18,6 @@ public class DeviceListRespVO extends Device {
     private String alarmDesc;
 
     private Date alarmTime;
+
+    private Date lastReportTime;
 }

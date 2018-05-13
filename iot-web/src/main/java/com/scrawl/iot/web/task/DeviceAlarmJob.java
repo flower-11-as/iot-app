@@ -55,15 +55,13 @@ public class DeviceAlarmJob implements Job {
 
             List<Device> devices = deviceService.getByServerAndDevType(devType.getServerId(), devType.getDevType());
 
-            devices.forEach(device -> {
-                CompletableFuture.runAsync(() -> {
-                    try {
-                        deviceAlarmService.alarm(device.getId());
-                    } catch (Exception e) {
-                        log.error(JOB_LOG_PREFIX + "产品型号[" + devType.getId() + "]设备[" + device.getId() + "]告警异常", e);
-                    }
-                });
-            });
+            devices.forEach(device -> CompletableFuture.runAsync(() -> {
+                try {
+                    deviceAlarmService.alarm(device.getId());
+                } catch (Exception e) {
+                    log.error(JOB_LOG_PREFIX + "产品型号[" + devType.getId() + "]设备[" + device.getId() + "]告警异常", e);
+                }
+            }));
 
         });
     }

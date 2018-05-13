@@ -30,8 +30,8 @@ var localColumns = [
         }
     },
     {
-        field: 'alarmTime', // 列字段名
-        title: '告警时间' // 列标题
+        field: 'lastReportTime', // 列字段名
+        title: '最新上报时间' // 列标题
     },
     {
         field: 'alarmDesc', // 列字段名

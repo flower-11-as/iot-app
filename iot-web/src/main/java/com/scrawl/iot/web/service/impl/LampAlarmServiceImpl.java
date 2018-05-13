@@ -67,22 +67,22 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
         Assert.notNull(device, "设备[" + deviceId + "]不能为空");
 
         // 1、获取预警配置
-        BigDecimal minCurrent, maxCurrent;
+        BigDecimal minPower, maxPower;
         int maxNoReportTime;// 最大未上报时间（h）
         try {
             List<DeviceAlarmConfigVO> alarmConfigs = deviceService.getAlarmConfig(deviceId);
             Map<String, DeviceAlarmConfigVO> alarmConfigMap = alarmConfigs.stream().collect(
                     Collectors.toMap(DeviceAlarmConfigVO::getParamKey, Function.identity()));
 
-            DeviceAlarmConfigVO minCurrentConfig = alarmConfigMap.get("minCurrent");
-            DeviceAlarmConfigVO maxCurrentConfig = alarmConfigMap.get("maxCurrent");
+            DeviceAlarmConfigVO minPowerConfig = alarmConfigMap.get("minPower");
+            DeviceAlarmConfigVO maxPowerConfig = alarmConfigMap.get("maxPower");
             DeviceAlarmConfigVO maxNoReportTimeConfig = alarmConfigMap.get("maxNoReportTime");
 
-            minCurrent = StringUtils.isEmpty(minCurrentConfig.getParamValue()) ?
-                    new BigDecimal(minCurrentConfig.getSysParamValue()) : new BigDecimal(minCurrentConfig.getParamValue());
+            minPower = StringUtils.isEmpty(minPowerConfig.getParamValue()) ?
+                    new BigDecimal(minPowerConfig.getSysParamValue()) : new BigDecimal(minPowerConfig.getParamValue());
 
-            maxCurrent = StringUtils.isEmpty(maxCurrentConfig.getParamValue()) ?
-                    new BigDecimal(maxCurrentConfig.getSysParamValue()) : new BigDecimal(maxCurrentConfig.getParamValue());
+            maxPower = StringUtils.isEmpty(maxPowerConfig.getParamValue()) ?
+                    new BigDecimal(maxPowerConfig.getSysParamValue()) : new BigDecimal(maxPowerConfig.getParamValue());
 
             maxNoReportTime = StringUtils.isEmpty(maxNoReportTimeConfig.getParamValue()) ?
                     Integer.parseInt(maxNoReportTimeConfig.getSysParamValue()) : Integer.parseInt(maxNoReportTimeConfig.getParamValue());
@@ -128,25 +128,25 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
             return;
         }
 
-        // 电流值
-        BigDecimal current;
+        // 功率值
+        BigDecimal power;
         try {
-            current = new BigDecimal(messageDetailMap.get("Current").getParamValue());
+            power = new BigDecimal(messageDetailMap.get("Power").getParamValue());
         } catch (NumberFormatException e) {
-            log.error(LAMP_ALARM_LOG_PREFIX + "设备[{}]获取电流信息异常", e);
-            alarmHandler(deviceId, DeviceAlarmStatusEnum.NOT_ALARM, "设备消息获取电流信息异常");
+            log.error(LAMP_ALARM_LOG_PREFIX + "设备[{}]获取功率信息异常", e);
+            alarmHandler(deviceId, DeviceAlarmStatusEnum.NOT_ALARM, "设备消息获取功率信息异常");
             return;
         }
 
 
         // 3、判断是否需要预警
-        if (current.compareTo(minCurrent) >= 0 && current.compareTo(maxCurrent) <= 0) {
-            log.error(LAMP_ALARM_LOG_PREFIX + "设备[{}]电流信息[{}]正常，无需预警", device.getDevSerial(), current);
+        if (power.compareTo(minPower) >= 0 && power.compareTo(maxPower) <= 0) {
+            log.error(LAMP_ALARM_LOG_PREFIX + "设备[{}]功率信息[{}]正常，无需预警", device.getDevSerial(), power);
             alarmHandler(deviceId, DeviceAlarmStatusEnum.NOT_ALARM, "");
             return;
         } else {
-            alarmHandler(deviceId, DeviceAlarmStatusEnum.NOT_ALARM, String.format("设备[%s]电流信息[%smA]在预警范围之外(min[%smA], max[%smA])",
-                    device.getDevSerial(), current.toPlainString(), minCurrent.toPlainString(), maxCurrent.toPlainString()));
+            alarmHandler(deviceId, DeviceAlarmStatusEnum.NOT_ALARM, String.format("设备[%s]功率信息[%smA]在预警范围之外(min[%smA], max[%smA])",
+                    device.getDevSerial(), power.toPlainString(), minPower.toPlainString(), maxPower.toPlainString()));
         }
     }
 

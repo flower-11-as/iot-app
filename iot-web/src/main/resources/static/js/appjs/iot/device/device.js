@@ -30,8 +30,8 @@ var localColumns = [
         }
     },
     {
-        field: 'createTime', // 列字段名
-        title: '创建时间' // 列标题
+        field: 'lastReportTime', // 列字段名
+        title: '最新上报时间' // 列标题
     },
     {
         title: '操作',
