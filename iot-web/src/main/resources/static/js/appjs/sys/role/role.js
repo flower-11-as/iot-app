@@ -91,10 +91,11 @@ function add() {
     // iframe层
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '添加角色',
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['60%', '70%'],
+        area: ['75%', '75%'],
         content: prefix + '/add' // iframe的url
     });
 }
@@ -128,16 +129,16 @@ function remove(id) {
 function edit(id) {
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '角色修改',
         maxmin: true,
         shadeClose: true, // 点击遮罩关闭层
-        area: ['60%', '70%'],
+        area: ['75%', '75%'],
         content: prefix + '/edit/' + id // iframe的url
     });
 }
 
 function batchRemove() {
-
     var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
     if (rows.length === 0) {
         layer.msg("请选择要删除的数据");

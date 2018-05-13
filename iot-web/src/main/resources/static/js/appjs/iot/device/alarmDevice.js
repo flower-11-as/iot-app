@@ -124,10 +124,11 @@ function info(id) {
     // iframe层
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: localPageName + "信息",
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '600px'],
+        area: ['75%', '75%'],
         content: prefix + '/info?id=' + id
     });
 }
@@ -163,10 +164,11 @@ function command(id) {
     // iframe层
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: localPageName + "指令信息",
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '600px'],
+        area: ['75%', '75%'],
         content: prefix + '/command?id=' + id
     });
 }
@@ -176,10 +178,11 @@ function alarmConfig(id) {
     // iframe层
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: localPageName + "预警配置",
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '400px'],
+        area: ['75%', '75%'],
         content: prefix + '/alarmConfig/' + id
     });
 }

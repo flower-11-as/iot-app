@@ -110,10 +110,11 @@ function add() {
     // iframe层
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '增加用户',
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '500px'],
+        area: ['75%', '75%'],
         content: prefix + '/add'
     });
 }
@@ -146,10 +147,11 @@ function remove(id) {
 function edit(id) {
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '用户修改',
         maxmin: true,
         shadeClose: false,
-        area: ['800px', '420px'],
+        area: ['75%', '75%'],
         content: prefix + '/edit/' + id // iframe的url
     });
 }
@@ -157,10 +159,11 @@ function edit(id) {
 function resetPwd(id) {
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '重置密码',
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['400px', '260px'],
+        area: ['50%', '50%'],
         content: prefix + '/resetPwd/' + id // iframe的url
     });
 }

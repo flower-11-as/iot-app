@@ -117,10 +117,11 @@ function add() {
     // iframe层
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '增加' + localPageName,
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '350px'],
+        area: ['75%', '60%'],
         content: prefix + '/add'
     });
 }
@@ -158,7 +159,7 @@ function resetPwd(id) {
         title: '重置密码',
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['400px', '260px'],
+        area: ['50%', '50%'],
         content: prefix + '/resetPwd/' + id // iframe的url
     });
 }
@@ -196,7 +197,7 @@ function subscribe(id) {
         title: '注册订阅地址',
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['400px', '260px'],
+        area: ['50%', '50%'],
         content: prefix + '/subscribe/' + id // iframe的url
     });
 }

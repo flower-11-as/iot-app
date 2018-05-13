@@ -164,10 +164,11 @@ function reLoad() {
 function add() {
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '增加',
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '520px'],
+        area: ['75%', '75%'],
         content: prefix + '/add' // iframe的url
     });
 }
@@ -179,10 +180,11 @@ function edit(id, status) {
     }
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '编辑',
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '520px'],
+        area: ['75%', '75%'],
         content: prefix + '/edit/' + id // iframe的url
     });
 }

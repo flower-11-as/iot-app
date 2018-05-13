@@ -131,10 +131,11 @@ function info(id) {
     // iframe层
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: localPageName + "信息",
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '600px'],
+        area: ['75%', '75%'],
         content: prefix + '/info?id=' + id
     });
 }

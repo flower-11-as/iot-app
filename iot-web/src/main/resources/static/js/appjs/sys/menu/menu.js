@@ -116,10 +116,11 @@ function reLoad() {
 function add(pId) {
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '增加菜单',
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '520px'],
+        area: ['75%', '75%'],
         content: prefix + '/add/' + pId // iframe的url
     });
 }
@@ -149,10 +150,11 @@ function remove(id) {
 function edit(id) {
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '菜单修改',
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['60%', '70%'],
+        area: ['75%', '75%'],
         content: prefix + '/edit/' + id // iframe的url
     });
 }

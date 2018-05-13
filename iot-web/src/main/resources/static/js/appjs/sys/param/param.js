@@ -100,10 +100,11 @@ function add() {
     // iframe层
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: '增加' + localPageName,
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
-        area: ['800px', '450px'],
+        area: ['75%', '75%'],
         content: prefix + '/add'
     });
 }
@@ -136,10 +137,11 @@ function remove(id) {
 function edit(id) {
     layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         title: localPageName + '修改',
         maxmin: true,
         shadeClose: false,
-        area: ['800px', '450px'],
+        area: ['75%', '75%'],
         content: prefix + '/edit/' + id // iframe的url
     });
 }
