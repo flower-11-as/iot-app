@@ -110,4 +110,10 @@
     WHERE message_id = (
       SELECT MAX(id) FROM `t_iot_device_message` WHERE device_id=#{deviceId})
   </select>
+  <select id="selectByMessageId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_iot_device_message_detail
+    where message_id = #{messageId}
+  </select>
 </mapper>

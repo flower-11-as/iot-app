@@ -17,5 +17,8 @@ public interface DeviceMessageDetailMapper {
 
     int updateByPrimaryKey(DeviceMessageDetail record);
 
+    @Deprecated
     List<DeviceMessageDetail> selectMessageInfo(Integer deviceId);
+
+    List<DeviceMessageDetail> selectByMessageId(Integer messageId);
 }

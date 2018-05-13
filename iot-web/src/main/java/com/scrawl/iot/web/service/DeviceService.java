@@ -1,9 +1,6 @@
 package com.scrawl.iot.web.service;
 
-import com.scrawl.iot.web.dao.entity.Device;
-import com.scrawl.iot.web.dao.entity.DeviceAlarmConfig;
-import com.scrawl.iot.web.dao.entity.DeviceBasicDetail;
-import com.scrawl.iot.web.dao.entity.DeviceMessageDetail;
+import com.scrawl.iot.web.dao.entity.*;
 import com.scrawl.iot.web.vo.iot.callback.IotDataReportReqVO;
 import com.scrawl.iot.web.vo.iot.device.DeviceAlarmConfigVO;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;

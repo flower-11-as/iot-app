@@ -2,6 +2,8 @@ package com.scrawl.iot.web.dao.mapper;
 
 import com.scrawl.iot.web.dao.entity.DeviceMessage;
 
+import java.util.List;
+
 public interface DeviceMessageMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface DeviceMessageMapper {
     int updateByPrimaryKeySelective(DeviceMessage record);
 
     int updateByPrimaryKey(DeviceMessage record);
+
+    List<DeviceMessage> selectBySyncId(Integer syncId);
 }

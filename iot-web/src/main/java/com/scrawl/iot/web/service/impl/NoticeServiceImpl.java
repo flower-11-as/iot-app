@@ -80,8 +80,6 @@ public class NoticeServiceImpl implements NoticeService {
             throw new BizException("SYS13002");
         }
 
-
-
         Date now = new Date();
         reqVO.getManagerIds().forEach(managerId -> {
             // 添加发送记录

@@ -14,4 +14,6 @@ public interface DeviceSyncMapper {
     int updateByPrimaryKeySelective(DeviceSync record);
 
     int updateByPrimaryKey(DeviceSync record);
+
+    DeviceSync selectLastDeviceSync(Integer deviceId);
 }

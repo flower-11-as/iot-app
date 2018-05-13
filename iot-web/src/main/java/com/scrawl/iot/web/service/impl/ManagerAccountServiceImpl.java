@@ -26,9 +26,16 @@ public class ManagerAccountServiceImpl implements ManagerAccountService {
     }
 
     @Override
-    public List<ManagerAccount> managerList(Integer managerId) {
+    public List<ManagerAccount> listByManagerId(Integer managerId) {
         ManagerAccount managerAccount = new ManagerAccount();
         managerAccount.setManagerId(managerId);
+        return managerAccountMapper.selectBySelective(managerAccount);
+    }
+
+    @Override
+    public List<ManagerAccount> listByAccountId(Integer accountId) {
+        ManagerAccount managerAccount = new ManagerAccount();
+        managerAccount.setAccountId(accountId);
         return managerAccountMapper.selectBySelective(managerAccount);
     }
 }

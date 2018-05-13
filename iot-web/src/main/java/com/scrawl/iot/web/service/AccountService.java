@@ -26,6 +26,8 @@ public interface AccountService {
 
     Account get(Integer id);
 
+    Account get(String serverId);
+
     boolean resetPwd(Account account);
 
     boolean resetAuth(Integer id, Integer managerId);

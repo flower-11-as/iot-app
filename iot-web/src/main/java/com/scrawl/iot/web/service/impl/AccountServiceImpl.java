@@ -109,6 +109,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account get(String serverId) {
+        return accountMapper.selectByServerId(serverId);
+    }
+
+    @Override
     public boolean resetPwd(Account account) {
         Account oldAccount = get(account.getId());
         account.setServerId(oldAccount.getServerId());

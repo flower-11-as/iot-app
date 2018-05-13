@@ -17,5 +17,8 @@ public interface DeviceBasicDetailMapper {
 
     int updateByPrimaryKey(DeviceBasicDetail record);
 
+    @Deprecated
     List<DeviceBasicDetail> selectBaseSensorInfo(Integer deviceId);
+
+    List<DeviceBasicDetail> selectBySyncId(Integer syncId);
 }

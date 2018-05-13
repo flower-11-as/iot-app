@@ -12,5 +12,7 @@ public interface ManagerAccountService {
 
     List<ManagerAccount> list();
 
-    List<ManagerAccount> managerList(Integer managerId);
+    List<ManagerAccount> listByManagerId(Integer managerId);
+
+    List<ManagerAccount> listByAccountId(Integer accountId);
 }
