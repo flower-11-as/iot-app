@@ -339,7 +339,7 @@ var content_path = /*[[@{/}]]*/;//取值
                     type: "post",
                     dataType: "json",
                     contentType:"application/json",
-                    data: JSON.stringify({'status': 0}),
+                    data: JSON.stringify({'status': 0, 'limit': 10, 'offset': 0}),
                     success: function (r) {
                         wrapper.total = r.total;
                         wrapper.rows = r.rows;

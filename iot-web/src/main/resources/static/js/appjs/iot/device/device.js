@@ -47,17 +47,20 @@ var localColumns = [
             var b = '<a class="btn btn-info btn-sm ' + s_alarmConfig_h + '" href="#" title="预警配置"  mce_href="#" onclick="alarmConfig(\''
                 + row.id
                 + '\')">配置</a> ';
-            var c = '<a class="btn btn-success btn-sm ' + s_syncDevice_h + '" href="#" title="同步设备"  mce_href="#" onclick="syncDevice(\''
+            var c = '<a class="btn btn-info btn-sm ' + s_report_h + '" href="#" title="设备消息报表"  mce_href="#" onclick="report(\''
+                + row.id
+                + '\')">报表</a> ';
+            var d = '<a class="btn btn-success btn-sm ' + s_syncDevice_h + '" href="#" title="同步设备"  mce_href="#" onclick="syncDevice(\''
                 + row.id
                 + '\')">同步</a> ';
-            var d = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="下发指令"  mce_href="#" onclick="command(\''
+            var e = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="下发指令"  mce_href="#" onclick="command(\''
                 + row.id
                 + '\')">指令</a> ';
-            var e = '<a class="btn btn-danger btn-sm ' + s_remove_h + '" href="#" title="删除设备"  mce_href="#" onclick="remove(\''
+            var f = '<a class="btn btn-danger btn-sm ' + s_remove_h + '" href="#" title="删除设备"  mce_href="#" onclick="remove(\''
                 + row.id
                 + '\')">删除</a> ';
 
-            return a + b + c + d + e;
+            return a + b + c + d + e + f;
         }
     }];
 var localPageName = "设备";
@@ -262,5 +265,17 @@ function alarmConfig(id) {
         shadeClose: false, // 点击遮罩关闭层
         area: ['800px', '400px'],
         content: prefix + '/alarmConfig/' + id
+    });
+}
+
+function report(id) {
+    // iframe层
+    layer.open({
+        type: 2,
+        title: localPageName + "报表",
+        maxmin: true,
+        shadeClose: false, // 点击遮罩关闭层
+        area: ['75%', '75%'],
+        content: prefix + '/report?id=' + id
     });
 }

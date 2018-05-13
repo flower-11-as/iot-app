@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include::header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <input id="deviceId" type="hidden" th:value="${deviceId}">
+                <div id="report" class="ibox-content" style="height: 350px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+</body>
+<script th:src="@{/js/echarts.common.min.js}"></script>
+<script type="text/javascript">
+    var deviceChart = echarts.init(document.getElementById('report'));
+    $(function(){
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: content_path + "iot/device/getReportData",
+            data: {"id": $('#deviceId').val()},
+            async: false,
+            error: function () {
+                layer.alert("Connection error");
+            },
+            success: function (data) {
+                if (data.code === '0000') {
+                    var option = {
+                        title: {
+                            text: ''
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data:[]
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: []
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [
+                        ]
+                    };
+                    var reportData = eval(data.data);
+                    option.title.text = reportData.title;
+                    option.legend.data = reportData.legend;
+                    option.xAxis.data = reportData.xaxis;
+                    $.each(reportData.series, function(key){
+                        option.series.push({
+                            name: key,
+                            type:'line',
+                            data: reportData.series[key]
+                        });
+                    });
+
+                    deviceChart.setOption(option);
+                } else {
+                    layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
+                }
+            }
+        });
+    });
+
+</script>
+</html>

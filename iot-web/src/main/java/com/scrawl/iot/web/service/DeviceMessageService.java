@@ -4,6 +4,7 @@ import com.scrawl.iot.web.dao.entity.DeviceBasicDetail;
 import com.scrawl.iot.web.dao.entity.DeviceMessage;
 import com.scrawl.iot.web.dao.entity.DeviceMessageDetail;
 import com.scrawl.iot.web.dao.entity.DeviceSync;
+import com.scrawl.iot.web.vo.iot.device.DeviceReportRespVO;
 
 import java.util.List;
 import java.util.Map;
@@ -53,4 +54,13 @@ public interface DeviceMessageService {
      * @return
      */
     List<DeviceBasicDetail> getDeviceBasicDetails(Integer deviceSyncId);
+
+    /**
+     * 获取设备报表数据
+     * TODO[as]：暂时写死Lamp报表
+     *
+     * @param deviceId 设备id
+     * @return 设备24小时内数据
+     */
+    DeviceReportRespVO getReportData(Integer deviceId);
 }

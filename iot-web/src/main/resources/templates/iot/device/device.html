@@ -51,6 +51,7 @@
     <script type="text/javascript">
         var s_view_h = 'hidden';
         var s_edit_h = 'hidden';
+        var s_report_h = 'hidden';
         var s_remove_h = 'hidden';
         var s_syncDevice_h = 'hidden';
         var s_command_h = 'hidden';
@@ -65,6 +66,11 @@
 <div shiro:hasPermission="iot:device:edit">
     <script type="text/javascript">
         s_edit_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="iot:device:report">
+    <script type="text/javascript">
+        s_report_h = '';
     </script>
 </div>
 <div shiro:hasPermission="iot:device:remove">

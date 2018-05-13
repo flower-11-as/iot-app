@@ -157,7 +157,6 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
             return;
         }
 
-
         Date now = new Date();
 
         deviceExt.setAlarmStatus(alarmStatus.getStatus());

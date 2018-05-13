@@ -4,14 +4,12 @@ import com.scrawl.iot.web.dao.entity.DevType;
 import com.scrawl.iot.web.dao.entity.Device;
 import com.scrawl.iot.web.dao.mapper.ServiceModeMapper;
 import com.scrawl.iot.web.exception.BizException;
-import com.scrawl.iot.web.service.DevTypeService;
-import com.scrawl.iot.web.service.DeviceService;
-import com.scrawl.iot.web.service.ServerService;
-import com.scrawl.iot.web.service.ServiceModeService;
+import com.scrawl.iot.web.service.*;
 import com.scrawl.iot.web.vo.PageRespVO;
 import com.scrawl.iot.web.vo.R;
 import com.scrawl.iot.web.vo.iot.device.DeviceListReqVO;
 import com.scrawl.iot.web.vo.iot.device.DeviceListRespVO;
+import com.scrawl.iot.web.vo.iot.device.DeviceReportRespVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +42,9 @@ public class DeviceController extends BaseController {
 
     @Autowired
     private ServiceModeService serviceModeService;
+
+    @Autowired
+    private DeviceMessageService deviceMessageService;
 
     @GetMapping
     public String device() {
@@ -209,5 +210,24 @@ public class DeviceController extends BaseController {
             throw new BizException("SYS90004");
         }
         return R.ok();
+    }
+
+    @GetMapping("/report")
+    public String report(Integer id, Model model) {
+        model.addAttribute("deviceId", id);
+        return prefix + "/report";
+    }
+
+    @PostMapping("/getReportData")
+    @ResponseBody
+    public R getReportData(Integer id) {
+        DeviceReportRespVO respVO = new DeviceReportRespVO();
+        try {
+            respVO = deviceMessageService.getReportData(id);
+        } catch (Exception e) {
+            log.error("获取IoT设备报表信息错误：", e);
+            throw new BizException("SYS90005");
+        }
+        return R.ok(respVO);
     }
 }
