@@ -94,6 +94,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DeviceMessageService deviceMessageService;
 
+    @Autowired
     private LampAlarmServiceImpl lampAlarmService;
 
     private final String SERVICE_ID_BATTERY = "Battery";
