@@ -66,8 +66,8 @@ var localPageName = "设备";
 
 $(function () {
     load();
+    setTimeout('window.location.reload()', 300000);
 });
-
 // 加载
 function load() {
     $('#exampleTable').bootstrapTable({
@@ -119,6 +119,7 @@ function load() {
 
 // 刷新列表
 function reLoad() {
+    alert("刷新页面咯");
     $('#exampleTable').bootstrapTable('refresh');
 }
 
