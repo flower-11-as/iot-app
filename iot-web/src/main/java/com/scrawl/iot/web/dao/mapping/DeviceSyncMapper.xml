@@ -83,7 +83,7 @@
     select
     <include refid="Base_Column_List"/>
     from t_iot_device_sync
-    where device_id = #{deviceId} order by create_time limit 1
+    where device_id = #{deviceId} order by create_time desc limit 1
   </select>
   <select id="selectLastDeviceSyncWithEndTime" resultMap="BaseResultMap">
     select
