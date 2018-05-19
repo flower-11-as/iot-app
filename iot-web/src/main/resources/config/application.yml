@@ -12,4 +12,4 @@ mybatis:
 
 logging:
   level:
-    com.scrawl.iot.web.dao.mapper: DEBUG
+    com.scrawl.iot.web.dao.mapper: INFO

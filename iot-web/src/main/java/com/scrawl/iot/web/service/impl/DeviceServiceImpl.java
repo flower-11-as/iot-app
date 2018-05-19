@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -92,6 +93,8 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Autowired
     private DeviceMessageService deviceMessageService;
+
+    private LampAlarmServiceImpl lampAlarmService;
 
     private final String SERVICE_ID_BATTERY = "Battery";
     private final String SERVICE_ID_METER = "Meter";
@@ -290,9 +293,6 @@ public class DeviceServiceImpl implements DeviceService {
         deviceSync.setCreateTime(new Date());
         deviceSyncMapper.insertSelective(deviceSync);
 
-//        {'serviceId': 'Battery', 'serviceData': {'batteryLevel': 10}}, //电量
-//        {'serviceId': 'Meter', 'serviceData': {'signalStrength': -11}}, //信号
-
         List<IotDataReportReqVO.IotDeviceData> serviceData = reqVO.getServiceData();
         if (null == serviceData || serviceData.size() == 0) {
             return;
@@ -320,6 +320,15 @@ public class DeviceServiceImpl implements DeviceService {
 
                 // 消息详情落地
                 deviceData.getServiceData().forEach((k, v) -> addDeviceMessageDetail(deviceMessage.getId(), k, v, devTypeMessage));
+            }
+        });
+
+        // 触发预警
+        CompletableFuture.runAsync(() -> {
+            try {
+                lampAlarmService.alarm(device.getId());
+            } catch (Exception e) {
+                log.error("触发预警异常", e);
             }
         });
     }

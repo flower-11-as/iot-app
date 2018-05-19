@@ -8,13 +8,10 @@ import com.scrawl.iot.web.vo.iot.callback.IotDataReportReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
- * Description: TODO
+ * Description:
  * Created by as on 2018/4/23.
  */
 @RequestMapping("/iot/callback")
@@ -32,24 +29,24 @@ public class IotCallBackApi {
     @Autowired
     private IotCallbackService iotCallbackService;
 
-    @PostMapping("/dev-batch-reg-result")
+    @PostMapping("/{accountSign}/dev-batch-reg-result")
     @ResponseBody
-    public R batchRegResult(){
+    public R batchRegResult(@PathVariable("accountSign") String accountSign) {
         return R.ok();
     }
 
-    @PostMapping("/report-dev-callback")
+    @PostMapping("/{accountSign}/report-dev-callback")
     @ResponseBody
-    public R reportDevCallback(@RequestBody IotDataReportReqVO reqVO) {
-        log.info("收到Iot数据上报[{}]", JSON.toJSONString(reqVO));
+    public R reportDevCallback(@PathVariable("accountSign") String accountSign, @RequestBody IotDataReportReqVO reqVO) {
+        log.info("收到Iot数据上报[{}][{}]", accountSign, JSON.toJSONString(reqVO));
         iotCallbackService.dataReport(reqVO);
         return R.ok();
     }
 
-    @PostMapping("/cmd-response-callback")
+    @PostMapping("/{accountSign}/cmd-response-callback")
     @ResponseBody
-    public R cmdResponseCallback(@RequestBody IotCmdCallbackReqVO reqVO) {
-        log.info("收到Iot指令响应回调[{}]", JSON.toJSONString(reqVO));
+    public R cmdResponseCallback(@PathVariable("accountSign") String accountSign, @RequestBody IotCmdCallbackReqVO reqVO) {
+        log.info("收到Iot指令响应回调[{}][{}]", accountSign, JSON.toJSONString(reqVO));
         iotCallbackService.cmdCallback(reqVO);
 
         return R.ok();

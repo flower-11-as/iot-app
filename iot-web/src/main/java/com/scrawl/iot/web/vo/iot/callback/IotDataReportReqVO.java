@@ -33,7 +33,7 @@ public class IotDataReportReqVO {
 
     @Setter
     @Getter
-    public class IotDeviceData{
+    public static class IotDeviceData{
         private String serviceId;
         private Map<String, Object> serviceData;
     }
