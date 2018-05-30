@@ -221,7 +221,7 @@ public class DeviceController extends BaseController {
     @PostMapping("/getReportData")
     @ResponseBody
     public R getReportData(Integer id) {
-        DeviceReportRespVO respVO = new DeviceReportRespVO();
+        DeviceReportRespVO respVO;
         try {
             respVO = deviceMessageService.getReportData(id);
         } catch (Exception e) {

@@ -83,15 +83,13 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
     public DeviceReportRespVO getReportData(Integer deviceId) {
         // init
         DeviceReportRespVO reportData = new DeviceReportRespVO();
-        List<String> legend = Arrays.asList("功率(W)", "电压(V)", "电流(mA)");
+        List<String> legend = Arrays.asList("功率(W)", "电压(V)");
         List<String> xAxis = new ArrayList<>();
         Map<String, List<Float>> series = new HashMap<>();
         List<Float> powerList = new ArrayList<>();
         List<Float> voltageList = new ArrayList<>();
-        List<Float> currentList = new ArrayList<>();
         series.put("功率(W)", powerList);
         series.put("电压(V)", voltageList);
-        series.put("电流(mA)", currentList);
 
         reportData.setTitle("设备基本信息");
         reportData.setLegend(legend);
@@ -122,7 +120,6 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
             if (null == deviceSync) {
                 powerList.add(0f);
                 voltageList.add(0f);
-                currentList.add(0f);
             } else {
                 // TODO[as]：暂时仅考虑一套消息模板
                 List<DeviceMessage> deviceMessages = this.getDeviceMessageBySync(deviceSync.getId());
@@ -136,11 +133,6 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
                         orElse(0f));
                 voltageList.add(Optional.ofNullable(messageDetailMap).
                         map((m)-> m.get("Voltage")).
-                        map(DeviceMessageDetail::getParamValue).
-                        map(Float::parseFloat).
-                        orElse(0f));
-                currentList.add(Optional.ofNullable(messageDetailMap).
-                        map((m)-> m.get("Current")).
                         map(DeviceMessageDetail::getParamValue).
                         map(Float::parseFloat).
                         orElse(0f));

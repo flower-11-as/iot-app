@@ -50,6 +50,22 @@
                             </div>
                             <div class="gg-formGroup">
                                 <div class="gg-formTitle">
+                                    <strong>户主:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${device.endUserName}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <strong>户主信息:</strong>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <u th:text="${device.endUserInfo}"></u>
+                                </div>
+                            </div>
+                            <div class="gg-formGroup">
+                                <div class="gg-formTitle">
                                     <strong>经度:</strong>
                                 </div>
                                 <div class="gg-formDetail">
@@ -108,7 +124,11 @@
                                     <strong>开关一时段:</strong>
                                 </div>
                                 <div class="gg-formDetail">
-                                    <u th:text="${messageInfo.Period1.paramValue}"></u>
+                                    <u th:text="${#strings.substring(messageInfo.Period1.paramValue,0,2)+':'+
+                                    #strings.substring(messageInfo.Period1.paramValue,2,4)+'-'+
+                                    #strings.substring(messageInfo.Period1.paramValue,4,6)+':'+
+                                    #strings.substring(messageInfo.Period1.paramValue,6,8)
+                                    }"></u>
                                 </div>
                             </div>
                             <div class="gg-formGroup">
@@ -124,7 +144,11 @@
                                     <strong>开关二时段:</strong>
                                 </div>
                                 <div class="gg-formDetail">
-                                    <u th:text="${messageInfo.Period2.paramValue}"></u>
+                                    <u th:text="${#strings.substring(messageInfo.Period2.paramValue,0,2)+':'+
+                                    #strings.substring(messageInfo.Period2.paramValue,2,4)+'-'+
+                                    #strings.substring(messageInfo.Period2.paramValue,4,6)+':'+
+                                    #strings.substring(messageInfo.Period2.paramValue,6,8)
+                                    }"></u>
                                 </div>
                             </div>
                             <div class="gg-formGroup">
@@ -159,30 +183,33 @@
                                     <u th:text="${messageInfo.Voltage.paramValue}"></u> V
                                 </div>
                             </div>
-                            <div class="gg-formGroup">
-                                <div class="gg-formTitle">
-                                    <strong>电流:</strong>
-                                </div>
-                                <div class="gg-formDetail">
-                                    <u th:text="${messageInfo.Current.paramValue}"></u> mA
-                                </div>
-                            </div>
+                            <!--暂时屏蔽电流信息-->
+                            <!--<div class="gg-formGroup">-->
+                                <!--<div class="gg-formTitle">-->
+                                    <!--<strong>电流:</strong>-->
+                                <!--</div>-->
+                                <!--<div class="gg-formDetail">-->
+                                    <!--<u th:text="${messageInfo.Current.paramValue}"></u> mA-->
+                                <!--</div>-->
+                            <!--</div>-->
                             <div class="gg-formGroup">
                                 <div class="gg-formTitle">
                                     <strong>GPS定位:</strong>
                                 </div>
                                 <div class="gg-formDetail">
-                                    <u th:text="${messageInfo.GPS.paramValue}"></u>
+                                    <u th:text="${#strings.substring(messageInfo.GPS.paramValue,0,11)+' '+
+                                    #strings.substring(messageInfo.GPS.paramValue,11,22)
+                                    }"></u>
                                 </div>
                             </div>
-                            <div class="gg-formGroup">
-                                <div class="gg-formTitle">
-                                    <strong>通用数据通道:</strong>
-                                </div>
-                                <div class="gg-formDetail">
-                                    <u th:text="${messageInfo.GeneralDataBuffer.paramValue}"></u>
-                                </div>
-                            </div>
+                            <!--<div class="gg-formGroup">-->
+                                <!--<div class="gg-formTitle">-->
+                                    <!--<strong>通用数据通道:</strong>-->
+                                <!--</div>-->
+                                <!--<div class="gg-formDetail">-->
+                                    <!--<u th:text="${messageInfo.GeneralDataBuffer.paramValue}"></u>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
