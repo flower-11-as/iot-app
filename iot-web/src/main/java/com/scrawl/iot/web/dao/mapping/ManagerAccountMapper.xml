@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.scrawl.iot.web.dao.mapper.ManagerAccountMapper">
-  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.ManagerAccount">
+  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.ManageAccount">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="manager_id" jdbcType="INTEGER" property="managerId" />
     <result column="account_id" jdbcType="INTEGER" property="accountId" />
+    <result column="end_user_name" jdbcType="VARCHAR" property="endUserName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_manager" jdbcType="INTEGER" property="createManager" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, manager_id, account_id, create_time, create_manager
+    id, manager_id, account_id, end_user_name, create_time, create_manager
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_sys_manager_account
     where id = #{id,jdbcType=INTEGER}
@@ -21,13 +22,15 @@
     delete from t_sys_manager_account
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
-    insert into t_sys_manager_account (id, manager_id, account_id, 
-      create_time, create_manager)
-    values (#{id,jdbcType=INTEGER}, #{managerId,jdbcType=INTEGER}, #{accountId,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.ManageAccount">
+    insert into t_sys_manager_account (id, manager_id, account_id,
+      end_user_name, create_time, create_manager
+      )
+    values (#{id,jdbcType=INTEGER}, #{managerId,jdbcType=INTEGER}, #{accountId,jdbcType=INTEGER},
+      #{endUserName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.ManageAccount">
     insert into t_sys_manager_account
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -38,6 +41,9 @@
       </if>
       <if test="accountId != null">
         account_id,
+      </if>
+      <if test="endUserName != null">
+        end_user_name,
       </if>
       <if test="createTime != null">
         create_time,
@@ -56,6 +62,9 @@
       <if test="accountId != null">
         #{accountId,jdbcType=INTEGER},
       </if>
+      <if test="endUserName != null">
+        #{endUserName,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -64,7 +73,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
+  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.ManageAccount">
     update t_sys_manager_account
     <set>
       <if test="managerId != null">
@@ -72,6 +81,9 @@
       </if>
       <if test="accountId != null">
         account_id = #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="endUserName != null">
+        end_user_name = #{endUserName,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -82,10 +94,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
+  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.ManageAccount">
     update t_sys_manager_account
     set manager_id = #{managerId,jdbcType=INTEGER},
       account_id = #{accountId,jdbcType=INTEGER},
+      end_user_name = #{endUserName,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_manager = #{createManager,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
