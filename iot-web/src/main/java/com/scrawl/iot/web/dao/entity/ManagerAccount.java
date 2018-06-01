@@ -9,6 +9,8 @@ public class ManagerAccount {
 
     private Integer accountId;
 
+    private String endUserName;
+
     private Date createTime;
 
     private Integer createManager;
@@ -35,6 +37,14 @@ public class ManagerAccount {
 
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
+    }
+
+    public String getEndUserName() {
+        return endUserName;
+    }
+
+    public void setEndUserName(String endUserName) {
+        this.endUserName = endUserName;
     }
 
     public Date getCreateTime() {
