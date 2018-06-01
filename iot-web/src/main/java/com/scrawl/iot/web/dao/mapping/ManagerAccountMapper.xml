@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.scrawl.iot.web.dao.mapper.ManagerAccountMapper">
-  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.ManageAccount">
+  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.ManagerAccount">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="manager_id" jdbcType="INTEGER" property="managerId" />
     <result column="account_id" jdbcType="INTEGER" property="accountId" />
@@ -22,7 +22,7 @@
     delete from t_sys_manager_account
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.ManageAccount">
+  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
     insert into t_sys_manager_account (id, manager_id, account_id,
       end_user_name, create_time, create_manager
       )
@@ -30,7 +30,7 @@
       #{endUserName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.ManageAccount">
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
     insert into t_sys_manager_account
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -73,7 +73,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.ManageAccount">
+  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
     update t_sys_manager_account
     <set>
       <if test="managerId != null">
@@ -94,7 +94,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.ManageAccount">
+  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.ManagerAccount">
     update t_sys_manager_account
     set manager_id = #{managerId,jdbcType=INTEGER},
       account_id = #{accountId,jdbcType=INTEGER},
