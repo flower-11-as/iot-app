@@ -26,11 +26,11 @@ public class MenuServiceImpl implements MenuService {
     private MenuMapper menuMapper;
 
     @Override
-    public List<Tree<Menu>> listMenuTree(Integer id) {
-        List<Tree<Menu>> trees = new ArrayList<>();
+    public List<Tree> listMenuTree(Integer id) {
+        List<Tree> trees = new ArrayList<>();
         List<Menu> Menus = menuMapper.listMenuByManagerId(id);
         for (Menu sysMenu : Menus) {
-            Tree<Menu> tree = new Tree<>();
+            Tree tree = new Tree();
             tree.setId(sysMenu.getId().toString());
             tree.setParentId(sysMenu.getParentId().toString());
             tree.setText(sysMenu.getName());
@@ -45,7 +45,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<Menu> list() {
+    public List list() {
         return menuMapper.list();
     }
 
@@ -70,30 +70,30 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Tree<Menu> getTree() {
-        List<Tree<Menu>> trees = new ArrayList<>();
+    public Tree getTree() {
+        List<Tree> trees = new ArrayList<>();
         List<Menu> menus = menuMapper.list();
         for (Menu menu : menus) {
-            Tree<Menu> tree = new Tree<>();
+            Tree tree = new Tree();
             tree.setId(menu.getId().toString());
             tree.setParentId(menu.getParentId().toString());
             tree.setText(menu.getName());
             trees.add(tree);
         }
         // 默认顶级菜单为０，根据数据库实际情况调整
-        Tree<Menu> t = BuildTree.build(trees);
+        Tree t = BuildTree.build(trees);
         return t;
     }
 
     @Override
-    public Tree<Menu> getTree(Integer roleId) {
+    public Tree getTree(Integer roleId) {
         // 根据roleId查询权限
         List<Menu> roleMenus = menuMapper.listMenuByRoleId(roleId);
         List<Integer> roleMenuIds = roleMenus.stream().map(Menu::getId).collect(Collectors.toList());
-        List<Tree<Menu>> trees = new ArrayList<>();
+        List<Tree> trees = new ArrayList<>();
         List<Menu> menus = menuMapper.list();
         for (Menu sysMenu : menus) {
-            Tree<Menu> tree = new Tree<>();
+            Tree tree = new Tree();
             tree.setId(sysMenu.getId().toString());
             tree.setParentId(sysMenu.getParentId().toString());
             tree.setText(sysMenu.getName());

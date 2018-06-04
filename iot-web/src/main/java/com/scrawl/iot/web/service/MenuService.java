@@ -10,9 +10,9 @@ import java.util.List;
  * Created by as on 2018/4/9.
  */
 public interface MenuService {
-    List<Tree<Menu>> listMenuTree(Integer id);
+    List<Tree> listMenuTree(Integer id);
 
-    List<Menu> list();
+    List list();
 
     int save(Menu menu);
 
@@ -22,7 +22,7 @@ public interface MenuService {
 
     Menu get(Integer id);
 
-    Tree<Menu> getTree();
+    Tree getTree();
 
-    Tree<Menu> getTree(Integer roleId);
+    Tree getTree(Integer roleId);
 }

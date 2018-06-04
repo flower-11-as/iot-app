@@ -131,13 +131,13 @@ public class MenuController extends BaseController {
 
     @GetMapping("/tree")
     @ResponseBody
-    public Tree<Menu> tree() {
+    public Tree tree() {
         return menuService.getTree();
     }
 
     @GetMapping("/tree/{roleId}")
     @ResponseBody
-    public Tree<Menu> tree(@PathVariable("roleId") Integer roleId) {
+    public Tree tree(@PathVariable("roleId") Integer roleId) {
         return menuService.getTree(roleId);
     }
 }

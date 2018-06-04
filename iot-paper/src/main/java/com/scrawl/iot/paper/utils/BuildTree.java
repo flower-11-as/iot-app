@@ -10,13 +10,13 @@ import java.util.Map;
 
 public class BuildTree {
 
-    public static <T> Tree<T> build(List<Tree<T>> nodes) {
+    public static  Tree build(List<Tree> nodes) {
         if (nodes == null) {
             return null;
         }
-        List<Tree<T>> topNodes = new ArrayList<>();
+        List<Tree> topNodes = new ArrayList<>();
 
-        for (Tree<T> children : nodes) {
+        for (Tree children : nodes) {
 
             String pid = children.getParentId();
             if (pid == null || "0".equals(pid)) {
@@ -25,7 +25,7 @@ public class BuildTree {
                 continue;
             }
 
-            for (Tree<T> parent : nodes) {
+            for (Tree parent : nodes) {
                 String id = parent.getId();
                 if (id != null && id.equals(pid)) {
                     parent.getChildren().add(children);
@@ -38,7 +38,7 @@ public class BuildTree {
             }
         }
 
-        Tree<T> root = new Tree<>();
+        Tree root = new Tree();
         if (topNodes.size() == 1) {
             root = topNodes.get(0);
         } else {
@@ -57,13 +57,13 @@ public class BuildTree {
         return root;
     }
 
-    public static <T> List<Tree<T>> buildList(List<Tree<T>> nodes, String idParam) {
+    public static  List<Tree> buildList(List<Tree> nodes, String idParam) {
         if (nodes == null) {
             return null;
         }
-        List<Tree<T>> topNodes = new ArrayList<>();
+        List<Tree> topNodes = new ArrayList<>();
 
-        for (Tree<T> children : nodes) {
+        for (Tree children : nodes) {
 
             String pid = children.getParentId();
             if (pid == null || idParam.equals(pid)) {
@@ -72,7 +72,7 @@ public class BuildTree {
                 continue;
             }
 
-            for (Tree<T> parent : nodes) {
+            for (Tree parent : nodes) {
                 String id = parent.getId();
                 if (id != null && id.equals(pid)) {
                     parent.getChildren().add(children);

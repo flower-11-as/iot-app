@@ -52,7 +52,7 @@ public class LoginController extends BaseController{
 
     @GetMapping("/index")
     public String index(Model model) {
-        List<Tree<Menu>> menus = menuService.listMenuTree(getManagerId());
+        List<Tree> menus = menuService.listMenuTree(getManagerId());
         model.addAttribute("menus", menus);
         return "index_iot";
     }

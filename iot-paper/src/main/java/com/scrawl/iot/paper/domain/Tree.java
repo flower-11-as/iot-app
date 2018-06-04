@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class Tree<T> {
+public class Tree {
     /**
      * 节点ID
      */
@@ -32,7 +32,7 @@ public class Tree<T> {
     /**
      * 节点的子节点
      */
-    private List<Tree<T>> children = new ArrayList<>();
+    private List<Tree> children = new ArrayList<>();
     /**
      * 父ID
      */

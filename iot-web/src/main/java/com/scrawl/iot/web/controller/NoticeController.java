@@ -121,18 +121,18 @@ public class NoticeController extends BaseController {
 
     @GetMapping("/managerTree")
     @ResponseBody
-    public Tree<Manager> managerTree() {
+    public Tree managerTree() {
         List<Manager> managers = managerService.list(new Manager());
-        List<Tree<Manager>> trees = new ArrayList<>();
+        List<Tree> trees = new ArrayList<>();
         managers.forEach(manager -> {
-            Tree<Manager> managerTree = new Tree<>();
+            Tree managerTree = new Tree();
             managerTree.setId(manager.getId().toString());
             managerTree.setText(manager.getName());
 
             trees.add(managerTree);
         });
 
-        Tree<Manager> rs = BuildTree.build(trees);
+        Tree rs = BuildTree.build(trees);
         rs.setText("管理员");
         return rs;
     }

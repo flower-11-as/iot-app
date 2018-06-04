@@ -27,15 +27,15 @@ public class NoticeServiceTest {
     @Test
     public void managerTree() {
         List<Manager> managers = managerService.list(new Manager());
-        List<Tree<Manager>> trees = new ArrayList<>();
+        List<Tree> trees = new ArrayList<>();
         managers.forEach(manager -> {
-            Tree<Manager> managerTree = new Tree<>();
+            Tree managerTree = new Tree();
             managerTree.setId(manager.getId().toString());
             managerTree.setText(manager.getName());
 
             trees.add(managerTree);
         });
-        Tree<Manager> t = BuildTree.build(trees);
+        Tree t = BuildTree.build(trees);
         t.setText("管理员");
         System.out.println(JSON.toJSONString(t));
     }
