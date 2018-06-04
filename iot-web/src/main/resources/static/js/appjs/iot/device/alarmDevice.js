@@ -119,7 +119,6 @@ function load() {
 
 // 刷新列表
 function reLoad() {
-    alert("刷新页面咯");
     $('#exampleTable').bootstrapTable('refresh');
 }
 

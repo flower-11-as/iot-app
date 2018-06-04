@@ -580,4 +580,9 @@ public class DeviceServiceImpl implements DeviceService {
     public List<Device> getByServerAndDevType(String serverId, String devType) {
         return deviceMapper.selectByServerAndDevType(serverId, devType);
     }
+
+    @Override
+    public List<String> getEndUserNameByServerId(String serverId) {
+        return deviceMapper.selectEndUserNameByServerId(serverId);
+    }
 }

@@ -27,4 +27,6 @@ public interface DeviceMapper {
     Device selectByDevSerial(String devSerial);
 
     List<Device> selectByServerAndDevType(@Param("serverId") String serverId, @Param("devType") String devType);
+
+    List<String> selectEndUserNameByServerId(@Param("serverId") String serverId);
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -15,5 +16,5 @@ import java.util.List;
 public class ManagerReqVO extends Manager {
     private List<Integer> roles;
 
-    private List<Integer> accounts;
+    private String accountEndUserNames;
 }

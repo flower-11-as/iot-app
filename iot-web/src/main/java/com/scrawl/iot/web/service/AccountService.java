@@ -1,6 +1,7 @@
 package com.scrawl.iot.web.service;
 
 
+import com.scrawl.iot.paper.domain.Tree;
 import com.scrawl.iot.web.dao.entity.Account;
 import com.scrawl.iot.web.vo.iot.account.AccountListReqVO;
 import com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO;
@@ -41,4 +42,8 @@ public interface AccountService {
     List<Account> getManagerAccountList(Integer managerId);
 
     boolean subscribe(Account account);
+
+    List<Tree> getEndUserNameTree();
+
+    List<Tree> getEndUserNameTree(Integer accountId);
 }

@@ -1,5 +1,6 @@
 package com.scrawl.iot.web.service.impl;
 
+import com.scrawl.iot.paper.domain.Tree;
 import com.scrawl.iot.paper.exception.IotHttpException;
 import com.scrawl.iot.paper.exception.PaperHttpException;
 import com.scrawl.iot.paper.http.request.IotHeader;
@@ -10,11 +11,14 @@ import com.scrawl.iot.paper.http.response.IotResponse;
 import com.scrawl.iot.paper.http.service.IotHttpService;
 import com.scrawl.iot.web.dao.entity.Account;
 import com.scrawl.iot.web.dao.entity.DevType;
+import com.scrawl.iot.web.dao.entity.ManagerAccount;
 import com.scrawl.iot.web.dao.mapper.AccountMapper;
 import com.scrawl.iot.web.dao.mapper.DevTypeMapper;
 import com.scrawl.iot.web.enums.AccountStatusEnum;
 import com.scrawl.iot.web.exception.BizException;
 import com.scrawl.iot.web.service.AccountService;
+import com.scrawl.iot.web.service.DeviceService;
+import com.scrawl.iot.web.service.ManagerAccountService;
 import com.scrawl.iot.web.vo.iot.account.AccountListReqVO;
 import com.scrawl.iot.web.vo.sys.manager.ManagerAccountRespVO;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -43,6 +47,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private DevTypeMapper devTypeMapper;
+
+    @Autowired
+    private DeviceService deviceService;
+
+    @Autowired
+    private ManagerAccountService managerAccountService;
 
     private final Integer AUTH_CONTINUE_HOUR = 8;
 
@@ -192,5 +202,86 @@ public class AccountServiceImpl implements AccountService {
 
         account.setSubscribeUrl(callbackUrl);
         return accountMapper.updateByPrimaryKeySelective(account) > 0;
+    }
+
+    @Override
+    public List<Tree> getEndUserNameTree() {
+        // 获取所有账户
+        List<Account> accounts = list(new Account());
+        List<Tree> trees = new ArrayList<>();
+        accounts.forEach(account -> {
+            Tree tree = new Tree();
+            tree.setId(account.getId() + "");
+            tree.setText(account.getServerId());
+            tree.setParentId("-1");
+            // 获取账户下所有终端账户名
+            List<String> endUserNames = deviceService.getEndUserNameByServerId(account.getServerId());
+            if (endUserNames.size() > 0) {
+                tree.setHasChildren(true);
+
+                List<Tree> childTrees = new ArrayList<>();
+                endUserNames.forEach(endUserName -> {
+                    Tree childTree = new Tree();
+                    childTree.setId(endUserName);
+                    childTree.setText(endUserName);
+                    childTrees.add(childTree);
+                });
+                tree.setChildren(childTrees);
+            }
+
+            trees.add(tree);
+        });
+
+        return trees;
+    }
+
+    @Override
+    public List<Tree> getEndUserNameTree(Integer accountId) {
+        List<ManagerAccount> managerAccounts = managerAccountService.listByAccountId(accountId);
+        Map<Integer, String> managerAccountMap = managerAccounts.stream().collect(Collectors.toMap(ManagerAccount::getAccountId, ManagerAccount::getEndUserName));
+
+        // 获取所有账户
+        List<Account> accounts = list(new Account());
+        List<Tree> trees = new ArrayList<>();
+        accounts.forEach(account -> {
+            Tree tree = new Tree();
+            tree.setId(account.getId() + "");
+            tree.setText(account.getServerId());
+            tree.setParentId("-1");
+            if (managerAccountMap.containsKey(account.getId())) {
+                Map<String, Object> state = new HashMap<>();
+                state.put("selected", true);
+                tree.setState(state);
+            }
+
+            List<String> selectEndUserNames = Optional.ofNullable(managerAccountMap.get(account.getId())).
+                    map(endUserName -> Arrays.asList(endUserName.split(","))).orElse(new ArrayList<>());
+
+            // 获取账户下所有终端账户名
+            List<String> endUserNames = deviceService.getEndUserNameByServerId(account.getServerId());
+            if (endUserNames.size() > 0) {
+                tree.setHasChildren(true);
+
+                List<Tree> childTrees = new ArrayList<>();
+                endUserNames.forEach(endUserName -> {
+                    Tree childTree = new Tree();
+                    childTree.setId(endUserName);
+                    childTree.setText(endUserName);
+                    childTree.setHasParent(true);
+                    if (selectEndUserNames.contains(endUserName)) {
+                        Map<String, Object> state = new HashMap<>();
+                        state.put("selected", true);
+                        childTree.setState(state);
+                        tree.getState().remove("selected");
+                    }
+                    childTrees.add(childTree);
+                });
+                tree.setChildren(childTrees);
+            }
+
+            trees.add(tree);
+        });
+
+        return trees;
     }
 }

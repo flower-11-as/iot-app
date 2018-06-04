@@ -1,5 +1,7 @@
 package com.scrawl.iot.web.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.scrawl.iot.web.dao.entity.Manager;
 import com.scrawl.iot.web.dao.entity.ManagerAccount;
 import com.scrawl.iot.web.dao.entity.ManagerRole;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -95,25 +98,34 @@ public class ManagerServiceImpl implements ManagerService {
 
 
         // 修改manager-account
-        List<Integer> accounts = null == reqVO.getAccounts() ? new ArrayList<>() : reqVO.getAccounts();
-
+        Map<Integer, List<String>> accountEndUserNames = JSON.parseObject(reqVO.getAccountEndUserNames(), new TypeReference<Map<Integer, List<String>>>(){});
         ManagerAccount managerAccount = new ManagerAccount();
         managerAccount.setManagerId(reqVO.getId());
-        List<Integer> oldAccounts = managerAccountMapper.selectBySelective(managerAccount).
-                stream().map(ManagerAccount::getAccountId).collect(Collectors.toList());
+        List<ManagerAccount> oldAccountList = managerAccountMapper.selectBySelective(managerAccount);
+        List<Integer> oldAccounts = oldAccountList.stream().map(ManagerAccount::getAccountId).collect(Collectors.toList());
+        Map<Integer, ManagerAccount> oldAccountMap = oldAccountList.stream().collect(Collectors.toMap(ManagerAccount::getAccountId,
+                Function.identity(), (oldValue, newValue) -> newValue));
 
         // 删除ma
-        oldAccounts.stream().filter(account -> !accounts.contains(account)).collect(Collectors.toList()).
+        oldAccounts.stream().filter(account -> !accountEndUserNames.containsKey(account)).collect(Collectors.toList()).
                 forEach(id -> managerAccountMapper.deleteByManagerIdAndAccountId(reqVO.getId(), id));
 
-        // 添加ma
-        accounts.stream().filter(account -> !oldAccounts.contains(account)).collect(Collectors.toList()).forEach(id -> {
-            ManagerAccount ma = new ManagerAccount();
-            ma.setManagerId(reqVO.getId());
-            ma.setAccountId(id);
-            ma.setCreateManager(reqVO.getUpdateManager());
-            ma.setCreateTime(new Date());
-            managerAccountMapper.insertSelective(ma);
+        // 编辑、添加ma
+        accountEndUserNames.forEach((accountId, endUserNames) -> {
+            if (oldAccountMap.containsKey(accountId)) {
+                ManagerAccount ma = oldAccountMap.get(accountId);
+                ma.setEndUserName(String.join(",", endUserNames));
+                ma.setCreateManager(reqVO.getCreateManager());
+                ma.setCreateTime(new Date());
+                managerAccountMapper.insertSelective(ma);
+            } else {
+                ManagerAccount ma = new ManagerAccount();
+                ma.setManagerId(reqVO.getId());
+                ma.setAccountId(accountId);
+                ma.setCreateManager(reqVO.getUpdateManager());
+                ma.setCreateTime(new Date());
+                managerAccountMapper.insertSelective(ma);
+            }
         });
     }
 
@@ -144,17 +156,16 @@ public class ManagerServiceImpl implements ManagerService {
         }
 
         // 插入账户
-        List<Integer> accountIds = reqVO.getAccounts();
-        if (CollectionUtils.isNotEmpty(accountIds)) {
-            accountIds.forEach(accountId -> {
-                ManagerAccount ma = new ManagerAccount();
-                ma.setManagerId(reqVO.getId());
-                ma.setAccountId(accountId);
-                ma.setCreateManager(reqVO.getCreateManager());
-                ma.setCreateTime(new Date());
-                managerAccountMapper.insertSelective(ma);
-            });
-        }
+        Map<Integer, List<String>> accountEndUserNames = JSON.parseObject(reqVO.getAccountEndUserNames(), new TypeReference<Map<Integer, List<String>>>(){});
+        accountEndUserNames.forEach((accountId, endUserNames) -> {
+            ManagerAccount ma = new ManagerAccount();
+            ma.setManagerId(reqVO.getId());
+            ma.setAccountId(accountId);
+            ma.setEndUserName(String.join(",", endUserNames));
+            ma.setCreateManager(reqVO.getCreateManager());
+            ma.setCreateTime(new Date());
+            managerAccountMapper.insertSelective(ma);
+        });
     }
 
     @Override

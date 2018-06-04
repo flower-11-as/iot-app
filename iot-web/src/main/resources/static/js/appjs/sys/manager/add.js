@@ -1,14 +1,62 @@
 var prefix = content_path + "sys/manager";
 
 $().ready(function () {
+    initEndUserNameTree();
     validateRule();
 });
 
 $.validator.setDefaults({
     submitHandler: function () {
+        getAllSelectNodes();
         save();
     }
 });
+
+function getAllSelectNodes() {
+    var ref = $('#endUserNameTree').jstree(true); // 获得整个树
+    var nodes = ref.get_selected(true);
+    $("#endUserNameTree").find(".jstree-undetermined").each(function (i, element) {
+        var node = ref.get_node($(element));
+        node && node['id'] && nodes.push(node);
+    });
+
+    var rs = {};
+    $.each(nodes, function(i, e) {
+        // account
+        var node = nodes[i];
+        if ('#' === node.parent) {
+            rs[node.id] || (rs[node.id] = []);
+        }
+        // endUserName
+        else {
+            rs[node.parent] || (rs[node.parent] = []);
+            rs[node.parent].push(node.id);
+        }
+    });
+    $('#accountEndUserNames').val(JSON.stringify(rs));
+}
+
+function initEndUserNameTree() {
+    $.ajax({
+        type: "GET",
+        url: prefix + "/endUserNameTree",
+        success: function (endUserNameTree) {
+            loadEndUserNameTree(endUserNameTree);
+        }
+    });
+}
+
+function loadEndUserNameTree(endUserNameTree) {
+    $('#endUserNameTree').jstree({
+        'core': {
+            'data': endUserNameTree
+        },
+        "checkbox": {
+            "three_state": true,
+        },
+        "plugins": ["wholerow", "checkbox"]
+    });
+}
 
 function save() {
     $.ajax({

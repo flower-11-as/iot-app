@@ -396,4 +396,9 @@
     from t_iot_device
     where server_id = #{serverId} and dev_type = #{devType}
   </select>
+  <select id="selectEndUserNameByServerId" resultType="java.lang.String">
+    select end_user_name as endUserName
+      from t_iot_device
+    where server_id = #{serverId} group by end_user_name
+  </select>
 </mapper>

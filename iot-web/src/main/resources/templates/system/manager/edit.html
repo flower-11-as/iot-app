@@ -9,6 +9,7 @@
 				<div class="ibox-content">
 					<form class="form-horizontal m-t" id="signupForm">
 						<input id="id" name="id" th:value="${manager.id}" type="hidden">
+						<input id="accountEndUserNames" name="accountEndUserNames" type="hidden">
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="name">姓名：</label>
 							<div class="col-sm-8">
@@ -52,9 +53,8 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">IoT账户</label>
 							<div class="col-sm-8">
-								<label th:each="account:${accounts}" class="checkbox-inline">
-									<input name="accounts" type="checkbox" th:value="${account.id}" th:text="${account.serverId}" th:checked="${account.accountSign}">
-								</label>
+								<div id="endUserNameTree">
+								</div>
 							</div>
 						</div>
 						<div class="form-group">

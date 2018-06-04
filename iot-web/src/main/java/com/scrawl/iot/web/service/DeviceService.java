@@ -44,4 +44,6 @@ public interface DeviceService {
     void saveAlarmConfig(Integer deviceId, Map<String, String> params, Integer managerId);
 
     List<Device> getByServerAndDevType(String serverId, String devType);
+
+    List<String> getEndUserNameByServerId(String serverId);
 }
