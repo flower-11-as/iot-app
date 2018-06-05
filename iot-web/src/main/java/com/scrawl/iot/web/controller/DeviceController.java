@@ -60,6 +60,7 @@ public class DeviceController extends BaseController {
     @ResponseBody
     public PageRespVO<DeviceListRespVO> list(@RequestBody DeviceListReqVO reqVO) {
         reqVO.setServerIds(getManagerServerIds());
+        reqVO.setEndUserNames(getManagerEndUserNames());
 
         PageRespVO<DeviceListRespVO> respVO = new PageRespVO<>();
         respVO.setRows(deviceService.list(reqVO));

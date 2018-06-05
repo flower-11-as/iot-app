@@ -380,6 +380,12 @@
         #{item}
       </foreach>
     </if>
+    <if test="endUserNames != null and endUserNames.size() &gt; 0">
+      and d.end_user_name in
+      <foreach close=")" collection="endUserNames" item="item" open="(" separator=",">
+        #{item}
+      </foreach>
+    </if>
     <if test="alarmStatus != null">
       and de.alarm_status = #{alarmStatus}
     </if>

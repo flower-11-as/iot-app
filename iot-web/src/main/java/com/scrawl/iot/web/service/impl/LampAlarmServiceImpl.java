@@ -9,19 +9,16 @@ import com.scrawl.iot.web.enums.NoticeTypeEnum;
 import com.scrawl.iot.web.service.*;
 import com.scrawl.iot.web.vo.iot.device.DeviceAlarmConfigVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.util.Assert;
 import org.joda.time.DateTime;
 import org.joda.time.DurationFieldType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -189,6 +186,15 @@ public class LampAlarmServiceImpl extends AbstractAlarmService {
                     }
 
                     managerAccounts.forEach(managerAccount -> {
+                        // 判断endUserName
+                        String endUserNameStr = managerAccount.getEndUserName();
+                        if (StringUtils.isNotBlank(endUserNameStr)) {
+                            List<String> endUserNames = Arrays.asList(endUserNameStr.split(","));
+                            if (StringUtils.isNotBlank(device.getEndUserName()) && !endUserNames.contains(device.getEndUserName())) {
+                                return;
+                            }
+                        }
+
                         // 添加通知
                         NoticeRecord noticeRecord = new NoticeRecord();
                         noticeRecord.setManagerId(managerAccount.getManagerId());

@@ -23,5 +23,7 @@ public class DeviceListReqVO extends PageReqVO {
 
     private List<String> serverIds;
 
+    private List<String> endUserNames;
+
     private Byte alarmStatus;
 }
