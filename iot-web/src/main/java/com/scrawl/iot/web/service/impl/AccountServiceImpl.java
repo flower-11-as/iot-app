@@ -236,9 +236,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Tree> getEndUserNameTree(Integer accountId) {
-        List<ManagerAccount> managerAccounts = managerAccountService.listByAccountId(accountId);
-        Map<Integer, String> managerAccountMap = managerAccounts.stream().collect(Collectors.toMap(ManagerAccount::getAccountId, ManagerAccount::getEndUserName));
+    public List<Tree> getEndUserNameTree(Integer managerId) {
+        List<ManagerAccount> managerAccounts = managerAccountService.listByManagerId(managerId);
+        Map<Integer, String> managerAccountMap = new HashMap<>();
+        managerAccounts.forEach(managerAccount -> {
+            managerAccountMap.put(managerAccount.getAccountId(), managerAccount.getEndUserName());
+        });
 
         // 获取所有账户
         List<Account> accounts = list(new Account());

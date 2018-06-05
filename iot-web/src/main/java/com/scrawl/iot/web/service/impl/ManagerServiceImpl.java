@@ -112,16 +112,18 @@ public class ManagerServiceImpl implements ManagerService {
 
         // 编辑、添加ma
         accountEndUserNames.forEach((accountId, endUserNames) -> {
+            endUserNames = null == endUserNames ? new ArrayList<>() : endUserNames;
             if (oldAccountMap.containsKey(accountId)) {
                 ManagerAccount ma = oldAccountMap.get(accountId);
                 ma.setEndUserName(String.join(",", endUserNames));
-                ma.setCreateManager(reqVO.getCreateManager());
+                ma.setCreateManager(reqVO.getUpdateManager());
                 ma.setCreateTime(new Date());
-                managerAccountMapper.insertSelective(ma);
+                managerAccountMapper.updateByPrimaryKeySelective(ma);
             } else {
                 ManagerAccount ma = new ManagerAccount();
                 ma.setManagerId(reqVO.getId());
                 ma.setAccountId(accountId);
+                ma.setEndUserName(String.join(",", endUserNames));
                 ma.setCreateManager(reqVO.getUpdateManager());
                 ma.setCreateTime(new Date());
                 managerAccountMapper.insertSelective(ma);
@@ -158,6 +160,7 @@ public class ManagerServiceImpl implements ManagerService {
         // 插入账户
         Map<Integer, List<String>> accountEndUserNames = JSON.parseObject(reqVO.getAccountEndUserNames(), new TypeReference<Map<Integer, List<String>>>(){});
         accountEndUserNames.forEach((accountId, endUserNames) -> {
+            endUserNames = null == endUserNames ? new ArrayList<>() : endUserNames;
             ManagerAccount ma = new ManagerAccount();
             ma.setManagerId(reqVO.getId());
             ma.setAccountId(accountId);

@@ -45,5 +45,5 @@ public interface AccountService {
 
     List<Tree> getEndUserNameTree();
 
-    List<Tree> getEndUserNameTree(Integer accountId);
+    List<Tree> getEndUserNameTree(Integer managerId);
 }
