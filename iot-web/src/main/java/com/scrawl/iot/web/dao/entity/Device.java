@@ -47,6 +47,8 @@ public class Device {
 
     private String extendType;
 
+    private String areaCode;
+
     private Date createTime;
 
     private Integer createManager;
@@ -229,6 +231,14 @@ public class Device {
 
     public void setExtendType(String extendType) {
         this.extendType = extendType;
+    }
+
+    public String getAreaCode() {
+        return areaCode;
+    }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
     }
 
     public Date getCreateTime() {

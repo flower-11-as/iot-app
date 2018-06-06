@@ -24,19 +24,20 @@
     <result column="sim_num" jdbcType="VARCHAR" property="simNum" />
     <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
     <result column="extend_type" jdbcType="VARCHAR" property="extendType" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_manager" jdbcType="INTEGER" property="createManager" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="update_manager" jdbcType="INTEGER" property="updateManager" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, server_id, dev_type, dev_serial, `name`, connect_point_id, service_mode, is_published, 
-    `location`, longitude, latitude, end_user_info, end_user_name, industry_name, category_name, 
-    display_icon_id, client_id, protocol_type, has_sim_Card, sim_num, del_flag, extend_type, 
-    create_time, create_manager, update_time, update_manager
+    id, server_id, dev_type, dev_serial, `name`, connect_point_id, service_mode, is_published,
+    `location`, longitude, latitude, end_user_info, end_user_name, industry_name, category_name,
+    display_icon_id, client_id, protocol_type, has_sim_Card, sim_num, del_flag, extend_type,
+    area_code, create_time, create_manager, update_time, update_manager
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_iot_device
     where id = #{id,jdbcType=INTEGER}
@@ -46,24 +47,26 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.Device">
-    insert into t_iot_device (id, server_id, dev_type, 
-      dev_serial, `name`, connect_point_id, 
-      service_mode, is_published, `location`, 
-      longitude, latitude, end_user_info, 
-      end_user_name, industry_name, category_name, 
-      display_icon_id, client_id, protocol_type, 
-      has_sim_Card, sim_num, del_flag, 
-      extend_type, create_time, create_manager, 
-      update_time, update_manager)
-    values (#{id,jdbcType=INTEGER}, #{serverId,jdbcType=VARCHAR}, #{devType,jdbcType=VARCHAR}, 
-      #{devSerial,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{connectPointId,jdbcType=VARCHAR}, 
-      #{serviceMode,jdbcType=VARCHAR}, #{isPublished,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
-      #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{endUserInfo,jdbcType=VARCHAR}, 
-      #{endUserName,jdbcType=VARCHAR}, #{industryName,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, 
-      #{displayIconId,jdbcType=INTEGER}, #{clientId,jdbcType=VARCHAR}, #{protocolType,jdbcType=VARCHAR}, 
-      #{hasSimCard,jdbcType=VARCHAR}, #{simNum,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT}, 
-      #{extendType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createManager,jdbcType=INTEGER}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateManager,jdbcType=INTEGER})
+    insert into t_iot_device (id, server_id, dev_type,
+      dev_serial, `name`, connect_point_id,
+      service_mode, is_published, `location`,
+      longitude, latitude, end_user_info,
+      end_user_name, industry_name, category_name,
+      display_icon_id, client_id, protocol_type,
+      has_sim_Card, sim_num, del_flag,
+      extend_type, area_code, create_time,
+      create_manager, update_time, update_manager
+      )
+    values (#{id,jdbcType=INTEGER}, #{serverId,jdbcType=VARCHAR}, #{devType,jdbcType=VARCHAR},
+      #{devSerial,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{connectPointId,jdbcType=VARCHAR},
+      #{serviceMode,jdbcType=VARCHAR}, #{isPublished,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR},
+      #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{endUserInfo,jdbcType=VARCHAR},
+      #{endUserName,jdbcType=VARCHAR}, #{industryName,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR},
+      #{displayIconId,jdbcType=INTEGER}, #{clientId,jdbcType=VARCHAR}, #{protocolType,jdbcType=VARCHAR},
+      #{hasSimCard,jdbcType=VARCHAR}, #{simNum,jdbcType=VARCHAR}, #{delFlag,jdbcType=TINYINT},
+      #{extendType,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{createManager,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{updateManager,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.Device" useGeneratedKeys="true" keyProperty="id">
     insert into t_iot_device
@@ -133,6 +136,9 @@
       </if>
       <if test="extendType != null">
         extend_type,
+      </if>
+      <if test="areaCode != null">
+        area_code,
       </if>
       <if test="createTime != null">
         create_time,
@@ -214,6 +220,9 @@
       <if test="extendType != null">
         #{extendType,jdbcType=VARCHAR},
       </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -294,6 +303,9 @@
       <if test="extendType != null">
         extend_type = #{extendType,jdbcType=VARCHAR},
       </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -332,21 +344,22 @@
       sim_num = #{simNum,jdbcType=VARCHAR},
       del_flag = #{delFlag,jdbcType=TINYINT},
       extend_type = #{extendType,jdbcType=VARCHAR},
+      area_code = #{areaCode,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_manager = #{createManager,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       update_manager = #{updateManager,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.iot.device.DeviceListReqVO"
-          resultType="com.scrawl.iot.web.vo.iot.device.DeviceListRespVO">
+  <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.iot.device.DeviceListReqVO" resultType="com.scrawl.iot.web.vo.iot.device.DeviceListRespVO">
     select
     d.id, d.server_id as serverId, d.dev_type as devType, d.dev_serial as devSerial, d.`name`, d.connect_point_id as connectPointId,
     d.service_mode as serviceMode, d.is_published as isPublished, d.`location`, d.longitude, d.latitude, d.end_user_info as endUserInfo,
     d.end_user_name as endUserName, d.industry_name as industryName, d.category_name as categoryName, d.display_icon_id as displayIconId,
     d.client_id as clientId, d.protocol_type as protocolType, d.has_sim_Card as hasSimCard, d.sim_num as simNum, d.del_flag as delFlag,
     d.extend_type as extendType, d.create_time as createTime, d.create_manager as createManager, d.update_time as updateTime,
-    d.update_manager as updateManager, ifnull(de.alarm_status, 0) as alarmStatus, de.alarm_desc as alarmDesc, de.alarm_time as alarmTime
+    d.update_manager as updateManager, ifnull(de.alarm_status, 0) as alarmStatus, de.alarm_desc as alarmDesc, de.alarm_time as alarmTime,
+    d.area_code as areaCode
     from t_iot_device d
     left join t_iot_device_ext de on de.device_id = d.id
     where 1=1 and d.del_flag=0
@@ -398,7 +411,7 @@
   </select>
   <select id="selectByServerAndDevType" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from t_iot_device
     where server_id = #{serverId} and dev_type = #{devType}
   </select>
