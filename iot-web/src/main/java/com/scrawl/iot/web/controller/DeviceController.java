@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -202,6 +203,22 @@ public class DeviceController extends BaseController {
         command.remove("commandId");
 
         deviceService.sendCommand(command, deviceId, commandId);
+        return R.ok();
+    }
+
+    @PostMapping("reboot")
+    public R reboot(@RequestParam("id") Integer id) {
+        Map<String, Object> command = new HashMap<>();
+        command.put("GeneralDataBuffer", "#rebo!");
+        deviceService.sendCommand(command, id, "DeviceCmd");
+        return R.ok();
+    }
+
+    @PostMapping("upload")
+    public R upload(@RequestParam("id") Integer id) {
+        Map<String, Object> command = new HashMap<>();
+        command.put("GeneralDataBuffer", "#uplo!");
+        deviceService.sendCommand(command, id, "DeviceCmd");
         return R.ok();
     }
 

@@ -18,6 +18,10 @@ var localColumns = [
         title: '产品型号' // 列标题
     },
     {
+        field: 'areaCode', // 列字段名
+        title: '设备地址编号' // 列标题
+    },
+    {
         field: 'alarmStatus', // 列字段名
         title: '预警状态', // 列标题,
         align: "center",
@@ -56,11 +60,17 @@ var localColumns = [
             var f = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="下发指令"  mce_href="#" onclick="command(\''
                 + row.id
                 + '\')">指令</a> ';
-            var g = '<a class="btn btn-danger btn-sm ' + s_remove_h + '" href="#" title="删除设备"  mce_href="#" onclick="remove(\''
+            var g = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="重启终端"  mce_href="#" onclick="reboot(\''
+                + row.id
+                + '\')">重启</a> ';
+            var h = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="上报数据"  mce_href="#" onclick="upload(\''
+                + row.id
+                + '\')">上报</a> ';
+            var i = '<a class="btn btn-danger btn-sm ' + s_remove_h + '" href="#" title="删除设备"  mce_href="#" onclick="remove(\''
                 + row.id
                 + '\')">删除</a> ';
 
-            return a + b + c + d + e + f + g;
+            return a + b + c + d + e + f + g + h + i;
 
         }
     }];
@@ -258,6 +268,58 @@ function command(id) {
         area: ['75%', '75%'],
         content: prefix + '/command?id=' + id
     });
+}
+
+// 下发重启终端
+function reboot(id) {
+    layer.confirm('确定要下发重启终端指令？', {
+        btn: ['确定', '取消']
+    }, function () {
+        $.ajax({
+            url: prefix + "/reboot",
+            type: "post",
+            data: {
+                'id': id
+            },
+            success: function (data) {
+                if (data.code === '0000') {
+                    layer.msg("下发重启终端指令成功");
+                    reLoad();
+                } else {
+                    layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
+                }
+            }
+        });
+    })
+}
+
+// 下发上报数据指令
+function upload(id) {
+    layer.confirm('确定要下发上报数据指令？', {
+        btn: ['确定', '取消']
+    }, function () {
+        $.ajax({
+            url: prefix + "/upload",
+            type: "post",
+            data: {
+                'id': id
+            },
+            success: function (data) {
+                if (data.code === '0000') {
+                    layer.msg("下发上报数据指令成功");
+                    reLoad();
+                } else {
+                    layer.alert(data.msg, {
+                        title: '提示',
+                        icon: 2
+                    });
+                }
+            }
+        });
+    })
 }
 
 // 预警配置

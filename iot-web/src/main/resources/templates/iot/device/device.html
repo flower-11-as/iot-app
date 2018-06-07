@@ -55,6 +55,8 @@
         var s_remove_h = 'hidden';
         var s_syncDevice_h = 'hidden';
         var s_command_h = 'hidden';
+        var s_reboot_h = 'hidden';
+        var s_upload_h = 'hidden';
         var s_alarmConfig_h = "hidden";
     </script>
 </div>
@@ -86,6 +88,16 @@
 <div shiro:hasPermission="iot:device:command">
     <script type="text/javascript">
         s_command_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="iot:device:reboot">
+    <script type="text/javascript">
+        s_reboot_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="iot:device:upload">
+    <script type="text/javascript">
+        s_upload_h = '';
     </script>
 </div>
 <div shiro:hasPermission="iot:device:alarmConfig">

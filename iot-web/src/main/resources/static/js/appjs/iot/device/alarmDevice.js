@@ -18,6 +18,10 @@ var localColumns = [
         title: '产品型号' // 列标题
     },
     {
+        field: 'areaCode', // 列字段名
+        title: '设备地址编号' // 列标题
+    },
+    {
         field: 'alarmStatus', // 列字段名
         title: '预警状态', // 列标题,
         align: "center",
