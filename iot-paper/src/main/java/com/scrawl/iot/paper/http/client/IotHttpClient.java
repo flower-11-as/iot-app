@@ -44,6 +44,20 @@ public class IotHttpClient {
         return convertResponse(httpResponse, t);
     }
 
+    public <T extends IotResponse> T doPut(String url, Object headerRequest, Object paramRequest, Class<T> t) {
+        return doPut(url, ContentType.APPLICATION_JSON, headerRequest, paramRequest, t);
+    }
+
+    public <T extends IotResponse> T doPut(String url, ContentType contentType, Object headerRequest, Object paramRequest, Class<T> t) {
+        Map<String, Object> headers = BeanUtil.object2Map(headerRequest);
+        headers.put("Content-Type", contentType.getMimeType());
+
+        Map<String, Object> params = BeanUtil.object2Map(paramRequest);
+        HttpResponse httpResponse = httpClients.doPut(iotProperties.getApiUri() + url, headers, params);
+
+        return convertResponse(httpResponse, t);
+    }
+
     public <T extends IotResponse> T doGet(String url, Object headerRequest, Object paramRequest, Class<T> t) {
         return doGet(url, ContentType.APPLICATION_JSON, headerRequest, paramRequest, t);
     }

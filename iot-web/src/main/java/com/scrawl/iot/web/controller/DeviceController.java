@@ -111,14 +111,28 @@ public class DeviceController extends BaseController {
         return prefix + "/info";
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id) {
+    @GetMapping("/edit")
+    public String edit(@RequestParam("id") Integer id, Model model) {
+        Device device = deviceService.get(id);
+        model.addAttribute("device", device);
+
         return prefix + "/edit";
     }
 
     @PostMapping("/update")
     @ResponseBody
     public R update(Device device) {
+        try {
+            device.setUpdateManager(getManagerId());
+            device.setUpdateTime(new Date());
+            deviceService.update(device);
+        }catch (BizException e) {
+            log.error("编辑IoT设备异常：", e);
+            throw e;
+        } catch (Exception e) {
+            log.error("编辑IoT设备异常：", e);
+            throw new BizException("SYS90006");
+        }
         return R.ok();
     }
 

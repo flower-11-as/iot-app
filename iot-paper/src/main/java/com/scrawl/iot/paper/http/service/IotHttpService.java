@@ -92,6 +92,15 @@ public class IotHttpService {
         return response;
     }
 
+    // IoT编辑设备信息
+    public IotResponse updateDevice(IotHeader header, IotUpdateDeviceRequest request) {
+        log.info("IoT编辑设备信息：header[{}],request[{}]", JSON.toJSONString(header), JSON.toJSONString(request));
+        IotResponse response = iotHttpClient.doPut(IotConstant.UPDATE_DEVICE, header,
+                request, IotResponse.class);
+        log.info("IoT编辑设备信息：response[{}]", JSON.toJSONString(response));
+        return response;
+    }
+
     // IoT删除设备信息
     public IotResponse delDevice(Map<String, Object> urlParams, IotHeader header) {
         log.info("IoT删除设备信息：urlParams[{}],header[{}]", JSON.toJSONString(urlParams), JSON.toJSONString(header));

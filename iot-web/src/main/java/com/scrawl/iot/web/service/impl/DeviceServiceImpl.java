@@ -3,6 +3,7 @@ package com.scrawl.iot.web.service.impl;
 import com.scrawl.iot.paper.http.request.IotCommandRequest;
 import com.scrawl.iot.paper.http.request.IotHeader;
 import com.scrawl.iot.paper.http.request.IotRegDeviceRequest;
+import com.scrawl.iot.paper.http.request.IotUpdateDeviceRequest;
 import com.scrawl.iot.paper.http.response.IotCommandResponse;
 import com.scrawl.iot.paper.http.response.IotDeviceAllResponse;
 import com.scrawl.iot.paper.http.response.IotDeviceResponse;
@@ -156,10 +157,31 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public boolean update(Device device) {
-        // TODO:调用iot接口
+    public void update(Device updateDevice) {
+        // 调用iot接口
+        Device device = get(updateDevice.getId());
+        DevType devType = devTypeMapper.selectByServerIdAndDevType(device.getServerId(), device.getDevType());
 
-        return deviceMapper.updateByPrimaryKeySelective(device) > 0;
+        Account account = accountService.getAndAuthAccount(devType.getServerId());
+        if (null == account) {
+            throw new BizException("IOT10001");
+        }
+
+        IotHeader header = new IotHeader();
+        header.setServerId(account.getServerId());
+        header.setAccessToken(account.getToken());
+
+        IotUpdateDeviceRequest request = new IotUpdateDeviceRequest();
+        request.setDevSerial(updateDevice.getDevSerial());
+        request.setName(updateDevice.getName());
+        request.setEndUserName(updateDevice.getEndUserName());
+        request.setEndUserInfo(updateDevice.getEndUserInfo());
+        request.setLocation(updateDevice.getLocation());
+        request.setLongitude(updateDevice.getLongitude());
+        request.setLatitude(updateDevice.getLatitude());
+        iotHttpService.updateDevice(header, request);
+
+        deviceMapper.updateByPrimaryKeySelective(updateDevice);
     }
 
     @Override
