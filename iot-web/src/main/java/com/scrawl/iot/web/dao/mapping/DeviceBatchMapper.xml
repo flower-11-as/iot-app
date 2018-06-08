@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scrawl.iot.web.dao.mapper.DeviceBatchMapper">
+  <resultMap id="BaseResultMap" type="com.scrawl.iot.web.dao.entity.DeviceBatch">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
+    <result column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="progress" jdbcType="DECIMAL" property="progress" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_manager" jdbcType="INTEGER" property="createManager" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.scrawl.iot.web.dao.entity.DeviceBatch">
+    <result column="data_list" jdbcType="LONGVARCHAR" property="dataList" />
+    <result column="result_list" jdbcType="LONGVARCHAR" property="resultList" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_id, client_id, progress, `status`, create_time, create_manager, update_time
+  </sql>
+  <sql id="Blob_Column_List">
+    data_list, result_list
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_iot_device_batch
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_iot_device_batch
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.scrawl.iot.web.dao.entity.DeviceBatch">
+    insert into t_iot_device_batch (id, task_id, client_id, 
+      progress, `status`, create_time, 
+      create_manager, update_time, data_list, 
+      result_list)
+    values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=VARCHAR}, #{clientId,jdbcType=VARCHAR}, 
+      #{progress,jdbcType=DECIMAL}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createManager,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{dataList,jdbcType=LONGVARCHAR}, 
+      #{resultList,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceBatch">
+    insert into t_iot_device_batch
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="clientId != null">
+        client_id,
+      </if>
+      <if test="progress != null">
+        progress,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createManager != null">
+        create_manager,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="dataList != null">
+        data_list,
+      </if>
+      <if test="resultList != null">
+        result_list,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null">
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="progress != null">
+        #{progress,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createManager != null">
+        #{createManager,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataList != null">
+        #{dataList,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="resultList != null">
+        #{resultList,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.scrawl.iot.web.dao.entity.DeviceBatch">
+    update t_iot_device_batch
+    <set>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null">
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="progress != null">
+        progress = #{progress,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createManager != null">
+        create_manager = #{createManager,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataList != null">
+        data_list = #{dataList,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="resultList != null">
+        result_list = #{resultList,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.scrawl.iot.web.dao.entity.DeviceBatch">
+    update t_iot_device_batch
+    set task_id = #{taskId,jdbcType=VARCHAR},
+      client_id = #{clientId,jdbcType=VARCHAR},
+      progress = #{progress,jdbcType=DECIMAL},
+      `status` = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_manager = #{createManager,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      data_list = #{dataList,jdbcType=LONGVARCHAR},
+      result_list = #{resultList,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.scrawl.iot.web.dao.entity.DeviceBatch">
+    update t_iot_device_batch
+    set task_id = #{taskId,jdbcType=VARCHAR},
+      client_id = #{clientId,jdbcType=VARCHAR},
+      progress = #{progress,jdbcType=DECIMAL},
+      `status` = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_manager = #{createManager,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectPageList" parameterType="com.scrawl.iot.web.vo.PageReqVO" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from t_iot_device_batch
+    order by create_time desc
+    limit #{offset}, #{limit}
+  </select>
+  <select id="selectPageCount" parameterType="com.scrawl.iot.web.vo.PageReqVO" resultType="java.lang.Integer">
+    select
+      count(*)
+    from t_iot_device_batch
+  </select>
+  <select id="selectByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+      ,
+      <include refid="Blob_Column_List"/>
+    from t_iot_device_batch
+    where task_id = #{taskId}
+  </select>
+</mapper>

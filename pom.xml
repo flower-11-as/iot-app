@@ -73,6 +73,7 @@
         <aspectj.version>1.8.0</aspectj.version>
         <quartz.version>2.2.1</quartz.version>
         <joda.time.version>2.9.9</joda.time.version>
+        <poi.version>3.17</poi.version>
     </properties>
 
     <dependencies>
@@ -214,6 +215,13 @@
                         <groupId>org.slf4j</groupId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <!--poi-->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -76,6 +76,10 @@
     <entry key="SYS13005">删除通知错误</entry>
     <entry key="SYS13006">发送通知错误</entry>
 
+    <!--device batch-->
+    <entry key="SYS14001">批量添加设备异常</entry>
+    <entry key="SYS14002">批量添加设备文件异常</entry>
+
     <!--iot-->
     <entry key="IOT10001">未获取到有效授权IoT账户</entry>
     <entry key="IOT10002">指令响应回调错误</entry>

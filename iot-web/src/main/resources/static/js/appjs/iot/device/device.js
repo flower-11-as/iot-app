@@ -336,6 +336,7 @@ function alarmConfig(id) {
     });
 }
 
+// 查看报表
 function report(id) {
     // iframe层
     layer.open({

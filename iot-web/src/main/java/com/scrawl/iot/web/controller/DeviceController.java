@@ -102,6 +102,7 @@ public class DeviceController extends BaseController {
         return R.ok();
     }
 
+
     @GetMapping("/info")
     public String view(@RequestParam("id") Integer id, Model model) {
         Device device = deviceService.get(id);
