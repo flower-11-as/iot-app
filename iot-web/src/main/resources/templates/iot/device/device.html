@@ -70,14 +70,14 @@
         s_edit_h = '';
     </script>
 </div>
+<div shiro:hasPermission="iot:device:alarmConfig">
+    <script type="text/javascript">
+        s_alarmConfig_h = '';
+    </script>
+</div>
 <div shiro:hasPermission="iot:device:report">
     <script type="text/javascript">
         s_report_h = '';
-    </script>
-</div>
-<div shiro:hasPermission="iot:device:remove">
-    <script type="text/javascript">
-        s_remove_h = '';
     </script>
 </div>
 <div shiro:hasPermission="iot:device:syncDevice">
@@ -100,9 +100,9 @@
         s_upload_h = '';
     </script>
 </div>
-<div shiro:hasPermission="iot:device:alarmConfig">
+<div shiro:hasPermission="iot:device:remove">
     <script type="text/javascript">
-        s_alarmConfig_h = '';
+        s_remove_h = '';
     </script>
 </div>
 <div th:include="include::footer"></div>

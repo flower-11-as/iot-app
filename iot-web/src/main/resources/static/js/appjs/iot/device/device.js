@@ -60,10 +60,10 @@ var localColumns = [
             var f = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="下发指令"  mce_href="#" onclick="command(\''
                 + row.id
                 + '\')">指令</a> ';
-            var g = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="重启终端"  mce_href="#" onclick="reboot(\''
+            var g = '<a class="btn btn-success btn-sm ' + s_reboot_h + '" href="#" title="重启终端"  mce_href="#" onclick="reboot(\''
                 + row.id
                 + '\')">重启</a> ';
-            var h = '<a class="btn btn-success btn-sm ' + s_command_h + '" href="#" title="上报数据"  mce_href="#" onclick="upload(\''
+            var h = '<a class="btn btn-success btn-sm ' + s_upload_h + '" href="#" title="上报数据"  mce_href="#" onclick="upload(\''
                 + row.id
                 + '\')">上报</a> ';
             var i = '<a class="btn btn-danger btn-sm ' + s_remove_h + '" href="#" title="删除设备"  mce_href="#" onclick="remove(\''

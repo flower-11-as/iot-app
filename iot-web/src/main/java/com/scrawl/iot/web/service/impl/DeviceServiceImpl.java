@@ -207,6 +207,7 @@ public class DeviceServiceImpl implements DeviceService {
 
         Map<String, Object> params = new HashMap<>();
         params.put("serverID", account.getServerId());
+        params.put("pageDataCount", 100);
 
         Integer pageNum = 1;
         List<IotDeviceAllResponse.IotDevice> devicesAll = new ArrayList<>();
